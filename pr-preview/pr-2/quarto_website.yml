@@ -1,0 +1,85 @@
+project:
+  type: website
+  output-dir: ../docs/
+  render:
+    - "*.qmd"      # Render all Quarto markdown files
+    - "*.md"       # Also render plain markdown files
+    - "!README.md" # Except README which is used in index
+    - "!index.md"  # Except index which is replaced by index.qmd
+    - "!data-raw/" # Exclude anything in the data-raw directory
+
+# Note: freeze functionality can be set at a project level or for individual .qmd files
+# execute:
+#   freeze: false
+bibliography: vignettes/references.bib
+website:
+  title: "$ALTDOC_PACKAGE_NAME"
+  repo-url: https://github.com/UCD-SERG/rpt
+  repo-actions: [edit, source, issue]
+  navbar:
+    search: true
+    pinned: false
+    right:
+      - icon: github
+        href: $ALTDOC_PACKAGE_URL_GITHUB
+        aria-label: $ALTDOC_PACKAGE_NAME GitHub
+    left:
+      - text: Documentation
+        file: man/rpt-package.qmd
+      - text: Articles
+        menu:
+          - text: "Getting started"
+            file: vignettes/getting-started.qmd
+          - text: "Intro vignette"
+            file: vignettes/quarto_vignette.qmd
+          - text: "Advanced"
+            file: vignettes/articles/quarto_article.qmd
+  sidebar:
+    collapse-level: 1
+    contents:
+      - text: Home
+        file: index.qmd
+        style: floating
+      - section: Articles
+        style: floating
+        contents:
+          - vignettes/getting-started.qmd
+          - vignettes/quarto_vignette.qmd
+          - section: Advanced
+            contents:
+              - vignettes/articles/quarto_article.qmd
+      - section: $ALTDOC_MAN_BLOCK
+        style: floating
+      - text: News
+        file: NEWS.md
+      - text: License
+        file: LICENSE.md
+      - text: Code of conduct
+        file: CODE_OF_CONDUCT.md
+      - text: Contributing
+        file: CONTRIBUTING.md
+      - text: Citation
+        file: CITATION.md
+
+format:
+  html:
+    code-link: true # enables downlit; see https://altdoc.etiennebacher.com/#/man/render_docs.md#auto-link-for-quarto-websites
+    theme:
+      light: default
+      dark: darkly
+    css: styles.css
+    number-sections: false
+    code-fold: show
+    echo: true
+    code-copy: true
+    code-overflow: scroll
+    title-block-style: none
+    toc: true
+    grid:
+      sidebar-width: 340px
+      margin-width: 340px
+
+filters:
+  - slidebreak
+  - quarto
+
