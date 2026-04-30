@@ -1,0 +1,84 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# `{rpt}` ([R]{.underline} [p]{.underline}ackage [t]{.underline}emplate)
+
+<!-- badges: start -->
+
+```{r, echo = FALSE, message = FALSE, results='asis'}
+library(badger)
+cat(
+  badge_lifecycle(stage = "experimental", alt = "Lifecycle: experimental"),
+  badge_github_actions(alt = "R-CMD-check", action = "R-CMD-check.yaml"),
+  badge_codecov(alt = "Codecov test coverage", branch = "main"),
+  badge_codefactor(alt = "CodeFactor", ref = "ucd-serg/rpt"), # case matters
+  badge_cran_release(alt = "CRAN status"),
+  badge_cran_download(type = "grand-total"),
+  badge_cran_download(type = "last-month"),
+  badge_cran_download(type = "last-week"),
+  badger::badge_license()
+)
+```
+
+<!-- badges: end -->
+
+The goal of `{rpt}` is to ...
+
+## Installation
+
+You can install the development version of `{rpt}` from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("UCD-SERG/rpt")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(rpt)
+## basic example code
+```
+
+## Development
+
+### Building the Documentation Site
+
+This package uses [altdoc](https://altdoc.etiennebacher.com/) with [Quarto](https://quarto.org/) to build its documentation site. To build and preview the documentation locally:
+
+```r
+# Load the package
+pkgload::load_all()
+
+# Render the documentation
+altdoc::render_docs()
+
+# Preview the site
+altdoc::preview_docs()
+```
+
+The documentation is automatically built and deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.
+
+## Other R Package Template Options
+
+If you're looking for alternative R package templates, you may also want to consider:
+
+- [r.pkg.template](https://github.com/insightsengineering/r.pkg.template/) - A comprehensive R package template from Insights Engineering
+
+## Code of Conduct
+
+Please note that the `{rpt}` project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

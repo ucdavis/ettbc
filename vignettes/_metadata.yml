@@ -1,0 +1,20 @@
+format:
+  html:
+    number-sections: true
+    toc: true
+    html-math-method: mathjax
+    fig-cap-location: top
+  revealjs:
+    reference-location: document
+    echo: true
+    code-fold: true
+    html-math-method: mathjax
+    scrollable: true
+    auto-stretch: true
+    fig-height: 3
+    fig-width: 7
+    number-sections: true
+    number-depth: 2
+    fig-cap-location: top
+  docx:
+    number-sections: true

@@ -1,0 +1,31 @@
+Package: rpt
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9011
+Authors@R: c(
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+  )
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+URL: https://github.com/UCD-SERG/rpt, https://ucd-serg.github.io/rpt/
+BugReports: https://github.com/UCD-SERG/rpt/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Language: en-US
+Depends: 
+    R (>= 4.1.0)
+Imports: 
+    stats
+Suggests: 
+    altdoc,
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0),
+    withr,
+    quarto,
+    bslib,
+    badger
+Config/testthat/edition: 3
+VignetteBuilder: knitr, quarto
+Config/Needs/website: quarto

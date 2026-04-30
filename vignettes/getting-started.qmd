@@ -1,0 +1,40 @@
+---
+title: "Getting Started"
+format: 
+  html: default
+  revealjs:
+    output-file: getting-started-revealjs.html
+  docx: default
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rpt)
+```
+
+## Introduction
+
+This vignette provides an introduction to the `{rpt}` package.
+
+## Basic Usage
+
+Here's a basic example:
+
+```{r}
+# Example usage
+example_function(c(1, 2, 3, 4, 5))
+```
+
+## Next Steps
+
+For more information, see the package documentation.

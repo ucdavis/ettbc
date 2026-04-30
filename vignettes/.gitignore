@@ -1,0 +1,9 @@
+/.quarto/
+**/*.quarto_ipynb
+*.html
+*.R
+*_files
+*.docx
+*.pdf
+*.pptx
+_extensions

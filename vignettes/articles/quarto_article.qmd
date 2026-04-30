@@ -1,0 +1,267 @@
+---
+title: "Advanced Quarto Article"
+author: "UC Davis Seroepidemiology Research Group (UCD-SERG)"
+date: "`r Sys.Date()`"
+format:
+  revealjs:
+    output-file: quarto_article-revealjs.html
+  html: default
+  docx: default
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+```{r setup}
+#| message: false
+library(rpt)
+```
+
+## Overview
+
+This article demonstrates advanced features of Quarto for package documentation. Unlike vignettes, articles are only available on the documentation website and are not included in the package bundle.
+
+## When to Use Articles vs Vignettes
+
+**Vignettes** should be used for:
+
+- Core package documentation
+- Essential usage examples
+- Content that users need offline
+
+**Articles** are better for:
+
+- Extended tutorials
+- Case studies and detailed examples
+- Content with large datasets or external dependencies
+- Supplementary material
+
+## Advanced Quarto Features
+
+### Cross-References
+
+Quarto makes it easy to create cross-references. For example, see @fig-scatter for a scatter plot and @tbl-summary for a summary table.
+
+```{r}
+#| label: fig-scatter
+#| fig-cap: "Scatter plot demonstrating cross-referencing"
+#| echo: true
+
+# Generate sample data
+set.seed(123)
+x <- rnorm(100)
+y <- 2 * x + rnorm(100, 0, 0.5)
+
+# Create scatter plot
+plot(x, y, 
+     main = "Example Scatter Plot",
+     xlab = "X Variable",
+     ylab = "Y Variable",
+     pch = 16,
+     col = rgb(0.2, 0.4, 0.6, 0.6))
+abline(lm(y ~ x), col = "red", lwd = 2)
+```
+
+### Summary Tables
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Summary statistics for example data"
+
+data_summary <- data.frame(
+  Statistic = c("Mean", "Median", "SD", "Min", "Max"),
+  X = c(mean(x), median(x), sd(x), min(x), max(x)),
+  Y = c(mean(y), median(y), sd(y), min(y), max(y))
+)
+
+knitr::kable(data_summary, digits = 3)
+```
+
+As shown in @tbl-summary, the variables have similar distributions.
+
+### Code Folding
+
+You can make code chunks foldable:
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code for data preparation"
+
+# Prepare more complex data
+complex_data <- data.frame(
+  id = 1:50,
+  group = rep(c("A", "B"), each = 25),
+  value1 = rnorm(50, 100, 15),
+  value2 = rnorm(50, 50, 10)
+)
+
+# Calculate group statistics
+group_stats <- aggregate(
+  cbind(value1, value2) ~ group, 
+  data = complex_data, 
+  FUN = function(x) c(mean = mean(x), sd = sd(x))
+)
+
+print(group_stats)
+```
+
+### Tabsets
+
+::: {.panel-tabset}
+
+#### Plot View
+
+```{r}
+#| echo: false
+boxplot(value1 ~ group, data = complex_data,
+        main = "Value 1 by Group",
+        xlab = "Group",
+        ylab = "Value 1",
+        col = c("lightblue", "lightgreen"))
+```
+
+#### Summary View
+
+```{r}
+#| echo: false
+summary(complex_data)
+```
+
+#### Raw Data
+
+```{r}
+#| echo: false
+head(complex_data, 10)
+```
+
+:::
+
+### Advanced Callouts
+
+::: {.callout-important}
+## Important Considerations
+
+When using this package in production:
+
+1. Always validate input data
+2. Check for missing values
+3. Consider computational complexity
+:::
+
+::: {.callout-warning}
+## Performance Warning
+
+Large datasets may require additional memory and processing time.
+:::
+
+### Columns Layout
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Left Column**
+
+This demonstrates a two-column layout in Quarto.
+
+- Feature 1
+- Feature 2
+- Feature 3
+:::
+
+::: {.column width="50%"}
+**Right Column**
+
+You can place different content in each column.
+
+```{r}
+#| echo: false
+hist(rnorm(100), 
+     main = "Distribution",
+     col = "lightblue",
+     border = "white")
+```
+:::
+
+::::
+
+## Working with Package Functions
+
+Here's how to use the package's example function with different inputs:
+
+```{r}
+# Numeric vector
+example_function(c(5, 10, 15, 20, 25))
+
+# Using with generated data
+random_data <- runif(10, min = 0, max = 100)
+example_function(random_data)
+```
+
+## Code Annotations
+
+Quarto supports code annotations for detailed explanations:
+
+```{r}
+# <1>
+data <- c(1, 2, 3, 4, 5) # <2>
+result <- example_function(data) # <3>
+print(result) # <4>
+```
+1. Load sample data
+2. Create a simple numeric vector
+3. Apply the example function from the package
+4. Display the results
+
+## Mathematical Notation
+
+Quarto excels at mathematical notation. Here's an example of a statistical formula:
+
+The standard error of the mean is calculated as:
+
+$$
+SE = \frac{s}{\sqrt{n}}
+$$
+
+where $s$ is the sample standard deviation and $n$ is the sample size.
+
+For a confidence interval:
+
+$$
+CI = \bar{x} \pm t_{\alpha/2, n-1} \cdot SE
+$$
+
+## Tips and Best Practices
+
+::: {.callout-tip collapse="true"}
+## Expanding tip section
+
+Click to expand this section for additional tips:
+
+1. Use descriptive chunk labels for better organization
+2. Set global chunk options at the beginning
+3. Use cross-references to link related content
+4. Leverage callouts for important information
+5. Consider code folding for long code blocks
+:::
+
+## Conclusion
+
+This article demonstrates the advanced capabilities of Quarto for creating rich, interactive documentation for R packages.
+
+## Learn More
+
+- Visit the [package website](https://ucd-serg.github.io/rpt/)
+- Check out the [GitHub repository](https://github.com/UCD-SERG/rpt)
+- Read the [Quarto documentation](https://quarto.org/)
+
+## References
+
+::: {#refs}
+:::

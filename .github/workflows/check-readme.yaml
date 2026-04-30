@@ -1,0 +1,36 @@
+# Workflow derived from https://github.com/IndrajeetPatil/statsExpressions/blob/main/.github/workflows/check-readme.yaml
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+name: check-readme
+
+jobs:
+  check-readme:
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/verse:latest
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          pak-version: devel
+          upgrade: "TRUE"
+          extra-packages: |
+            local::.
+
+      - name: Render README
+        run: |
+          options(
+            crayon.enabled = TRUE,
+            warn = 2L
+          )
+          rmarkdown::render("README.Rmd")
+        shell: Rscript {0}
