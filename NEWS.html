@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>news – rpt</title>
+<title>news – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -249,7 +249,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">rpt</span>
+    <span class="navbar-title">ettbc</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -259,7 +259,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./man/rpt-package.html" aria-current="page"> 
+    <a class="nav-link active" href="./man/ettbc-package.html" aria-current="page"> 
 <span class="menu-text">Documentation</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -284,7 +284,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/UCD-SERG/rpt"> <i class="bi bi-github" role="img" aria-label="rpt GitHub">
+    <a class="nav-link" href="https://github.com/ucdavis/ettbc"> <i class="bi bi-github" role="img" aria-label="ettbc GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -369,14 +369,14 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/example_function.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">example_function</span></a>
+  <a href="./man/ettbc-package.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ettbc-package</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/rpt-package.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">rpt-package</span></a>
+  <a href="./man/example_function.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">example_function</span></a>
   </div>
 </li>
       </ul>
@@ -421,10 +421,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#rpt-development-version" id="toc-rpt-development-version" class="nav-link active" data-scroll-target="#rpt-development-version">rpt (development version)</a></li>
-  <li><a href="#rpt-0.0.0.9000" id="toc-rpt-0.0.0.9000" class="nav-link" data-scroll-target="#rpt-0.0.0.9000">rpt 0.0.0.9000</a></li>
+  <li><a href="#ettbc-development-version" id="toc-ettbc-development-version" class="nav-link active" data-scroll-target="#ettbc-development-version">ettbc (development version)</a></li>
+  <li><a href="#ettbc-0.0.0.9000" id="toc-ettbc-0.0.0.9000" class="nav-link" data-scroll-target="#ettbc-0.0.0.9000">ettbc 0.0.0.9000</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/UCD-SERG/rpt/edit/main/NEWS.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/UCD-SERG/rpt/blob/main/NEWS.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/UCD-SERG/rpt/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/NEWS.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/NEWS.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
@@ -433,21 +433,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="rpt-development-version" class="level1">
-<h1>rpt (development version)</h1>
-<ul>
-<li><p>Switched from pkgdown to altdoc for documentation generation. Now using Quarto Website for documentation with native math equation support via MathJax.</p></li>
-<li><p>Removed pkgdown-specific configurations and workflows.</p></li>
-<li><p>Retained RevealJS multi-format support for Quarto vignettes and articles.</p></li>
-<li><p>Fixed index page rendering by switching from <code>index.md</code> to <code>index.qmd</code> to properly process Quarto include directive (<a href="https://github.com/UCD-SERG/rpt/issues/58">#58</a>)</p></li>
-<li><p>Switched from <code>pkgdown</code> to <code>altdoc</code> (<a href="https://github.com/UCD-SERG/rpt/issues/45">#45</a>)</p></li>
-<li><p>Updated lintr configuration to match serodynamics reference with enhanced linter rules</p></li>
-<li><p>PR preview comments now use <code>recreate: true</code> to ensure they always appear at the bottom of the PR conversation, preventing them from being hidden in collapsed sections (<a href="https://github.com/UCD-SERG/rpt/issues/31">#31</a>)</p></li>
-<li><p>Added RevealJS presentation format for Quarto vignettes and articles in pkgdown documentation. HTML pages now display an “Other Formats” section with links to slide versions (<a href="https://github.com/UCD-SERG/rpt/issues/29">#29</a>)</p></li>
-</ul>
+<section id="ettbc-development-version" class="level1">
+<h1>ettbc (development version)</h1>
 </section>
-<section id="rpt-0.0.0.9000" class="level1">
-<h1>rpt 0.0.0.9000</h1>
+<section id="ettbc-0.0.0.9000" class="level1">
+<h1>ettbc 0.0.0.9000</h1>
 <ul>
 <li>Initial development version</li>
 </ul>
@@ -874,4 +864,4 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/UCD-SERG/rpt/edit/main/NEWS.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/UCD-SERG/rpt/blob/main/NEWS.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/UCD-SERG/rpt/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/NEWS.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/NEWS.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
