@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(rpt)
+library(ettbc)
 ```
 
 ## Introduction
@@ -117,4 +117,4 @@ For more information, see:
 - [Quarto Documentation](https://quarto.org/)
 - [Using Quarto with R](https://quarto.org/docs/computations/r.html)
 - @R-base
-- @R-rpt
+- @R-ettbc
