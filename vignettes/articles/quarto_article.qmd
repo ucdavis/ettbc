@@ -1,6 +1,6 @@
 ---
 title: "Advanced Quarto Article"
-author: "UC Davis Seroepidemiology Research Group (UCD-SERG)"
+author: "Douglas Ezra Morrison"
 date: "`r Sys.Date()`"
 format:
   revealjs:
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 #| message: false
-library(rpt)
+library(ettbc)
 ```
 
 ## Overview
@@ -257,8 +257,8 @@ This article demonstrates the advanced capabilities of Quarto for creating rich,
 
 ## Learn More
 
-- Visit the [package website](https://ucd-serg.github.io/rpt/)
-- Check out the [GitHub repository](https://github.com/UCD-SERG/rpt)
+- Visit the [package website](https://ucdavis.github.io/ettbc/)
+- Check out the [GitHub repository](https://github.com/ucdavis/ettbc)
 - Read the [Quarto documentation](https://quarto.org/)
 
 ## References

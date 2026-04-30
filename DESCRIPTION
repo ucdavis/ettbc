@@ -1,13 +1,19 @@
-Package: rpt
+Package: ettbc
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9012
+Version: 0.0.0.9013
 Authors@R: c(
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+    person(
+      given = "Douglas Ezra",
+      family = "Morrison",
+      email = "demorrison@ucdavis.edu",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-7195-830X")
+    )
   )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
-URL: https://github.com/UCD-SERG/rpt, https://ucd-serg.github.io/rpt/
-BugReports: https://github.com/UCD-SERG/rpt/issues
+URL: https://github.com/ucdavis/ettbc, https://ucdavis.github.io/ettbc/
+BugReports: https://github.com/ucdavis/ettbc/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

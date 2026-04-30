@@ -20,7 +20,7 @@ jobs:
 
       - name: Configure git safe directory
         run: |
-          git config --global --add safe.directory /__w/rpt/rpt
+          git config --global --add safe.directory /__w/ettbc/ettbc
 
       - uses: r-lib/actions/pr-fetch@v2
         with:
@@ -63,7 +63,7 @@ jobs:
 
       - name: Configure git safe directory
         run: |
-          git config --global --add safe.directory /__w/rpt/rpt
+          git config --global --add safe.directory /__w/ettbc/ettbc
 
       - uses: r-lib/actions/pr-fetch@v2
         with:
