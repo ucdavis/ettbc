@@ -81,5 +81,71 @@ format:
 
 filters:
   - slidebreak
+  - d-morrison/div-anchors
+  - d-morrison/equation-anchors
+  - sun123zxy/callouty-theorem
   - quarto
+
+callouty-theorem:
+  thm:
+    override-title: false
+    callout:
+      type: lem
+      appearance: minimal
+  lem:
+    override-title: false
+    callout:
+      type: lem
+      appearance: minimal
+  cor:
+    override-title: false
+    callout:
+      type: cor
+      appearance: minimal
+  prp:
+    override-title: false
+    callout:
+      type: prp
+      appearance: minimal
+  cnj:
+    override-title: false
+    callout:
+      type: cnj
+      appearance: minimal
+  def:
+    override-title: false
+    callout:
+      type: def
+      appearance: minimal
+  exm:
+    override-title: false
+    callout:
+      type: exm
+      appearance: minimal
+  exr:
+    override-title: false
+    callout:
+      type: exr
+      appearance: minimal
+  proof:
+    override-title: true
+    callout:
+      type: proof
+      appearance: default
+      collapse: true
+      icon: true
+  solution:
+    override-title: true
+    callout:
+      type: solution
+      appearance: default
+      collapse: true
+      icon: false
+  remark:
+    override-title: true
+    callout:
+      type: remark
+      appearance: default
+      collapse: false
+      icon: true
 
