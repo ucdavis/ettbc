@@ -19,12 +19,12 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(rpt)
+library(ettbc)
 ```
 
 ## Introduction
 
-This vignette provides an introduction to the `{rpt}` package.
+This vignette provides an introduction to the `{ettbc}` package.
 
 ## Basic Usage
 
