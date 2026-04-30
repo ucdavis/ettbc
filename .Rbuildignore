@@ -33,3 +33,6 @@
 ^index\.qmd$
 ^\.Rprofile$
 ^_extensions$
+^\.positai$
+^\.claude$
+^SAS$

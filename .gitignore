@@ -30,3 +30,4 @@ _quarto/*
 !_quarto/_freeze/
 *.docx
 *.knit.md
+.positai
