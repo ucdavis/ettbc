@@ -1,6 +1,6 @@
 ---
 title: "Advanced Quarto Article"
-author: "UC Davis Seroepidemiology Research Group (UCD-SERG)"
+author: "Douglas Ezra Morrison"
 date: "`r Sys.Date()`"
 format:
   revealjs:
