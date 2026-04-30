@@ -504,7 +504,7 @@
     "href": "vignettes/quarto_vignette-revealjs.html#references",
     "title": "Quarto Vignette Example",
     "section": "8 References",
-    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nMorrison (2024)\n\n\n\n\n\nMorrison, Douglas Ezra. 2024. Ettbc: What the Package Does (One Line, Title Case). https://github.com/ucdavis/ettbc.\n\n\nR Core Team. 2024. R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing. https://www.R-project.org/."
+    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nMorrison (2024)\n\n\n\n\n\n\n\nMorrison, Douglas Ezra. 2024. Ettbc: What the Package Does (One Line, Title Case). https://github.com/ucdavis/ettbc.\n\n\nR Core Team. 2024. R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing. https://www.R-project.org/."
   },
   {
     "objectID": "vignettes/quarto_vignette.html",
