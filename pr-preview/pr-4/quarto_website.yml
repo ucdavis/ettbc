@@ -14,7 +14,7 @@ project:
 bibliography: vignettes/references.bib
 website:
   title: "$ALTDOC_PACKAGE_NAME"
-  repo-url: https://github.com/UCD-SERG/rpt
+  repo-url: https://github.com/ucdavis/ettbc
   repo-actions: [edit, source, issue]
   navbar:
     search: true
@@ -25,7 +25,7 @@ website:
         aria-label: $ALTDOC_PACKAGE_NAME GitHub
     left:
       - text: Documentation
-        file: man/rpt-package.qmd
+        file: man/ettbc-package.qmd
       - text: Articles
         menu:
           - text: "Getting started"

@@ -2,9 +2,9 @@
   {
     "objectID": "NEWS.html",
     "href": "NEWS.html",
-    "title": "rpt (development version)",
+    "title": "ettbc (development version)",
     "section": "",
-    "text": "rpt (development version)\n\nSwitched from pkgdown to altdoc for documentation generation. Now using Quarto Website for documentation with native math equation support via MathJax.\nRemoved pkgdown-specific configurations and workflows.\nRetained RevealJS multi-format support for Quarto vignettes and articles.\nFixed index page rendering by switching from index.md to index.qmd to properly process Quarto include directive (#58)\nSwitched from pkgdown to altdoc (#45)\nUpdated lintr configuration to match serodynamics reference with enhanced linter rules\nPR preview comments now use recreate: true to ensure they always appear at the bottom of the PR conversation, preventing them from being hidden in collapsed sections (#31)\nAdded RevealJS presentation format for Quarto vignettes and articles in pkgdown documentation. HTML pages now display an “Other Formats” section with links to slide versions (#29)\n\n\n\nrpt 0.0.0.9000\n\nInitial development version",
+    "text": "ettbc (development version)\n\n\nettbc 0.0.0.9000\n\nInitial development version",
     "crumbs": [
       "Documentation",
       "News"
@@ -13,9 +13,9 @@
   {
     "objectID": "CONTRIBUTING.html",
     "href": "CONTRIBUTING.html",
-    "title": "Contributing to rpt",
+    "title": "Contributing to ettbc",
     "section": "",
-    "text": "This document outlines how to propose a change to this project. For a detailed discussion on contributing to this and other packages, please see the tidyverse’s development contributing guide and code review principles.\n\n\nYou can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the source file. This generally means you’ll need to edit roxygen2 comments in an .R, not a .Rd file. You can find the .R file that generates the .Rd by reading the comment in the first line.\n\n\n\nIf you want to make a bigger change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal reprex (this will also help you write a unit test, if needed). See the tidyverse guide on how to create a great issue for more advice.\n\n\n\nFork the package and clone onto your computer. If you haven’t done this before, we recommend using usethis::create_from_github(\"UCD-SERG/rpt\", fork = TRUE).\nInstall all development dependencies with devtools::install_dev_deps(), and then make sure the package passes R CMD check by running devtools::check(). If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.\nCreate a Git branch for your pull request (PR). We recommend using usethis::pr_init(\"brief-description-of-change\").\nMake your changes, commit to git, and then create a PR by running usethis::pr_push(), and following the prompts in your browser.\n\nThe title of your PR should briefly describe the change.\nThe body of your PR should contain Fixes #issue-number.\nYour changes should conform to the tidyverse code style guidelines and design principles described below.\n\nFor user-facing changes, add a bullet to the top of NEWS.md (i.e. just below the first header). Follow the style described in https://style.tidyverse.org/news.html.\nGitHub will automatically check your PR to see if the package is still functional on Mac OS, Windows, and Linux; if not, you will receive an email describing the problems.\n\nFor help decoding errors, try this resource: https://github.com/r-lib/actions?tab=readme-ov-file#where-to-find-help.\n\n\n\n\n\n\nNew code should follow the tidyverse style guide and design principles. You can use the lintr package to automatically check for some style and design issues and the styler package to automatically correct some issues. Please don’t restyle code that has nothing to do with your PR.\nWe use roxygen2, with Markdown syntax, for documentation.\nWe use testthat for unit tests. Contributions with test cases included are easier to accept.\n\n\n\n\n\nPlease note that this project is released with a Contributor Code of Conduct. By contributing to this project you agree to abide by its terms.",
+    "text": "This document outlines how to propose a change to this project. For a detailed discussion on contributing to this and other packages, please see the tidyverse’s development contributing guide and code review principles.\n\n\nYou can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the source file. This generally means you’ll need to edit roxygen2 comments in an .R, not a .Rd file. You can find the .R file that generates the .Rd by reading the comment in the first line.\n\n\n\nIf you want to make a bigger change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal reprex (this will also help you write a unit test, if needed). See the tidyverse guide on how to create a great issue for more advice.\n\n\n\nFork the package and clone onto your computer. If you haven’t done this before, we recommend using usethis::create_from_github(\"ucdavis/ettbc\", fork = TRUE).\nInstall all development dependencies with devtools::install_dev_deps(), and then make sure the package passes R CMD check by running devtools::check(). If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.\nCreate a Git branch for your pull request (PR). We recommend using usethis::pr_init(\"brief-description-of-change\").\nMake your changes, commit to git, and then create a PR by running usethis::pr_push(), and following the prompts in your browser.\n\nThe title of your PR should briefly describe the change.\nThe body of your PR should contain Fixes #issue-number.\nYour changes should conform to the tidyverse code style guidelines and design principles described below.\n\nFor user-facing changes, add a bullet to the top of NEWS.md (i.e. just below the first header). Follow the style described in https://style.tidyverse.org/news.html.\nGitHub will automatically check your PR to see if the package is still functional on Mac OS, Windows, and Linux; if not, you will receive an email describing the problems.\n\nFor help decoding errors, try this resource: https://github.com/r-lib/actions?tab=readme-ov-file#where-to-find-help.\n\n\n\n\n\n\nNew code should follow the tidyverse style guide and design principles. You can use the lintr package to automatically check for some style and design issues and the styler package to automatically correct some issues. Please don’t restyle code that has nothing to do with your PR.\nWe use roxygen2, with Markdown syntax, for documentation.\nWe use testthat for unit tests. Contributions with test cases included are easier to accept.\n\n\n\n\n\nPlease note that this project is released with a Contributor Code of Conduct. By contributing to this project you agree to abide by its terms.",
     "crumbs": [
       "Documentation",
       "Contributing"
@@ -24,7 +24,7 @@
   {
     "objectID": "CONTRIBUTING.html#fixing-typos",
     "href": "CONTRIBUTING.html#fixing-typos",
-    "title": "Contributing to rpt",
+    "title": "Contributing to ettbc",
     "section": "",
     "text": "You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the source file. This generally means you’ll need to edit roxygen2 comments in an .R, not a .Rd file. You can find the .R file that generates the .Rd by reading the comment in the first line.",
     "crumbs": [
@@ -35,9 +35,9 @@
   {
     "objectID": "CONTRIBUTING.html#bigger-changes",
     "href": "CONTRIBUTING.html#bigger-changes",
-    "title": "Contributing to rpt",
+    "title": "Contributing to ettbc",
     "section": "",
-    "text": "If you want to make a bigger change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal reprex (this will also help you write a unit test, if needed). See the tidyverse guide on how to create a great issue for more advice.\n\n\n\nFork the package and clone onto your computer. If you haven’t done this before, we recommend using usethis::create_from_github(\"UCD-SERG/rpt\", fork = TRUE).\nInstall all development dependencies with devtools::install_dev_deps(), and then make sure the package passes R CMD check by running devtools::check(). If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.\nCreate a Git branch for your pull request (PR). We recommend using usethis::pr_init(\"brief-description-of-change\").\nMake your changes, commit to git, and then create a PR by running usethis::pr_push(), and following the prompts in your browser.\n\nThe title of your PR should briefly describe the change.\nThe body of your PR should contain Fixes #issue-number.\nYour changes should conform to the tidyverse code style guidelines and design principles described below.\n\nFor user-facing changes, add a bullet to the top of NEWS.md (i.e. just below the first header). Follow the style described in https://style.tidyverse.org/news.html.\nGitHub will automatically check your PR to see if the package is still functional on Mac OS, Windows, and Linux; if not, you will receive an email describing the problems.\n\nFor help decoding errors, try this resource: https://github.com/r-lib/actions?tab=readme-ov-file#where-to-find-help.\n\n\n\n\n\n\nNew code should follow the tidyverse style guide and design principles. You can use the lintr package to automatically check for some style and design issues and the styler package to automatically correct some issues. Please don’t restyle code that has nothing to do with your PR.\nWe use roxygen2, with Markdown syntax, for documentation.\nWe use testthat for unit tests. Contributions with test cases included are easier to accept.",
+    "text": "If you want to make a bigger change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal reprex (this will also help you write a unit test, if needed). See the tidyverse guide on how to create a great issue for more advice.\n\n\n\nFork the package and clone onto your computer. If you haven’t done this before, we recommend using usethis::create_from_github(\"ucdavis/ettbc\", fork = TRUE).\nInstall all development dependencies with devtools::install_dev_deps(), and then make sure the package passes R CMD check by running devtools::check(). If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.\nCreate a Git branch for your pull request (PR). We recommend using usethis::pr_init(\"brief-description-of-change\").\nMake your changes, commit to git, and then create a PR by running usethis::pr_push(), and following the prompts in your browser.\n\nThe title of your PR should briefly describe the change.\nThe body of your PR should contain Fixes #issue-number.\nYour changes should conform to the tidyverse code style guidelines and design principles described below.\n\nFor user-facing changes, add a bullet to the top of NEWS.md (i.e. just below the first header). Follow the style described in https://style.tidyverse.org/news.html.\nGitHub will automatically check your PR to see if the package is still functional on Mac OS, Windows, and Linux; if not, you will receive an email describing the problems.\n\nFor help decoding errors, try this resource: https://github.com/r-lib/actions?tab=readme-ov-file#where-to-find-help.\n\n\n\n\n\n\nNew code should follow the tidyverse style guide and design principles. You can use the lintr package to automatically check for some style and design issues and the styler package to automatically correct some issues. Please don’t restyle code that has nothing to do with your PR.\nWe use roxygen2, with Markdown syntax, for documentation.\nWe use testthat for unit tests. Contributions with test cases included are easier to accept.",
     "crumbs": [
       "Documentation",
       "Contributing"
@@ -46,7 +46,7 @@
   {
     "objectID": "CONTRIBUTING.html#code-of-conduct",
     "href": "CONTRIBUTING.html#code-of-conduct",
-    "title": "Contributing to rpt",
+    "title": "Contributing to ettbc",
     "section": "",
     "text": "Please note that this project is released with a Contributor Code of Conduct. By contributing to this project you agree to abide by its terms.",
     "crumbs": [
@@ -59,7 +59,7 @@
     "href": "CITATION.html",
     "title": "Citation",
     "section": "",
-    "text": "Citation\nTo cite package ‘rpt’ in publications use:\n\nLast F (2026). rpt: What the Package Does (One Line, Title Case). R package version 0.0.0.9012, https://github.com/UCD-SERG/rpt.",
+    "text": "Citation\nTo cite package ‘ettbc’ in publications use:\n\nMorrison D (2026). ettbc: What the Package Does (One Line, Title Case). R package version 0.0.0.9013, https://github.com/ucdavis/ettbc.",
     "crumbs": [
       "Documentation",
       "Citation"
@@ -70,7 +70,7 @@
     "href": "vignettes/getting-started.html",
     "title": "Getting Started",
     "section": "",
-    "text": "Codelibrary(rpt)",
+    "text": "Codelibrary(ettbc)",
     "crumbs": [
       "Documentation",
       "Articles",
@@ -82,7 +82,7 @@
     "href": "vignettes/getting-started.html#introduction",
     "title": "Getting Started",
     "section": "\n1 Introduction",
-    "text": "1 Introduction\nThis vignette provides an introduction to the rpt package.",
+    "text": "1 Introduction\nThis vignette provides an introduction to the ettbc package.",
     "crumbs": [
       "Documentation",
       "Articles",
@@ -118,7 +118,7 @@
     "href": "vignettes/getting-started-revealjs.html#introduction",
     "title": "Getting Started",
     "section": "1 Introduction",
-    "text": "1 Introduction\nThis vignette provides an introduction to the {rpt} package."
+    "text": "1 Introduction\nThis vignette provides an introduction to the {ettbc} package."
   },
   {
     "objectID": "vignettes/getting-started-revealjs.html#basic-usage",
@@ -135,101 +135,11 @@
     "text": "3 Next Steps\nFor more information, see the package documentation."
   },
   {
-    "objectID": "man/rpt-package.html",
-    "href": "man/rpt-package.html",
-    "title": "rpt",
-    "section": "",
-    "text": "What the package does (one paragraph).\n\n\n\nMaintainer: First Last first.last@example.com\n\n\n\nUseful links:\n\n\nhttps://github.com/UCD-SERG/rpt\n\n\nhttps://ucd-serg.github.io/rpt/\n\n\nReport bugs at https://github.com/UCD-SERG/rpt/issues",
-    "crumbs": [
-      "Documentation",
-      "Reference",
-      "rpt-package"
-    ]
-  },
-  {
-    "objectID": "man/rpt-package.html#rpt-what-the-package-does-one-line-title-case",
-    "href": "man/rpt-package.html#rpt-what-the-package-does-one-line-title-case",
-    "title": "rpt",
-    "section": "",
-    "text": "What the package does (one paragraph).\n\n\n\nMaintainer: First Last first.last@example.com\n\n\n\nUseful links:\n\n\nhttps://github.com/UCD-SERG/rpt\n\n\nhttps://ucd-serg.github.io/rpt/\n\n\nReport bugs at https://github.com/UCD-SERG/rpt/issues",
-    "crumbs": [
-      "Documentation",
-      "Reference",
-      "rpt-package"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "{rpt} (R package template)",
-    "section": "",
-    "text": "The goal of {rpt} is to …\n\n\nYou can install the development version of {rpt} from GitHub with:\n# install.packages(\"pak\")\npak::pak(\"UCD-SERG/rpt\")\n\n\n\nThis is a basic example which shows you how to solve a common problem:\nlibrary(rpt)\n## basic example code\n\n\n\n\n\nThis package uses altdoc with Quarto to build its documentation site. To build and preview the documentation locally:\n# Load the package\npkgload::load_all()\n\n# Render the documentation\naltdoc::render_docs()\n\n# Preview the site\naltdoc::preview_docs()\nThe documentation is automatically built and deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.\n\n\n\n\nIf you’re looking for alternative R package templates, you may also want to consider:\n\nr.pkg.template - A comprehensive R package template from Insights Engineering\n\n\n\n\nPlease note that the {rpt} project is released with a Contributor Code of Conduct. By contributing to this project, you agree to abide by its terms.",
-    "crumbs": [
-      "Documentation",
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#installation",
-    "href": "index.html#installation",
-    "title": "{rpt} (R package template)",
-    "section": "",
-    "text": "You can install the development version of {rpt} from GitHub with:\n# install.packages(\"pak\")\npak::pak(\"UCD-SERG/rpt\")",
-    "crumbs": [
-      "Documentation",
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#example",
-    "href": "index.html#example",
-    "title": "{rpt} (R package template)",
-    "section": "",
-    "text": "This is a basic example which shows you how to solve a common problem:\nlibrary(rpt)\n## basic example code",
-    "crumbs": [
-      "Documentation",
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#development",
-    "href": "index.html#development",
-    "title": "{rpt} (R package template)",
-    "section": "",
-    "text": "This package uses altdoc with Quarto to build its documentation site. To build and preview the documentation locally:\n# Load the package\npkgload::load_all()\n\n# Render the documentation\naltdoc::render_docs()\n\n# Preview the site\naltdoc::preview_docs()\nThe documentation is automatically built and deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.",
-    "crumbs": [
-      "Documentation",
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#other-r-package-template-options",
-    "href": "index.html#other-r-package-template-options",
-    "title": "{rpt} (R package template)",
-    "section": "",
-    "text": "If you’re looking for alternative R package templates, you may also want to consider:\n\nr.pkg.template - A comprehensive R package template from Insights Engineering",
-    "crumbs": [
-      "Documentation",
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#code-of-conduct",
-    "href": "index.html#code-of-conduct",
-    "title": "{rpt} (R package template)",
-    "section": "",
-    "text": "Please note that the {rpt} project is released with a Contributor Code of Conduct. By contributing to this project, you agree to abide by its terms.",
-    "crumbs": [
-      "Documentation",
-      "Home"
-    ]
-  },
-  {
     "objectID": "man/example_function.html",
     "href": "man/example_function.html",
-    "title": "rpt",
+    "title": "ettbc",
     "section": "",
-    "text": "This is an example function that demonstrates basic functionality.\n\nexample_function(x)\n\n\n\n\nx\n\n\nA numeric vector\n\n\nThe median of the input vector\n\n\nCodelibrary(\"rpt\")\n\nexample_function(c(1, 2, 3, 4, 5))\n\n[1] 3",
+    "text": "This is an example function that demonstrates basic functionality.\n\nexample_function(x)\n\n\n\n\nx\n\n\nA numeric vector\n\n\nThe median of the input vector\n\n\nCodelibrary(\"ettbc\")\n\nexample_function(c(1, 2, 3, 4, 5))\n\n[1] 3",
     "crumbs": [
       "Documentation",
       "Reference",
@@ -239,9 +149,9 @@
   {
     "objectID": "man/example_function.html#example-function",
     "href": "man/example_function.html#example-function",
-    "title": "rpt",
+    "title": "ettbc",
     "section": "",
-    "text": "This is an example function that demonstrates basic functionality.\n\nexample_function(x)\n\n\n\n\nx\n\n\nA numeric vector\n\n\nThe median of the input vector\n\n\nCodelibrary(\"rpt\")\n\nexample_function(c(1, 2, 3, 4, 5))\n\n[1] 3",
+    "text": "This is an example function that demonstrates basic functionality.\n\nexample_function(x)\n\n\n\n\nx\n\n\nA numeric vector\n\n\nThe median of the input vector\n\n\nCodelibrary(\"ettbc\")\n\nexample_function(c(1, 2, 3, 4, 5))\n\n[1] 3",
     "crumbs": [
       "Documentation",
       "Reference",
@@ -249,11 +159,90 @@
     ]
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "The goal of {ettbc} is to …\n\n\nYou can install the development version of {ettbc} from GitHub with:\n# install.packages(\"pak\")\npak::pak(\"ucdavis/ettbc\")\n\n\n\nThis is a basic example which shows you how to solve a common problem:\nlibrary(ettbc)\n## basic example code\n\n\n\n\n\nThis package uses altdoc with Quarto to build its documentation site. To build and preview the documentation locally:\n# Load the package\npkgload::load_all()\n\n# Render the documentation\naltdoc::render_docs()\n\n# Preview the site\naltdoc::preview_docs()\nThe documentation is automatically built and deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.\n\n\n\n\nPlease note that the {ettbc} project is released with a Contributor Code of Conduct. By contributing to this project, you agree to abide by its terms.",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "You can install the development version of {ettbc} from GitHub with:\n# install.packages(\"pak\")\npak::pak(\"ucdavis/ettbc\")",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#example",
+    "href": "index.html#example",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "This is a basic example which shows you how to solve a common problem:\nlibrary(ettbc)\n## basic example code",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#development",
+    "href": "index.html#development",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "This package uses altdoc with Quarto to build its documentation site. To build and preview the documentation locally:\n# Load the package\npkgload::load_all()\n\n# Render the documentation\naltdoc::render_docs()\n\n# Preview the site\naltdoc::preview_docs()\nThe documentation is automatically built and deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#code-of-conduct",
+    "href": "index.html#code-of-conduct",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "Please note that the {ettbc} project is released with a Contributor Code of Conduct. By contributing to this project, you agree to abide by its terms.",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "man/ettbc-package.html",
+    "href": "man/ettbc-package.html",
+    "title": "ettbc",
+    "section": "",
+    "text": "What the package does (one paragraph).\n\n\n\nMaintainer: Douglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\n\n\n\nUseful links:\n\n\nhttps://github.com/ucdavis/ettbc\n\n\nhttps://ucdavis.github.io/ettbc/\n\n\nReport bugs at https://github.com/ucdavis/ettbc/issues",
+    "crumbs": [
+      "Documentation",
+      "Reference",
+      "ettbc-package"
+    ]
+  },
+  {
+    "objectID": "man/ettbc-package.html#ettbc-what-the-package-does-one-line-title-case",
+    "href": "man/ettbc-package.html#ettbc-what-the-package-does-one-line-title-case",
+    "title": "ettbc",
+    "section": "",
+    "text": "What the package does (one paragraph).\n\n\n\nMaintainer: Douglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\n\n\n\nUseful links:\n\n\nhttps://github.com/ucdavis/ettbc\n\n\nhttps://ucdavis.github.io/ettbc/\n\n\nReport bugs at https://github.com/ucdavis/ettbc/issues",
+    "crumbs": [
+      "Documentation",
+      "Reference",
+      "ettbc-package"
+    ]
+  },
+  {
     "objectID": "vignettes/articles/quarto_article.html",
     "href": "vignettes/articles/quarto_article.html",
     "title": "Advanced Quarto Article",
     "section": "",
-    "text": "UC Davis Seroepidemiology Research Group (UCD-SERG)\n\n2026-04-30\nCode\nlibrary(rpt)",
+    "text": "Douglas Ezra Morrison\n\n2026-04-30\nCode\nlibrary(ettbc)",
     "crumbs": [
       "Documentation",
       "Articles",
@@ -515,14 +504,14 @@
     "href": "vignettes/quarto_vignette-revealjs.html#references",
     "title": "Quarto Vignette Example",
     "section": "8 References",
-    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nUCD-SERG (2024)\n\n\n\n\n\n\n\nR Core Team. 2024. R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing. https://www.R-project.org/.\n\n\nUCD-SERG. 2024. Rpt: R Package Template. https://github.com/UCD-SERG/rpt."
+    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nMorrison (2024)\n\n\n\n\n\n\n\nMorrison, Douglas Ezra. 2024. Ettbc: What the Package Does (One Line, Title Case). https://github.com/ucdavis/ettbc.\n\n\nR Core Team. 2024. R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing. https://www.R-project.org/."
   },
   {
     "objectID": "vignettes/quarto_vignette.html",
     "href": "vignettes/quarto_vignette.html",
     "title": "Quarto Vignette Example",
     "section": "",
-    "text": "Codelibrary(rpt)",
+    "text": "Codelibrary(ettbc)",
     "crumbs": [
       "Documentation",
       "Articles",
@@ -618,7 +607,7 @@
     "href": "vignettes/quarto_vignette.html#references",
     "title": "Quarto Vignette Example",
     "section": "\n8 References",
-    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nUCD-SERG (2024)",
+    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nMorrison (2024)",
     "crumbs": [
       "Documentation",
       "Articles",
