@@ -255,7 +255,7 @@ legend("topleft",
 The crude curves above do not account for the informative censoring introduced
 by the clone-censor step. In a complete analysis, **inverse probability
 weights** (IPW) would be applied to correct for the different censoring
-mechanisms in each arm. See García-Albéniz et al. (2020) for the full
+mechanisms in each arm. See @garcia-albeniz2020 for the full
 weighted analysis.
 :::
 
