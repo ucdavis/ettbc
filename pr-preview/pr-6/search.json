@@ -1,0 +1,716 @@
+[
+  {
+    "objectID": "NEWS.html",
+    "href": "NEWS.html",
+    "title": "ettbc (development version)",
+    "section": "",
+    "text": "ettbc (development version)\n\n\nettbc 0.0.0.9000\n\nInitial development version",
+    "crumbs": [
+      "Documentation",
+      "News"
+    ]
+  },
+  {
+    "objectID": "CONTRIBUTING.html",
+    "href": "CONTRIBUTING.html",
+    "title": "Contributing to ettbc",
+    "section": "",
+    "text": "This document outlines how to propose a change to this project. For a detailed discussion on contributing to this and other packages, please see the tidyverse’s development contributing guide and code review principles.\n\n\nYou can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the source file. This generally means you’ll need to edit roxygen2 comments in an .R, not a .Rd file. You can find the .R file that generates the .Rd by reading the comment in the first line.\n\n\n\nIf you want to make a bigger change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal reprex (this will also help you write a unit test, if needed). See the tidyverse guide on how to create a great issue for more advice.\n\n\n\nFork the package and clone onto your computer. If you haven’t done this before, we recommend using usethis::create_from_github(\"ucdavis/ettbc\", fork = TRUE).\nInstall all development dependencies with devtools::install_dev_deps(), and then make sure the package passes R CMD check by running devtools::check(). If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.\nCreate a Git branch for your pull request (PR). We recommend using usethis::pr_init(\"brief-description-of-change\").\nMake your changes, commit to git, and then create a PR by running usethis::pr_push(), and following the prompts in your browser.\n\nThe title of your PR should briefly describe the change.\nThe body of your PR should contain Fixes #issue-number.\nYour changes should conform to the tidyverse code style guidelines and design principles described below.\n\nFor user-facing changes, add a bullet to the top of NEWS.md (i.e. just below the first header). Follow the style described in https://style.tidyverse.org/news.html.\nGitHub will automatically check your PR to see if the package is still functional on Mac OS, Windows, and Linux; if not, you will receive an email describing the problems.\n\nFor help decoding errors, try this resource: https://github.com/r-lib/actions?tab=readme-ov-file#where-to-find-help.\n\n\n\n\n\n\nNew code should follow the tidyverse style guide and design principles. You can use the lintr package to automatically check for some style and design issues and the styler package to automatically correct some issues. Please don’t restyle code that has nothing to do with your PR.\nWe use roxygen2, with Markdown syntax, for documentation.\nWe use testthat for unit tests. Contributions with test cases included are easier to accept.\n\n\n\n\n\nPlease note that this project is released with a Contributor Code of Conduct. By contributing to this project you agree to abide by its terms.",
+    "crumbs": [
+      "Documentation",
+      "Contributing"
+    ]
+  },
+  {
+    "objectID": "CONTRIBUTING.html#fixing-typos",
+    "href": "CONTRIBUTING.html#fixing-typos",
+    "title": "Contributing to ettbc",
+    "section": "",
+    "text": "You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the source file. This generally means you’ll need to edit roxygen2 comments in an .R, not a .Rd file. You can find the .R file that generates the .Rd by reading the comment in the first line.",
+    "crumbs": [
+      "Documentation",
+      "Contributing"
+    ]
+  },
+  {
+    "objectID": "CONTRIBUTING.html#bigger-changes",
+    "href": "CONTRIBUTING.html#bigger-changes",
+    "title": "Contributing to ettbc",
+    "section": "",
+    "text": "If you want to make a bigger change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal reprex (this will also help you write a unit test, if needed). See the tidyverse guide on how to create a great issue for more advice.\n\n\n\nFork the package and clone onto your computer. If you haven’t done this before, we recommend using usethis::create_from_github(\"ucdavis/ettbc\", fork = TRUE).\nInstall all development dependencies with devtools::install_dev_deps(), and then make sure the package passes R CMD check by running devtools::check(). If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.\nCreate a Git branch for your pull request (PR). We recommend using usethis::pr_init(\"brief-description-of-change\").\nMake your changes, commit to git, and then create a PR by running usethis::pr_push(), and following the prompts in your browser.\n\nThe title of your PR should briefly describe the change.\nThe body of your PR should contain Fixes #issue-number.\nYour changes should conform to the tidyverse code style guidelines and design principles described below.\n\nFor user-facing changes, add a bullet to the top of NEWS.md (i.e. just below the first header). Follow the style described in https://style.tidyverse.org/news.html.\nGitHub will automatically check your PR to see if the package is still functional on Mac OS, Windows, and Linux; if not, you will receive an email describing the problems.\n\nFor help decoding errors, try this resource: https://github.com/r-lib/actions?tab=readme-ov-file#where-to-find-help.\n\n\n\n\n\n\nNew code should follow the tidyverse style guide and design principles. You can use the lintr package to automatically check for some style and design issues and the styler package to automatically correct some issues. Please don’t restyle code that has nothing to do with your PR.\nWe use roxygen2, with Markdown syntax, for documentation.\nWe use testthat for unit tests. Contributions with test cases included are easier to accept.",
+    "crumbs": [
+      "Documentation",
+      "Contributing"
+    ]
+  },
+  {
+    "objectID": "CONTRIBUTING.html#code-of-conduct",
+    "href": "CONTRIBUTING.html#code-of-conduct",
+    "title": "Contributing to ettbc",
+    "section": "",
+    "text": "Please note that this project is released with a Contributor Code of Conduct. By contributing to this project you agree to abide by its terms.",
+    "crumbs": [
+      "Documentation",
+      "Contributing"
+    ]
+  },
+  {
+    "objectID": "CITATION.html",
+    "href": "CITATION.html",
+    "title": "Citation",
+    "section": "",
+    "text": "Citation\nTo cite package ‘ettbc’ in publications use:\n\nMorrison D (2026). ettbc: What the Package Does (One Line, Title Case). R package version 0.0.0.9013, https://github.com/ucdavis/ettbc.",
+    "crumbs": [
+      "Documentation",
+      "Citation"
+    ]
+  },
+  {
+    "objectID": "vignettes/getting-started.html",
+    "href": "vignettes/getting-started.html",
+    "title": "Getting Started",
+    "section": "",
+    "text": "Codelibrary(ettbc)",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "vignettes/getting-started.html#introduction",
+    "href": "vignettes/getting-started.html#introduction",
+    "title": "Getting Started",
+    "section": "\n1 Introduction",
+    "text": "1 Introduction\nThis vignette provides an introduction to the ettbc package.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "vignettes/getting-started.html#basic-usage",
+    "href": "vignettes/getting-started.html#basic-usage",
+    "title": "Getting Started",
+    "section": "\n2 Basic Usage",
+    "text": "2 Basic Usage\nHere’s a basic example:\n\nCode# Example usage\nexample_function(c(1, 2, 3, 4, 5))\n#&gt; [1] 3",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "vignettes/getting-started.html#next-steps",
+    "href": "vignettes/getting-started.html#next-steps",
+    "title": "Getting Started",
+    "section": "\n3 Next Steps",
+    "text": "3 Next Steps\nFor more information, see the package documentation.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "vignettes/getting-started-revealjs.html#introduction",
+    "href": "vignettes/getting-started-revealjs.html#introduction",
+    "title": "Getting Started",
+    "section": "1 Introduction",
+    "text": "1 Introduction\nThis vignette provides an introduction to the {ettbc} package."
+  },
+  {
+    "objectID": "vignettes/getting-started-revealjs.html#basic-usage",
+    "href": "vignettes/getting-started-revealjs.html#basic-usage",
+    "title": "Getting Started",
+    "section": "2 Basic Usage",
+    "text": "2 Basic Usage\nHere’s a basic example:\n\n\nCode\n# Example usage\nexample_function(c(1, 2, 3, 4, 5))\n#&gt; [1] 3"
+  },
+  {
+    "objectID": "vignettes/getting-started-revealjs.html#next-steps",
+    "href": "vignettes/getting-started-revealjs.html#next-steps",
+    "title": "Getting Started",
+    "section": "3 Next Steps",
+    "text": "3 Next Steps\nFor more information, see the package documentation."
+  },
+  {
+    "objectID": "man/example_function.html",
+    "href": "man/example_function.html",
+    "title": "ettbc",
+    "section": "",
+    "text": "This is an example function that demonstrates basic functionality.\n\nexample_function(x)\n\n\n\n\nx\n\n\nA numeric vector\n\n\nThe median of the input vector\n\n\nCodelibrary(\"ettbc\")\n\nexample_function(c(1, 2, 3, 4, 5))\n\n[1] 3",
+    "crumbs": [
+      "Documentation",
+      "Reference",
+      "example_function"
+    ]
+  },
+  {
+    "objectID": "man/example_function.html#example-function",
+    "href": "man/example_function.html#example-function",
+    "title": "ettbc",
+    "section": "",
+    "text": "This is an example function that demonstrates basic functionality.\n\nexample_function(x)\n\n\n\n\nx\n\n\nA numeric vector\n\n\nThe median of the input vector\n\n\nCodelibrary(\"ettbc\")\n\nexample_function(c(1, 2, 3, 4, 5))\n\n[1] 3",
+    "crumbs": [
+      "Documentation",
+      "Reference",
+      "example_function"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "The goal of {ettbc} is to …\n\n\nYou can install the development version of {ettbc} from GitHub with:\n# install.packages(\"pak\")\npak::pak(\"ucdavis/ettbc\")\n\n\n\nThis is a basic example which shows you how to solve a common problem:\nlibrary(ettbc)\n## basic example code\n\n\n\n\n\nThis package uses altdoc with Quarto to build its documentation site. To build and preview the documentation locally:\n# Load the package\npkgload::load_all()\n\n# Render the documentation\naltdoc::render_docs()\n\n# Preview the site\naltdoc::preview_docs()\nThe documentation is automatically built and deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.\n\n\n\n\nPlease note that the {ettbc} project is released with a Contributor Code of Conduct. By contributing to this project, you agree to abide by its terms.",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "You can install the development version of {ettbc} from GitHub with:\n# install.packages(\"pak\")\npak::pak(\"ucdavis/ettbc\")",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#example",
+    "href": "index.html#example",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "This is a basic example which shows you how to solve a common problem:\nlibrary(ettbc)\n## basic example code",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#development",
+    "href": "index.html#development",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "This package uses altdoc with Quarto to build its documentation site. To build and preview the documentation locally:\n# Load the package\npkgload::load_all()\n\n# Render the documentation\naltdoc::render_docs()\n\n# Preview the site\naltdoc::preview_docs()\nThe documentation is automatically built and deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#code-of-conduct",
+    "href": "index.html#code-of-conduct",
+    "title": "{ettbc}",
+    "section": "",
+    "text": "Please note that the {ettbc} project is released with a Contributor Code of Conduct. By contributing to this project, you agree to abide by its terms.",
+    "crumbs": [
+      "Documentation",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "man/ettbc-package.html",
+    "href": "man/ettbc-package.html",
+    "title": "ettbc",
+    "section": "",
+    "text": "What the package does (one paragraph).\n\n\n\nMaintainer: Douglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\n\n\n\nUseful links:\n\n\nhttps://github.com/ucdavis/ettbc\n\n\nhttps://ucdavis.github.io/ettbc/\n\n\nReport bugs at https://github.com/ucdavis/ettbc/issues",
+    "crumbs": [
+      "Documentation",
+      "Reference",
+      "ettbc-package"
+    ]
+  },
+  {
+    "objectID": "man/ettbc-package.html#ettbc-what-the-package-does-one-line-title-case",
+    "href": "man/ettbc-package.html#ettbc-what-the-package-does-one-line-title-case",
+    "title": "ettbc",
+    "section": "",
+    "text": "What the package does (one paragraph).\n\n\n\nMaintainer: Douglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\n\n\n\nUseful links:\n\n\nhttps://github.com/ucdavis/ettbc\n\n\nhttps://ucdavis.github.io/ettbc/\n\n\nReport bugs at https://github.com/ucdavis/ettbc/issues",
+    "crumbs": [
+      "Documentation",
+      "Reference",
+      "ettbc-package"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html",
+    "href": "vignettes/articles/quarto_article.html",
+    "title": "Advanced Quarto Article",
+    "section": "",
+    "text": "Douglas Ezra Morrison\n\n2026-05-01\nCode\nlibrary(ettbc)",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#overview",
+    "href": "vignettes/articles/quarto_article.html#overview",
+    "title": "Advanced Quarto Article",
+    "section": "1 Overview",
+    "text": "1 Overview\nThis article demonstrates advanced features of Quarto for package documentation. Unlike vignettes, articles are only available on the documentation website and are not included in the package bundle.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#when-to-use-articles-vs-vignettes",
+    "href": "vignettes/articles/quarto_article.html#when-to-use-articles-vs-vignettes",
+    "title": "Advanced Quarto Article",
+    "section": "2 When to Use Articles vs Vignettes",
+    "text": "2 When to Use Articles vs Vignettes\nVignettes should be used for:\n\nCore package documentation\nEssential usage examples\nContent that users need offline\n\nArticles are better for:\n\nExtended tutorials\nCase studies and detailed examples\nContent with large datasets or external dependencies\nSupplementary material",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#advanced-quarto-features",
+    "href": "vignettes/articles/quarto_article.html#advanced-quarto-features",
+    "title": "Advanced Quarto Article",
+    "section": "3 Advanced Quarto Features",
+    "text": "3 Advanced Quarto Features\n\n3.1 Cross-References\nQuarto makes it easy to create cross-references. For example, see Figure 1 for a scatter plot and Table 1 for a summary table.\n\n\nCode\n# Generate sample data\nset.seed(123)\nx &lt;- rnorm(100)\ny &lt;- 2 * x + rnorm(100, 0, 0.5)\n\n# Create scatter plot\nplot(x, y, \n     main = \"Example Scatter Plot\",\n     xlab = \"X Variable\",\n     ylab = \"Y Variable\",\n     pch = 16,\n     col = rgb(0.2, 0.4, 0.6, 0.6))\nabline(lm(y ~ x), col = \"red\", lwd = 2)\n\n\n\n\n\nFigure 1: Scatter plot demonstrating cross-referencing\n\n\n\n\n\n\n\n\n\n\n3.2 Summary Tables\n\n\nCode\ndata_summary &lt;- data.frame(\n  Statistic = c(\"Mean\", \"Median\", \"SD\", \"Min\", \"Max\"),\n  X = c(mean(x), median(x), sd(x), min(x), max(x)),\n  Y = c(mean(y), median(y), sd(y), min(y), max(y))\n)\n\nknitr::kable(data_summary, digits = 3)\n\n\n\n\nTable 1: Summary statistics for example data\n\n\n\n\n\n\nStatistic\nX\nY\n\n\n\n\nMean\n0.090\n0.127\n\n\nMedian\n0.062\n0.137\n\n\nSD\n0.913\n1.865\n\n\nMin\n-2.309\n-4.586\n\n\nMax\n2.187\n4.675\n\n\n\n\n\n\n\n\nAs shown in Table 1, the variables have similar distributions.\n\n\n3.3 Code Folding\nYou can make code chunks foldable:\n\n\nShow the code for data preparation\n# Prepare more complex data\ncomplex_data &lt;- data.frame(\n  id = 1:50,\n  group = rep(c(\"A\", \"B\"), each = 25),\n  value1 = rnorm(50, 100, 15),\n  value2 = rnorm(50, 50, 10)\n)\n\n# Calculate group statistics\ngroup_stats &lt;- aggregate(\n  cbind(value1, value2) ~ group, \n  data = complex_data, \n  FUN = function(x) c(mean = mean(x), sd = sd(x))\n)\n\nprint(group_stats)\n#&gt;   group value1.mean value1.sd value2.mean value2.sd\n#&gt; 1     A   101.61247  14.63952   51.727220 10.047051\n#&gt; 2     B    98.13191  13.84514   53.261796  8.934998\n\n\n\n\n3.4 Tabsets\n\nPlot ViewSummary ViewRaw Data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n#&gt;        id              group        value1           value2     \n#&gt;  Min.   : 1.00   Length   :50   Min.   : 79.60   Min.   :32.43  \n#&gt;  1st Qu.:13.25   N.unique : 2   1st Qu.: 89.29   1st Qu.:46.76  \n#&gt;  Median :25.50   N.blank  : 0   Median : 96.64   Median :51.04  \n#&gt;  Mean   :25.50   Min.nchar: 1   Mean   : 99.87   Mean   :52.49  \n#&gt;  3rd Qu.:37.75   Max.nchar: 1   3rd Qu.:107.93   3rd Qu.:59.34  \n#&gt;  Max.   :50.00                  Max.   :132.98   Max.   :72.93\n\n\n\n\n#&gt;    id group    value1   value2\n#&gt; 1   1     A 132.98216 46.24397\n#&gt; 2   2     A 119.68619 44.38124\n#&gt; 3   3     A  96.02282 46.56083\n#&gt; 4   4     A 108.14791 50.90497\n#&gt; 5   5     A  93.78490 65.98509\n#&gt; 6   6     A  92.85630 49.11435\n#&gt; 7   7     A  88.17096 60.80799\n#&gt; 8   8     A  91.08074 56.30754\n#&gt; 9   9     A 124.76361 48.86360\n#&gt; 10 10     A  99.18958 34.67098\n\n\n\n\n\n\n3.5 Advanced Callouts\n\n\n\n\n\n\nImportantImportant Considerations\n\n\n\nWhen using this package in production:\n\nAlways validate input data\nCheck for missing values\nConsider computational complexity\n\n\n\n\n\n\n\n\n\nWarningPerformance Warning\n\n\n\nLarge datasets may require additional memory and processing time.\n\n\n\n\n3.6 Columns Layout\n\n\nLeft Column\nThis demonstrates a two-column layout in Quarto.\n\nFeature 1\nFeature 2\nFeature 3\n\n\nRight Column\nYou can place different content in each column.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#working-with-package-functions",
+    "href": "vignettes/articles/quarto_article.html#working-with-package-functions",
+    "title": "Advanced Quarto Article",
+    "section": "4 Working with Package Functions",
+    "text": "4 Working with Package Functions\nHere’s how to use the package’s example function with different inputs:\n\n\nCode\n# Numeric vector\nexample_function(c(5, 10, 15, 20, 25))\n#&gt; [1] 15\n\n# Using with generated data\nrandom_data &lt;- runif(10, min = 0, max = 100)\nexample_function(random_data)\n#&gt; [1] 47.42519",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#code-annotations",
+    "href": "vignettes/articles/quarto_article.html#code-annotations",
+    "title": "Advanced Quarto Article",
+    "section": "5 Code Annotations",
+    "text": "5 Code Annotations\nQuarto supports code annotations for detailed explanations:\n\n\nCode\n1\n2data &lt;- c(1, 2, 3, 4, 5)\n3result &lt;- example_function(data)\n4print(result)\n#&gt; [1] 3\n\n\n\n1\n\nLoad sample data\n\n2\n\nCreate a simple numeric vector\n\n3\n\nApply the example function from the package\n\n4\n\nDisplay the results",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#mathematical-notation",
+    "href": "vignettes/articles/quarto_article.html#mathematical-notation",
+    "title": "Advanced Quarto Article",
+    "section": "6 Mathematical Notation",
+    "text": "6 Mathematical Notation\nQuarto excels at mathematical notation. Here’s an example of a statistical formula:\nThe standard error of the mean is calculated as:\n\\[\nSE = \\frac{s}{\\sqrt{n}}\n\\]\nwhere \\(s\\) is the sample standard deviation and \\(n\\) is the sample size.\nFor a confidence interval:\n\\[\nCI = \\bar{x} \\pm t_{\\alpha/2, n-1} \\cdot SE\n\\]",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#tips-and-best-practices",
+    "href": "vignettes/articles/quarto_article.html#tips-and-best-practices",
+    "title": "Advanced Quarto Article",
+    "section": "7 Tips and Best Practices",
+    "text": "7 Tips and Best Practices\n\n\n\n\n\n\nTipExpanding tip section\n\n\n\n\n\nClick to expand this section for additional tips:\n\nUse descriptive chunk labels for better organization\nSet global chunk options at the beginning\nUse cross-references to link related content\nLeverage callouts for important information\nConsider code folding for long code blocks",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#conclusion",
+    "href": "vignettes/articles/quarto_article.html#conclusion",
+    "title": "Advanced Quarto Article",
+    "section": "8 Conclusion",
+    "text": "8 Conclusion\nThis article demonstrates the advanced capabilities of Quarto for creating rich, interactive documentation for R packages.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#learn-more",
+    "href": "vignettes/articles/quarto_article.html#learn-more",
+    "title": "Advanced Quarto Article",
+    "section": "9 Learn More",
+    "text": "9 Learn More\n\nVisit the package website\nCheck out the GitHub repository\nRead the Quarto documentation",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article.html#references",
+    "href": "vignettes/articles/quarto_article.html#references",
+    "title": "Advanced Quarto Article",
+    "section": "10 References",
+    "text": "10 References",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Advanced Quarto Article"
+    ]
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#overview",
+    "href": "vignettes/articles/quarto_article-revealjs.html#overview",
+    "title": "Advanced Quarto Article",
+    "section": "1 Overview",
+    "text": "1 Overview\nThis article demonstrates advanced features of Quarto for package documentation. Unlike vignettes, articles are only available on the documentation website and are not included in the package bundle."
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#when-to-use-articles-vs-vignettes",
+    "href": "vignettes/articles/quarto_article-revealjs.html#when-to-use-articles-vs-vignettes",
+    "title": "Advanced Quarto Article",
+    "section": "2 When to Use Articles vs Vignettes",
+    "text": "2 When to Use Articles vs Vignettes\nVignettes should be used for:\n\nCore package documentation\nEssential usage examples\nContent that users need offline\n\nArticles are better for:\n\nExtended tutorials\nCase studies and detailed examples\nContent with large datasets or external dependencies\nSupplementary material"
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#advanced-quarto-features",
+    "href": "vignettes/articles/quarto_article-revealjs.html#advanced-quarto-features",
+    "title": "Advanced Quarto Article",
+    "section": "3 Advanced Quarto Features",
+    "text": "3 Advanced Quarto Features\nCross-References\nQuarto makes it easy to create cross-references. For example, see Figure 1 for a scatter plot and Table 1 for a summary table.\n\n\nCode\n# Generate sample data\nset.seed(123)\nx &lt;- rnorm(100)\ny &lt;- 2 * x + rnorm(100, 0, 0.5)\n\n# Create scatter plot\nplot(x, y, \n     main = \"Example Scatter Plot\",\n     xlab = \"X Variable\",\n     ylab = \"Y Variable\",\n     pch = 16,\n     col = rgb(0.2, 0.4, 0.6, 0.6))\nabline(lm(y ~ x), col = \"red\", lwd = 2)\n\n\n\n\n\nFigure 1: Scatter plot demonstrating cross-referencing\n\n\n\n\n\n\n\n\nSummary Tables\n\n\nCode\ndata_summary &lt;- data.frame(\n  Statistic = c(\"Mean\", \"Median\", \"SD\", \"Min\", \"Max\"),\n  X = c(mean(x), median(x), sd(x), min(x), max(x)),\n  Y = c(mean(y), median(y), sd(y), min(y), max(y))\n)\n\nknitr::kable(data_summary, digits = 3)\n\n\n\n\nTable 1: Summary statistics for example data\n\n\n\n\n\n\nStatistic\nX\nY\n\n\n\n\nMean\n0.090\n0.127\n\n\nMedian\n0.062\n0.137\n\n\nSD\n0.913\n1.865\n\n\nMin\n-2.309\n-4.586\n\n\nMax\n2.187\n4.675\n\n\n\n\n\n\n\n\nAs shown in Table 1, the variables have similar distributions.\nCode Folding\nYou can make code chunks foldable:\n\n\nShow the code for data preparation\n# Prepare more complex data\ncomplex_data &lt;- data.frame(\n  id = 1:50,\n  group = rep(c(\"A\", \"B\"), each = 25),\n  value1 = rnorm(50, 100, 15),\n  value2 = rnorm(50, 50, 10)\n)\n\n# Calculate group statistics\ngroup_stats &lt;- aggregate(\n  cbind(value1, value2) ~ group, \n  data = complex_data, \n  FUN = function(x) c(mean = mean(x), sd = sd(x))\n)\n\nprint(group_stats)\n#&gt;   group value1.mean value1.sd value2.mean value2.sd\n#&gt; 1     A   101.61247  14.63952   51.727220 10.047051\n#&gt; 2     B    98.13191  13.84514   53.261796  8.934998\n\n\nTabsets\n\nPlot ViewSummary ViewRaw Data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n#&gt;        id              group        value1           value2     \n#&gt;  Min.   : 1.00   Length   :50   Min.   : 79.60   Min.   :32.43  \n#&gt;  1st Qu.:13.25   N.unique : 2   1st Qu.: 89.29   1st Qu.:46.76  \n#&gt;  Median :25.50   N.blank  : 0   Median : 96.64   Median :51.04  \n#&gt;  Mean   :25.50   Min.nchar: 1   Mean   : 99.87   Mean   :52.49  \n#&gt;  3rd Qu.:37.75   Max.nchar: 1   3rd Qu.:107.93   3rd Qu.:59.34  \n#&gt;  Max.   :50.00                  Max.   :132.98   Max.   :72.93\n\n\n\n\n#&gt;    id group    value1   value2\n#&gt; 1   1     A 132.98216 46.24397\n#&gt; 2   2     A 119.68619 44.38124\n#&gt; 3   3     A  96.02282 46.56083\n#&gt; 4   4     A 108.14791 50.90497\n#&gt; 5   5     A  93.78490 65.98509\n#&gt; 6   6     A  92.85630 49.11435\n#&gt; 7   7     A  88.17096 60.80799\n#&gt; 8   8     A  91.08074 56.30754\n#&gt; 9   9     A 124.76361 48.86360\n#&gt; 10 10     A  99.18958 34.67098\n\n\n\n\nAdvanced Callouts\n\n\n\n\n\n\nImportant Considerations\n\n\nWhen using this package in production:\n\nAlways validate input data\nCheck for missing values\nConsider computational complexity\n\n\n\n\n\n\n\n\n\n\nPerformance Warning\n\n\nLarge datasets may require additional memory and processing time.\n\n\n\nColumns Layout\n\n\nLeft Column\nThis demonstrates a two-column layout in Quarto.\n\nFeature 1\nFeature 2\nFeature 3\n\n\nRight Column\nYou can place different content in each column."
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#working-with-package-functions",
+    "href": "vignettes/articles/quarto_article-revealjs.html#working-with-package-functions",
+    "title": "Advanced Quarto Article",
+    "section": "4 Working with Package Functions",
+    "text": "4 Working with Package Functions\nHere’s how to use the package’s example function with different inputs:\n\n\nCode\n# Numeric vector\nexample_function(c(5, 10, 15, 20, 25))\n#&gt; [1] 15\n\n# Using with generated data\nrandom_data &lt;- runif(10, min = 0, max = 100)\nexample_function(random_data)\n#&gt; [1] 47.42519"
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#code-annotations",
+    "href": "vignettes/articles/quarto_article-revealjs.html#code-annotations",
+    "title": "Advanced Quarto Article",
+    "section": "5 Code Annotations",
+    "text": "5 Code Annotations\nQuarto supports code annotations for detailed explanations:\n\n\nCode\n1\n2data &lt;- c(1, 2, 3, 4, 5)\n3result &lt;- example_function(data)\n4print(result)\n#&gt; [1] 3\n\n\n\n1\n\nLoad sample data\n\n2\n\nCreate a simple numeric vector\n\n3\n\nApply the example function from the package\n\n4\n\nDisplay the results"
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#mathematical-notation",
+    "href": "vignettes/articles/quarto_article-revealjs.html#mathematical-notation",
+    "title": "Advanced Quarto Article",
+    "section": "6 Mathematical Notation",
+    "text": "6 Mathematical Notation\nQuarto excels at mathematical notation. Here’s an example of a statistical formula:\nThe standard error of the mean is calculated as:\n\\[\nSE = \\frac{s}{\\sqrt{n}}\n\\]\nwhere \\(s\\) is the sample standard deviation and \\(n\\) is the sample size.\nFor a confidence interval:\n\\[\nCI = \\bar{x} \\pm t_{\\alpha/2, n-1} \\cdot SE\n\\]"
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#tips-and-best-practices",
+    "href": "vignettes/articles/quarto_article-revealjs.html#tips-and-best-practices",
+    "title": "Advanced Quarto Article",
+    "section": "7 Tips and Best Practices",
+    "text": "7 Tips and Best Practices\n\n\n\n\n\n\nExpanding tip section\n\n\nClick to expand this section for additional tips:\n\nUse descriptive chunk labels for better organization\nSet global chunk options at the beginning\nUse cross-references to link related content\nLeverage callouts for important information\nConsider code folding for long code blocks"
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#conclusion",
+    "href": "vignettes/articles/quarto_article-revealjs.html#conclusion",
+    "title": "Advanced Quarto Article",
+    "section": "8 Conclusion",
+    "text": "8 Conclusion\nThis article demonstrates the advanced capabilities of Quarto for creating rich, interactive documentation for R packages."
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#learn-more",
+    "href": "vignettes/articles/quarto_article-revealjs.html#learn-more",
+    "title": "Advanced Quarto Article",
+    "section": "9 Learn More",
+    "text": "9 Learn More\n\nVisit the package website\nCheck out the GitHub repository\nRead the Quarto documentation"
+  },
+  {
+    "objectID": "vignettes/articles/quarto_article-revealjs.html#references",
+    "href": "vignettes/articles/quarto_article-revealjs.html#references",
+    "title": "Advanced Quarto Article",
+    "section": "10 References",
+    "text": "10 References"
+  },
+  {
+    "objectID": "vignettes/quarto_vignette-revealjs.html#introduction",
+    "href": "vignettes/quarto_vignette-revealjs.html#introduction",
+    "title": "Quarto Vignette Example",
+    "section": "1 Introduction",
+    "text": "1 Introduction\nThis vignette demonstrates how to use Quarto (.qmd) files as vignettes in R packages. Quarto is the next-generation version of R Markdown, offering enhanced features and better integration with multiple programming languages."
+  },
+  {
+    "objectID": "vignettes/quarto_vignette-revealjs.html#why-use-quarto",
+    "href": "vignettes/quarto_vignette-revealjs.html#why-use-quarto",
+    "title": "Quarto Vignette Example",
+    "section": "2 Why Use Quarto?",
+    "text": "2 Why Use Quarto?\nQuarto offers several advantages over traditional R Markdown:\n\nEnhanced features: Better support for cross-references, callouts, and other advanced formatting\nMultiple engines: Works with R, Python, Julia, and Observable\nModern syntax: Cleaner YAML and chunk options using #| syntax\nBetter publishing: Improved website and book publishing capabilities"
+  },
+  {
+    "objectID": "vignettes/quarto_vignette-revealjs.html#basic-example",
+    "href": "vignettes/quarto_vignette-revealjs.html#basic-example",
+    "title": "Quarto Vignette Example",
+    "section": "3 Basic Example",
+    "text": "3 Basic Example\nHere’s a basic example using the package:\n\n\nCode\n# Create some sample data\nsample_data &lt;- c(1, 2, 3, 4, 5, 10, 15, 20)\n\n# Use the example function\nresult &lt;- example_function(sample_data)\nresult\n#&gt; [1] 4.5"
+  },
+  {
+    "objectID": "vignettes/quarto_vignette-revealjs.html#quarto-features",
+    "href": "vignettes/quarto_vignette-revealjs.html#quarto-features",
+    "title": "Quarto Vignette Example",
+    "section": "4 Quarto Features",
+    "text": "4 Quarto Features\nCallouts\n\n\n\n\n\n\nNote\n\n\nThis is a callout block that highlights important information.\n\n\n\n\n\n\n\n\n\nTip\n\n\nQuarto supports multiple types of callouts: note, tip, warning, important, and caution."
+  },
+  {
+    "objectID": "vignettes/quarto_vignette-revealjs.html#equations",
+    "href": "vignettes/quarto_vignette-revealjs.html#equations",
+    "title": "Quarto Vignette Example",
+    "section": "5 Equations",
+    "text": "5 Equations\nQuarto has excellent support for mathematical equations using LaTeX syntax:\nInline equation: \\(E = mc^2\\)\nDisplay equation:\n\\[\n\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\n\\]"
+  },
+  {
+    "objectID": "vignettes/quarto_vignette-revealjs.html#tables",
+    "href": "vignettes/quarto_vignette-revealjs.html#tables",
+    "title": "Quarto Vignette Example",
+    "section": "6 Tables",
+    "text": "6 Tables\n\n\n\nTable 1: Comparison of R Markdown and Quarto\n\n\n\n\n\nFeature\nR Markdown\nQuarto\n\n\n\n\nYAML\nStandard\nEnhanced\n\n\nChunks\n{r, option=value}\n#| option: value\n\n\nPublishing\nGood\nExcellent\n\n\nCross-refs\nLimited\nNative"
+  },
+  {
+    "objectID": "vignettes/quarto_vignette-revealjs.html#summary",
+    "href": "vignettes/quarto_vignette-revealjs.html#summary",
+    "title": "Quarto Vignette Example",
+    "section": "7 Summary",
+    "text": "7 Summary\nQuarto vignettes provide a modern, feature-rich way to document R packages. They integrate seamlessly with documentation systems and offer enhanced capabilities for technical documentation."
+  },
+  {
+    "objectID": "vignettes/quarto_vignette-revealjs.html#references",
+    "href": "vignettes/quarto_vignette-revealjs.html#references",
+    "title": "Quarto Vignette Example",
+    "section": "8 References",
+    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nMorrison (2024)\n\n\n\n\n\n\n\nMorrison, Douglas Ezra. 2024. Ettbc: What the Package Does (One Line, Title Case). https://github.com/ucdavis/ettbc.\n\n\nR Core Team. 2024. R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing. https://www.R-project.org/."
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html",
+    "href": "vignettes/quarto_vignette.html",
+    "title": "Quarto Vignette Example",
+    "section": "",
+    "text": "Codelibrary(ettbc)",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html#introduction",
+    "href": "vignettes/quarto_vignette.html#introduction",
+    "title": "Quarto Vignette Example",
+    "section": "\n1 Introduction",
+    "text": "1 Introduction\nThis vignette demonstrates how to use Quarto (.qmd) files as vignettes in R packages. Quarto is the next-generation version of R Markdown, offering enhanced features and better integration with multiple programming languages.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html#why-use-quarto",
+    "href": "vignettes/quarto_vignette.html#why-use-quarto",
+    "title": "Quarto Vignette Example",
+    "section": "\n2 Why Use Quarto?",
+    "text": "2 Why Use Quarto?\nQuarto offers several advantages over traditional R Markdown:\n\n\nEnhanced features: Better support for cross-references, callouts, and other advanced formatting\n\nMultiple engines: Works with R, Python, Julia, and Observable\n\nModern syntax: Cleaner YAML and chunk options using #| syntax\n\nBetter publishing: Improved website and book publishing capabilities",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html#basic-example",
+    "href": "vignettes/quarto_vignette.html#basic-example",
+    "title": "Quarto Vignette Example",
+    "section": "\n3 Basic Example",
+    "text": "3 Basic Example\nHere’s a basic example using the package:\n\nCode# Create some sample data\nsample_data &lt;- c(1, 2, 3, 4, 5, 10, 15, 20)\n\n# Use the example function\nresult &lt;- example_function(sample_data)\nresult\n#&gt; [1] 4.5",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html#quarto-features",
+    "href": "vignettes/quarto_vignette.html#quarto-features",
+    "title": "Quarto Vignette Example",
+    "section": "\n4 Quarto Features",
+    "text": "4 Quarto Features\n\n4.1 Callouts\n\n\n\n\n\n\nNote\n\n\n\nThis is a callout block that highlights important information.\n\n\n\n\n\n\n\n\nTip\n\n\n\nQuarto supports multiple types of callouts: note, tip, warning, important, and caution.\n\n\n\n4.2 Code Chunks with Modern Syntax\nYou can use the modern #| syntax for chunk options:\n\nCode# Create a simple plot\nplot(sample_data, \n     main = \"Sample Data\", \n     xlab = \"Index\", \n     ylab = \"Value\",\n     pch = 19,\n     col = \"steelblue\")\n\n\n\nFigure 1: Example plot showing data distribution",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html#equations",
+    "href": "vignettes/quarto_vignette.html#equations",
+    "title": "Quarto Vignette Example",
+    "section": "\n5 Equations",
+    "text": "5 Equations\nQuarto has excellent support for mathematical equations using LaTeX syntax:\nInline equation: \\(E = mc^2\\)\nDisplay equation:\n\\[\n\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\n\\]",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html#tables",
+    "href": "vignettes/quarto_vignette.html#tables",
+    "title": "Quarto Vignette Example",
+    "section": "\n6 Tables",
+    "text": "6 Tables\n\n\nTable 1: Comparison of R Markdown and Quarto\n\n\n\nFeature\nR Markdown\nQuarto\n\n\n\nYAML\nStandard\nEnhanced\n\n\nChunks\n{r, option=value}\n#| option: value\n\n\nPublishing\nGood\nExcellent\n\n\nCross-refs\nLimited\nNative",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html#summary",
+    "href": "vignettes/quarto_vignette.html#summary",
+    "title": "Quarto Vignette Example",
+    "section": "\n7 Summary",
+    "text": "7 Summary\nQuarto vignettes provide a modern, feature-rich way to document R packages. They integrate seamlessly with documentation systems and offer enhanced capabilities for technical documentation.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "vignettes/quarto_vignette.html#references",
+    "href": "vignettes/quarto_vignette.html#references",
+    "title": "Quarto Vignette Example",
+    "section": "\n8 References",
+    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nMorrison (2024)",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Quarto Vignette Example"
+    ]
+  },
+  {
+    "objectID": "CODE_OF_CONDUCT.html",
+    "href": "CODE_OF_CONDUCT.html",
+    "title": "Contributor Covenant Code of Conduct",
+    "section": "",
+    "text": "We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, or sexual identity and orientation.\nWe pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.\n\n\n\nExamples of behavior that contributes to a positive environment for our community include:\n\nDemonstrating empathy and kindness toward other people\nBeing respectful of differing opinions, viewpoints, and experiences\nGiving and gracefully accepting constructive feedback\nAccepting responsibility and apologizing to those affected by our mistakes, and learning from the experience\nFocusing on what is best not just for us as individuals, but for the overall community\n\nExamples of unacceptable behavior include:\n\nThe use of sexualized language or imagery, and sexual attention or advances of any kind\nTrolling, insulting or derogatory comments, and personal or political attacks\nPublic or private harassment\nPublishing others’ private information, such as a physical or email address, without their explicit permission\nOther conduct which could reasonably be considered inappropriate in a professional setting\n\n\n\n\nCommunity leaders are responsible for clarifying and enforcing our standards of acceptable behavior and will take appropriate and fair corrective action in response to any behavior that they deem inappropriate, threatening, offensive, or harmful.\nCommunity leaders have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, and will communicate reasons for moderation decisions when appropriate.\n\n\n\nThis Code of Conduct applies within all community spaces, and also applies when an individual is officially representing the community in public spaces. Examples of representing our community include using an official e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event.\n\n\n\nInstances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement here. All complaints will be reviewed and investigated promptly and fairly.\nAll community leaders are obligated to respect the privacy and security of the reporter of any incident.\n\n\n\nCommunity leaders will follow these Community Impact Guidelines in determining the consequences for any action they deem in violation of this Code of Conduct:\n\n\nCommunity Impact: Use of inappropriate language or other behavior deemed unprofessional or unwelcome in the community.\nConsequence: A private, written warning from community leaders, providing clarity around the nature of the violation and an explanation of why the behavior was inappropriate. A public apology may be requested.\n\n\n\nCommunity Impact: A violation through a single incident or series of actions.\nConsequence: A warning with consequences for continued behavior. No interaction with the people involved, including unsolicited interaction with those enforcing the Code of Conduct, for a specified period of time. This includes avoiding interactions in community spaces as well as external channels like social media. Violating these terms may lead to a temporary or permanent ban.\n\n\n\nCommunity Impact: A serious violation of community standards, including sustained inappropriate behavior.\nConsequence: A temporary ban from any sort of interaction or public communication with the community for a specified period of time. No public or private interaction with the people involved, including unsolicited interaction with those enforcing the Code of Conduct, is allowed during this period. Violating these terms may lead to a permanent ban.\n\n\n\nCommunity Impact: Demonstrating a pattern of violation of community standards, including sustained inappropriate behavior, harassment of an individual, or aggression toward or disparagement of classes of individuals.\nConsequence: A permanent ban from any sort of public interaction within the community.\n\n\n\n\nThis Code of Conduct is adapted from the Contributor Covenant, version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html.\nCommunity Impact Guidelines were inspired by [Mozilla’s code of conduct enforcement ladder][https://github.com/mozilla/inclusion].\nFor answers to common questions about this code of conduct, see the FAQ at https://www.contributor-covenant.org/faq. Translations are available at https://www.contributor-covenant.org/translations.",
+    "crumbs": [
+      "Documentation",
+      "Code of conduct"
+    ]
+  },
+  {
+    "objectID": "CODE_OF_CONDUCT.html#our-pledge",
+    "href": "CODE_OF_CONDUCT.html#our-pledge",
+    "title": "Contributor Covenant Code of Conduct",
+    "section": "",
+    "text": "We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, or sexual identity and orientation.\nWe pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.",
+    "crumbs": [
+      "Documentation",
+      "Code of conduct"
+    ]
+  },
+  {
+    "objectID": "CODE_OF_CONDUCT.html#our-standards",
+    "href": "CODE_OF_CONDUCT.html#our-standards",
+    "title": "Contributor Covenant Code of Conduct",
+    "section": "",
+    "text": "Examples of behavior that contributes to a positive environment for our community include:\n\nDemonstrating empathy and kindness toward other people\nBeing respectful of differing opinions, viewpoints, and experiences\nGiving and gracefully accepting constructive feedback\nAccepting responsibility and apologizing to those affected by our mistakes, and learning from the experience\nFocusing on what is best not just for us as individuals, but for the overall community\n\nExamples of unacceptable behavior include:\n\nThe use of sexualized language or imagery, and sexual attention or advances of any kind\nTrolling, insulting or derogatory comments, and personal or political attacks\nPublic or private harassment\nPublishing others’ private information, such as a physical or email address, without their explicit permission\nOther conduct which could reasonably be considered inappropriate in a professional setting",
+    "crumbs": [
+      "Documentation",
+      "Code of conduct"
+    ]
+  },
+  {
+    "objectID": "CODE_OF_CONDUCT.html#enforcement-responsibilities",
+    "href": "CODE_OF_CONDUCT.html#enforcement-responsibilities",
+    "title": "Contributor Covenant Code of Conduct",
+    "section": "",
+    "text": "Community leaders are responsible for clarifying and enforcing our standards of acceptable behavior and will take appropriate and fair corrective action in response to any behavior that they deem inappropriate, threatening, offensive, or harmful.\nCommunity leaders have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, and will communicate reasons for moderation decisions when appropriate.",
+    "crumbs": [
+      "Documentation",
+      "Code of conduct"
+    ]
+  },
+  {
+    "objectID": "CODE_OF_CONDUCT.html#scope",
+    "href": "CODE_OF_CONDUCT.html#scope",
+    "title": "Contributor Covenant Code of Conduct",
+    "section": "",
+    "text": "This Code of Conduct applies within all community spaces, and also applies when an individual is officially representing the community in public spaces. Examples of representing our community include using an official e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event.",
+    "crumbs": [
+      "Documentation",
+      "Code of conduct"
+    ]
+  },
+  {
+    "objectID": "CODE_OF_CONDUCT.html#enforcement",
+    "href": "CODE_OF_CONDUCT.html#enforcement",
+    "title": "Contributor Covenant Code of Conduct",
+    "section": "",
+    "text": "Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement here. All complaints will be reviewed and investigated promptly and fairly.\nAll community leaders are obligated to respect the privacy and security of the reporter of any incident.",
+    "crumbs": [
+      "Documentation",
+      "Code of conduct"
+    ]
+  },
+  {
+    "objectID": "CODE_OF_CONDUCT.html#enforcement-guidelines",
+    "href": "CODE_OF_CONDUCT.html#enforcement-guidelines",
+    "title": "Contributor Covenant Code of Conduct",
+    "section": "",
+    "text": "Community leaders will follow these Community Impact Guidelines in determining the consequences for any action they deem in violation of this Code of Conduct:\n\n\nCommunity Impact: Use of inappropriate language or other behavior deemed unprofessional or unwelcome in the community.\nConsequence: A private, written warning from community leaders, providing clarity around the nature of the violation and an explanation of why the behavior was inappropriate. A public apology may be requested.\n\n\n\nCommunity Impact: A violation through a single incident or series of actions.\nConsequence: A warning with consequences for continued behavior. No interaction with the people involved, including unsolicited interaction with those enforcing the Code of Conduct, for a specified period of time. This includes avoiding interactions in community spaces as well as external channels like social media. Violating these terms may lead to a temporary or permanent ban.\n\n\n\nCommunity Impact: A serious violation of community standards, including sustained inappropriate behavior.\nConsequence: A temporary ban from any sort of interaction or public communication with the community for a specified period of time. No public or private interaction with the people involved, including unsolicited interaction with those enforcing the Code of Conduct, is allowed during this period. Violating these terms may lead to a permanent ban.\n\n\n\nCommunity Impact: Demonstrating a pattern of violation of community standards, including sustained inappropriate behavior, harassment of an individual, or aggression toward or disparagement of classes of individuals.\nConsequence: A permanent ban from any sort of public interaction within the community.",
+    "crumbs": [
+      "Documentation",
+      "Code of conduct"
+    ]
+  },
+  {
+    "objectID": "CODE_OF_CONDUCT.html#attribution",
+    "href": "CODE_OF_CONDUCT.html#attribution",
+    "title": "Contributor Covenant Code of Conduct",
+    "section": "",
+    "text": "This Code of Conduct is adapted from the Contributor Covenant, version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html.\nCommunity Impact Guidelines were inspired by [Mozilla’s code of conduct enforcement ladder][https://github.com/mozilla/inclusion].\nFor answers to common questions about this code of conduct, see the FAQ at https://www.contributor-covenant.org/faq. Translations are available at https://www.contributor-covenant.org/translations.",
+    "crumbs": [
+      "Documentation",
+      "Code of conduct"
+    ]
+  },
+  {
+    "objectID": "LICENSE.html",
+    "href": "LICENSE.html",
+    "title": "MIT License",
+    "section": "",
+    "text": "MIT License\nCopyright (c) 2026 First Last\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\nTHE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+    "crumbs": [
+      "Documentation",
+      "License"
+    ]
+  }
+]
