@@ -20,9 +20,4 @@ Useful links:
 \author{
 \strong{Maintainer}: Douglas Ezra Morrison \email{demorrison@ucdavis.edu} (\href{https://orcid.org/0000-0002-7195-830X}{ORCID})
 
-Authors:
-\itemize{
-  \item Douglas Ezra Morrison \email{demorrison@ucdavis.edu} (\href{https://orcid.org/0000-0002-7195-830X}{ORCID})
-}
-
 }
