@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>example_function – ettbc</title>
+<title>expand_to_long – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -324,7 +324,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/clone_censor.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/example_function.html">example_function</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/clone_censor.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/expand_to_long.html">expand_to_long</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -413,13 +413,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/example_function.html" class="sidebar-item-text sidebar-link active">
+  <a href="../man/example_function.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">example_function</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/expand_to_long.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/expand_to_long.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">expand_to_long</span></a>
   </div>
 </li>
@@ -470,41 +470,209 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#example-function" id="toc-example-function" class="nav-link active" data-scroll-target="#example-function">Example Function</a>
+<a href="#expand-cloned-data-to-long-format" id="toc-expand-cloned-data-to-long-format" class="nav-link active" data-scroll-target="#expand-cloned-data-to-long-format">Expand Cloned Data to Long Format</a>
   <ul class="collapse">
 <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See Also</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/example_function.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/example_function.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/expand_to_long.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/expand_to_long.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/clone_censor.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/example_function.html">example_function</a></li></ol></nav></header><section id="example-function" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="example-function">Example Function</h2>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/clone_censor.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/expand_to_long.html">expand_to_long</a></li></ol></nav></header><section id="expand-cloned-data-to-long-format" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="expand-cloned-data-to-long-format">Expand Cloned Data to Long Format</h2>
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>This is an example function that demonstrates basic functionality.</p>
+<p>Converts the output of <code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code> from one row per participant-arm to one row per participant-arm-month. The resulting dataset is in a format suitable for discrete-time survival analysis with inverse probability weighting (IPW).</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">example_function(x)
+<pre><code class="language-R">expand_to_long(
+  data,
+  id_col = "id",
+  arm_col = "arm",
+  start_col = "start_month",
+  end_col = "end_month",
+  died_col = "died",
+  bc_died_col = "bc_died",
+  bc_month_col = "bc_month"
+)
 </code></pre>
 </section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
-<table role="presentation"><tbody><tr>
+<table role="presentation">
+<tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="x">x</code>
+<code id="data">data</code>
 </td>
 <td>
-A numeric vector
+Output from <code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code>, or any data frame with the same structure. Must contain columns <code>id</code>, <code>arm</code>, <code>start_month</code>, <code>end_month</code>, <code>died</code>, <code>bc_died</code>, and <code>bc_month</code> (or as specified via <code style="white-space: pre;">*_col</code> arguments).
 </td>
-</tr></tbody></table></section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>The median of the input vector</p>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="id_col">id_col</code>
+</td>
+<td>
+Name of the participant ID column. Default: <code>“id”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="arm_col">arm_col</code>
+</td>
+<td>
+Name of the trial arm column. Default: <code>“arm”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="start_col">start_col</code>
+</td>
+<td>
+Name of the start month column. Default: <code>“start_month”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="end_col">end_col</code>
+</td>
+<td>
+Name of the end month column. Default: <code>“end_month”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="died_col">died_col</code>
+</td>
+<td>
+Name of the overall death indicator column. Default: <code>“died”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="bc_died_col">bc_died_col</code>
+</td>
+<td>
+Name of the breast cancer death indicator column. Default: <code>“bc_died”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="bc_month_col">bc_month_col</code>
+</td>
+<td>
+Name of the breast cancer diagnosis month column. Default: <code>“bc_month”</code>.
+</td>
+</tr>
+</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
+<p>The binary outcome variable <code>dead_t1</code> encodes whether the participant died in the interval from month <code>t</code> to month <code>t+1</code>:</p>
+<ul>
+<li>
+<p><code>0</code>: alive at <code>t+1</code> (confirmed)</p>
+</li>
+<li>
+<p><code>1</code>: died by <code>t+1</code></p>
+</li>
+<li>
+<p><code>NA</code>: censored at month <code>t</code> (follow-up ends, outcome unknown)</p>
+</li>
+</ul>
+<p>For participants who died:</p>
+<ul>
+<li>
+<p>Rows span from <code>start_month</code> to <code>end_month - 1</code>.</p>
+</li>
+<li>
+<p>The last row (at <code>end_month - 1</code>) has <code>dead_t1 = 1</code>.</p>
+</li>
+<li>
+<p>No row is created for <code>end_month</code>.</p>
+</li>
+</ul>
+<p>For censored or surviving participants:</p>
+<ul>
+<li>
+<p>Rows span from <code>start_month</code> to <code>end_month</code>.</p>
+</li>
+<li>
+<p>The last row (at <code>end_month</code>) has <code>dead_t1 = NA</code>.</p>
+</li>
+<li>
+<p>All prior rows have <code>dead_t1 = 0</code>.</p>
+</li>
+</ul>
+<p>If a participant died in the same month they entered the study (<code>end_month == start_month</code> and <code>died == 1</code>), <code>dead_t1</code> is set to <code>NA</code> (outcome indeterminate within a single month).</p>
+<p>The breast-cancer-specific outcome <code>bc_dead_t1</code> mirrors <code>dead_t1</code> but is set to <code>0</code> at the event row when the death was not attributed to breast cancer (<code>bc_died == 0</code>).</p>
+</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
+<p>A data frame with one row per participant-arm-month, containing:</p>
+<dl>
+<dt>
+<code>id</code>
+</dt>
+<dd>
+Participant identifier
+</dd>
+<dt>
+<code>arm</code>
+</dt>
+<dd>
+Trial arm (<code>“STOPBASE”</code> or <code>“CONTINUE”</code>)
+</dd>
+<dt>
+<code>month</code>
+</dt>
+<dd>
+Calendar month (integer, same scale as input)
+</dd>
+<dt>
+<code>month2</code>
+</dt>
+<dd>
+Month relative to trial entry, 0-indexed
+</dd>
+<dt>
+<code>dead_t1</code>
+</dt>
+<dd>
+Death in the next interval: 1 / 0 / <code>NA</code>
+</dd>
+<dt>
+<code>bc_dead_t1</code>
+</dt>
+<dd>
+Breast cancer death in the next interval
+</dd>
+<dt>
+<code>bc_long</code>
+</dt>
+<dd>
+Breast cancer diagnosis at this month (0/1)
+</dd>
+</dl></section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
+<p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381–389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
+</section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code> for the preceding step.</p>
 </section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
 <details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ucdavis/ettbc">"ettbc"</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/example_function.html">example_function</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">cloned</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor</a></span><span class="op">(</span></span>
+<span>  <span class="va">cohort</span>,</span>
+<span>  <span class="va">screening_mammograms</span>,</span>
+<span>  <span class="va">diagnostic_mammograms</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">long_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long</a></span><span class="op">(</span><span class="va">cloned</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">long_data</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code>[1] 3</code></pre>
+<pre><code>  id      arm month month2 dead_t1 bc_dead_t1 bc_long
+1  1 STOPBASE    26      0       0          0       0
+2  1 STOPBASE    27      1       0          0       0
+3  1 STOPBASE    28      2       0          0       0
+4  1 STOPBASE    29      3       0          0       0
+5  1 STOPBASE    30      4       0          0       0
+6  1 STOPBASE    31      5       0          0       0</code></pre>
 </div>
 </div>
 
@@ -1100,4 +1268,4 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/example_function.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/example_function.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/expand_to_long.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/expand_to_long.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

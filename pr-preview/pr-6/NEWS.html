@@ -371,6 +371,24 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./man/clone_censor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">clone_censor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/cohort.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cohort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/diagnostic_mammograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">diagnostic_mammograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./man/ettbc-package.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ettbc-package</span></a>
   </div>
@@ -379,6 +397,18 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="./man/example_function.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">example_function</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/expand_to_long.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">expand_to_long</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/screening_mammograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">screening_mammograms</span></a>
   </div>
 </li>
       </ul>
@@ -437,6 +467,13 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="ettbc-development-version" class="level1">
 <h1>ettbc (development version)</h1>
+<ul>
+<li>Added <code>clone_censor()</code>: implements the clone-censor step of the target trial emulation methodology. Creates two clones per participant (STOPBASE and CONTINUE arms) and applies the corresponding censoring rules (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</li>
+<li>Added <code>expand_to_long()</code>: converts cloned data to one row per participant-arm-month for use in discrete-time survival analysis (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</li>
+<li>Added example synthetic datasets: <code>cohort</code>, <code>screening_mammograms</code>, and <code>diagnostic_mammograms</code> (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</li>
+<li>Added vignette article “Using ettbc: Emulating a Target Trial for Breast Cancer Screening” (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</li>
+<li>Updated <code>DESCRIPTION</code> title and description to reflect the package purpose.</li>
+</ul>
 </section>
 <section id="ettbc-0.0.0.9000" class="level1">
 <h1>ettbc 0.0.0.9000</h1>
