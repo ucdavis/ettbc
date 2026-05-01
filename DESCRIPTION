@@ -1,6 +1,6 @@
 Package: ettbc
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9013
+Title: Emulating a Target Trial for Breast Cancer Screening
+Version: 0.0.0.9014
 Authors@R: c(
     person(
       given = "Douglas Ezra",
@@ -10,7 +10,13 @@ Authors@R: c(
       comment = c(ORCID = "0000-0002-7195-830X")
     )
   )
-Description: What the package does (one paragraph).
+Description: Implements the clone-censor step of the target trial emulation
+    methodology for studying the effect of sustained screening mammography on
+    breast cancer mortality, following the approach of García-Albéniz et al.
+    (2020) <doi:10.7326/M18-1199>. Provides functions to clone participants
+    into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules,
+    and expand the resulting dataset to a long format suitable for
+    inverse-probability-weighted survival analysis.
 License: MIT + file LICENSE
 URL: https://github.com/ucdavis/ettbc, https://ucdavis.github.io/ettbc/
 BugReports: https://github.com/ucdavis/ettbc/issues
@@ -35,3 +41,4 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr, quarto
 Config/Needs/website: quarto
 Config/roxygen2/version: 8.0.0
+LazyData: true
