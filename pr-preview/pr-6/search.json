@@ -209,7 +209,7 @@
     "href": "vignettes/articles/quarto_article.html",
     "title": "Advanced Quarto Article",
     "section": "",
-    "text": "Douglas Ezra Morrison\n\n2026-05-01\nCode\nlibrary(ettbc)",
+    "text": "Douglas Ezra Morrison\n\n2026-05-02\nCode\nlibrary(ettbc)",
     "crumbs": [
       "Documentation",
       "Articles",
@@ -376,7 +376,7 @@
     "href": "man/ettbc-package.html",
     "title": "ettbc",
     "section": "",
-    "text": "Implements the clone-censor step of the target trial emulation methodology for studying the effect of sustained screening mammography on breast cancer mortality, following the approach of García-Albéniz et al. (2020) doi:10.7326/M18-1199. Provides functions to clone participants into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules, and expand the resulting dataset to a long format suitable for inverse-probability-weighted survival analysis.\n\n\n\nMaintainer: Douglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\n\n\n\nUseful links:\n\n\nhttps://github.com/ucdavis/ettbc\n\n\nhttps://ucdavis.github.io/ettbc/\n\n\nReport bugs at https://github.com/ucdavis/ettbc/issues",
+    "text": "Implements the clone-censor step of the target trial emulation methodology for studying the effect of sustained screening mammography on breast cancer mortality, following the approach of García-Albéniz et al. (2020) doi:10.7326/M18-1199. Provides functions to clone participants into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules, and expand the resulting dataset to a long format suitable for inverse-probability-weighted survival analysis.\n\n\n\nMaintainer: Douglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\nAuthors:\n\n\nDouglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\n\n\n\n\n\nUseful links:\n\n\nhttps://github.com/ucdavis/ettbc\n\n\nhttps://ucdavis.github.io/ettbc/\n\n\nReport bugs at https://github.com/ucdavis/ettbc/issues",
     "crumbs": [
       "Documentation",
       "Reference",
@@ -388,7 +388,7 @@
     "href": "man/ettbc-package.html#ettbc-emulating-a-target-trial-for-breast-cancer-screening",
     "title": "ettbc",
     "section": "",
-    "text": "Implements the clone-censor step of the target trial emulation methodology for studying the effect of sustained screening mammography on breast cancer mortality, following the approach of García-Albéniz et al. (2020) doi:10.7326/M18-1199. Provides functions to clone participants into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules, and expand the resulting dataset to a long format suitable for inverse-probability-weighted survival analysis.\n\n\n\nMaintainer: Douglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\n\n\n\nUseful links:\n\n\nhttps://github.com/ucdavis/ettbc\n\n\nhttps://ucdavis.github.io/ettbc/\n\n\nReport bugs at https://github.com/ucdavis/ettbc/issues",
+    "text": "Implements the clone-censor step of the target trial emulation methodology for studying the effect of sustained screening mammography on breast cancer mortality, following the approach of García-Albéniz et al. (2020) doi:10.7326/M18-1199. Provides functions to clone participants into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules, and expand the resulting dataset to a long format suitable for inverse-probability-weighted survival analysis.\n\n\n\nMaintainer: Douglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\nAuthors:\n\n\nDouglas Ezra Morrison demorrison@ucdavis.edu (ORCID)\n\n\n\n\n\nUseful links:\n\n\nhttps://github.com/ucdavis/ettbc\n\n\nhttps://ucdavis.github.io/ettbc/\n\n\nReport bugs at https://github.com/ucdavis/ettbc/issues",
     "crumbs": [
       "Documentation",
       "Reference",
@@ -575,56 +575,104 @@
     "href": "vignettes/articles/using-ettbc.html",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "",
-    "text": "Douglas Ezra Morrison\n\n2026-05-01"
+    "text": "Douglas Ezra Morrison\n\n2026-05-02",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+    ]
   },
   {
     "objectID": "vignettes/articles/using-ettbc.html#background",
     "href": "vignettes/articles/using-ettbc.html#background",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "\n1 Background",
-    "text": "1 Background\nThis article demonstrates how to use the ettbc package to emulate a target trial for breast cancer screening using the clone-censor-reweight methodology. The methods are based on the study by García-Albéniz et al. (2020), who estimated the effect of continuing annual screening mammography on breast cancer mortality in Medicare beneficiaries aged 70–84 years.\n\n1.1 The Target Trial\nThe study aimed to answer: Does continuing annual screening mammography (compared with stopping) reduce breast cancer mortality in older women?\nBecause a randomised trial of this question is unlikely to be conducted, the target trial was emulated using Medicare claims data. The key methodological challenge is confounding by indication: women who continue screening tend to be healthier and more health-conscious than those who stop.\n\n1.2 The Clone-Censor-Reweight Approach\nThe clone-censor-reweight method handles time-varying treatment and censoring in three steps (Hernán and Robins 2016):\n\nClone: Each participant is replicated into two copies — one assigned to the STOPBASE arm (stop screening at study entry) and one to the CONTINUE arm (continue annual screening).\n\nCensor: Clones are censored in their assigned arm when they deviate from the protocol:\n\n\nSTOPBASE: censored at the first screening mammogram received after the initial grace period.\n\nCONTINUE: censored when more than 14 months pass without any mammogram.\n\n\nReweight: Inverse probability weights (IPW) are constructed to account for the informative censoring introduced in step 2.\n\nThe ettbc package implements the first two steps with clone_censor() and provides a helper function expand_to_long() to prepare the dataset for the IPW outcome analysis."
+    "text": "1 Background\nThis article demonstrates how to use the ettbc package to emulate a target trial for breast cancer screening using the clone-censor-reweight methodology. The methods are based on the study by García-Albéniz et al. (2020), who estimated the effect of continuing annual screening mammography on breast cancer mortality in Medicare beneficiaries aged 70–84 years.\n\n1.1 The Target Trial\nThe study aimed to answer: Does continuing annual screening mammography (compared with stopping) reduce breast cancer mortality in older women?\nBecause a randomised trial of this question is unlikely to be conducted, the target trial was emulated using Medicare claims data. The key methodological challenge is confounding by indication: women who continue screening tend to be healthier and more health-conscious than those who stop.\n\n1.2 The Clone-Censor-Reweight Approach\nThe clone-censor-reweight method handles time-varying treatment and censoring in three steps (Hernán and Robins 2016):\n\nClone: Each participant is replicated into two copies — one assigned to the STOPBASE arm (stop screening at study entry) and one to the CONTINUE arm (continue annual screening).\n\nCensor: Clones are censored in their assigned arm when they deviate from the protocol:\n\n\nSTOPBASE: censored at the first screening mammogram received after the initial grace period.\n\nCONTINUE: censored when more than 14 months pass without any mammogram.\n\n\nReweight: Inverse probability weights (IPW) are constructed to account for the informative censoring introduced in step 2.\n\nThe ettbc package implements the first two steps with clone_censor() and provides a helper function expand_to_long() to prepare the dataset for the IPW outcome analysis.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+    ]
   },
   {
     "objectID": "vignettes/articles/using-ettbc.html#example-data",
     "href": "vignettes/articles/using-ettbc.html#example-data",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "\n2 Example Data",
-    "text": "2 Example Data\nThe package ships with three synthetic datasets that mimic the structure of the original study data (but contain entirely simulated values).\n\nCode# One row per participant\nhead(cohort)\n#&gt;   id age start_month end_month death_month bc_death bc_month\n#&gt; 1  1  81          26       108          NA        0       NA\n#&gt; 2  2  81          33       108          NA        0       NA\n#&gt; 3  3  76          28       108          NA        0       NA\n#&gt; 4  4  75           1       108          NA        0       NA\n#&gt; 5  5  77          17       108          NA        0       NA\n#&gt; 6  6  70          40       108          NA        0       NA\n\n\n\nCode# One row per screening mammogram event\nhead(screening_mammograms)\n#&gt;   id month\n#&gt; 1  1    16\n#&gt; 2  1    38\n#&gt; 3  1    50\n#&gt; 4  1    63\n#&gt; 5  1    77\n#&gt; 6  1    88\n\n\n\nCode# One row per diagnostic mammogram event\nhead(diagnostic_mammograms)\n#&gt;   id month\n#&gt; 1 98    46\n#&gt; 2  4    55\n#&gt; 3 84    95\n#&gt; 4 68    60\n#&gt; 5 77    70\n#&gt; 6 93    35\n\n\nMonths are numbered consecutively from 1 (January 2000) to 108 (December 2008). Participants enter the study between months 1 and 60.\n\nCodehist(\n  cohort$start_month,\n  breaks = 20,\n  main = \"Study Entry Month\",\n  xlab = \"Month (1 = January 2000)\",\n  col = \"steelblue\",\n  border = \"white\"\n)\n\n\n\nFigure 1: Distribution of study entry months in the simulated cohort."
+    "text": "2 Example Data\nThe package ships with three synthetic datasets that mimic the structure of the original study data (but contain entirely simulated values).\n\nCode# One row per participant\nhead(cohort)\n#&gt;   id age start_month end_month death_month bc_death bc_month\n#&gt; 1  1  81          26       108          NA        0       NA\n#&gt; 2  2  81          33       108          NA        0       NA\n#&gt; 3  3  76          28       108          NA        0       NA\n#&gt; 4  4  75           1       108          NA        0       NA\n#&gt; 5  5  77          17       108          NA        0       NA\n#&gt; 6  6  70          40       108          NA        0       NA\n\n\n\nCode# One row per screening mammogram event\nhead(screening_mammograms)\n#&gt;   id month\n#&gt; 1  1    16\n#&gt; 2  1    38\n#&gt; 3  1    50\n#&gt; 4  1    63\n#&gt; 5  1    77\n#&gt; 6  1    88\n\n\n\nCode# One row per diagnostic mammogram event\nhead(diagnostic_mammograms)\n#&gt;   id month\n#&gt; 1 98    46\n#&gt; 2  4    55\n#&gt; 3 84    95\n#&gt; 4 68    60\n#&gt; 5 77    70\n#&gt; 6 93    35\n\n\nMonths are numbered consecutively from 1 (January 2000) to 108 (December 2008). Participants enter the study between months 1 and 60.\n\nCodehist(\n  cohort$start_month,\n  breaks = 20,\n  main = \"Study Entry Month\",\n  xlab = \"Month (1 = January 2000)\",\n  col = \"steelblue\",\n  border = \"white\"\n)\n\n\n\nFigure 1: Distribution of study entry months in the simulated cohort.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+    ]
   },
   {
     "objectID": "vignettes/articles/using-ettbc.html#step-1-clone-and-censor",
     "href": "vignettes/articles/using-ettbc.html#step-1-clone-and-censor",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "\n3 Step 1: Clone and Censor",
-    "text": "3 Step 1: Clone and Censor\nclone_censor() takes the cohort and mammography event datasets and returns a data frame with two rows per participant — one for each arm.\n\nCodecloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\n\nnrow(cloned) # should be 2 × nrow(cohort)\n#&gt; [1] 200\nhead(cloned[, c(\"id\", \"arm\", \"start_month\", \"end_month\",\n                \"censor_month\", \"fup\", \"died\", \"bc_died\")])\n#&gt;   id      arm start_month end_month censor_month fup died bc_died\n#&gt; 1  1 STOPBASE          26        38           38  13    0       0\n#&gt; 2  2 STOPBASE          33        45           45  13    0       0\n#&gt; 3  3 STOPBASE          28        42           42  15    0       0\n#&gt; 4  4 STOPBASE           1        12           12  12    0       0\n#&gt; 5  5 STOPBASE          17        28           28  12    0       0\n#&gt; 6  6 STOPBASE          40        52           52  13    0       0\n\n\nThe key new columns are:\n\n\narm: trial arm (\"STOPBASE\" or \"CONTINUE\")\n\nend_month: final observed month (minimum of death, administrative censoring, and protocol censoring)\n\ncensor_month: month of protocol deviation censoring (NA if not censored for protocol non-adherence)\n\nfup: follow-up time in months\n\ndied: overall mortality indicator (1 if death caused end of follow-up)\n\nbc_died: breast cancer mortality indicator\n\n\n3.1 Censoring Patterns by Arm\nBecause participants in STOPBASE are censored when they get a screening mammogram, annual screeners are censored early in that arm. Conversely, participants in CONTINUE are censored when they go too long without a mammogram, so non-adherers are censored early.\n\nCodepar(mfrow = c(1, 2))\n\nstopbase &lt;- cloned[cloned$arm == \"STOPBASE\", ]\ncontinue &lt;- cloned[cloned$arm == \"CONTINUE\", ]\n\nhist(stopbase$fup,\n  breaks = 20, main = \"STOPBASE\",\n  xlab = \"Follow-up (months)\", col = \"#E05C4B\", border = \"white\",\n  xlim = c(0, 110)\n)\nhist(continue$fup,\n  breaks = 20, main = \"CONTINUE\",\n  xlab = \"Follow-up (months)\", col = \"#4B8FE0\", border = \"white\",\n  xlim = c(0, 110)\n)\npar(mfrow = c(1, 1))\n\n\n\nFigure 2: Follow-up time by arm and censoring type.\n\n\n\n\n\n\n\n\nCode# Percentage censored for protocol non-adherence in each arm\nprop_censored &lt;- tapply(\n  !is.na(cloned$censor_month),\n  cloned$arm,\n  mean\n)\nround(prop_censored * 100, 1)\n#&gt; CONTINUE STOPBASE \n#&gt;       41       90\n\n\nAs expected, most STOPBASE clones are censored (those who continued getting annual mammograms), while only a minority of CONTINUE clones are censored (those who stopped getting mammograms)."
+    "text": "3 Step 1: Clone and Censor\nclone_censor() takes the cohort and mammography event datasets and returns a data frame with two rows per participant — one for each arm.\n\nCodecloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\n\nnrow(cloned) # should be 2 × nrow(cohort)\n#&gt; [1] 200\nhead(cloned[, c(\"id\", \"arm\", \"start_month\", \"end_month\",\n                \"censor_month\", \"fup\", \"died\", \"bc_died\")])\n#&gt;   id      arm start_month end_month censor_month fup died bc_died\n#&gt; 1  1 STOPBASE          26        38           38  13    0       0\n#&gt; 2  2 STOPBASE          33        45           45  13    0       0\n#&gt; 3  3 STOPBASE          28        42           42  15    0       0\n#&gt; 4  4 STOPBASE           1        12           12  12    0       0\n#&gt; 5  5 STOPBASE          17        28           28  12    0       0\n#&gt; 6  6 STOPBASE          40        52           52  13    0       0\n\n\nThe key new columns are:\n\n\narm: trial arm (\"STOPBASE\" or \"CONTINUE\")\n\nend_month: final observed month (minimum of death, administrative censoring, and protocol censoring)\n\ncensor_month: month of protocol deviation censoring (NA if not censored for protocol non-adherence)\n\nfup: follow-up time in months\n\ndied: overall mortality indicator (1 if death caused end of follow-up)\n\nbc_died: breast cancer mortality indicator\n\n\n3.1 Censoring Patterns by Arm\nBecause participants in STOPBASE are censored when they get a screening mammogram, annual screeners are censored early in that arm. Conversely, participants in CONTINUE are censored when they go too long without a mammogram, so non-adherers are censored early.\n\nCodepar(mfrow = c(1, 2))\n\nstopbase &lt;- cloned[cloned$arm == \"STOPBASE\", ]\ncontinue &lt;- cloned[cloned$arm == \"CONTINUE\", ]\n\nhist(stopbase$fup,\n  breaks = 20, main = \"STOPBASE\",\n  xlab = \"Follow-up (months)\", col = \"#E05C4B\", border = \"white\",\n  xlim = c(0, 110)\n)\nhist(continue$fup,\n  breaks = 20, main = \"CONTINUE\",\n  xlab = \"Follow-up (months)\", col = \"#4B8FE0\", border = \"white\",\n  xlim = c(0, 110)\n)\npar(mfrow = c(1, 1))\n\n\n\nFigure 2: Follow-up time by arm and censoring type.\n\n\n\n\n\n\n\n\nCode# Percentage censored for protocol non-adherence in each arm\nprop_censored &lt;- tapply(\n  !is.na(cloned$censor_month),\n  cloned$arm,\n  mean\n)\nround(prop_censored * 100, 1)\n#&gt; CONTINUE STOPBASE \n#&gt;       41       90\n\n\nAs expected, most STOPBASE clones are censored (those who continued getting annual mammograms), while only a minority of CONTINUE clones are censored (those who stopped getting mammograms).",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+    ]
   },
   {
     "objectID": "vignettes/articles/using-ettbc.html#step-2-expand-to-long-format",
     "href": "vignettes/articles/using-ettbc.html#step-2-expand-to-long-format",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "\n4 Step 2: Expand to Long Format",
-    "text": "4 Step 2: Expand to Long Format\nexpand_to_long() converts the cloned dataset to one row per participant-arm-month. This format is required for the discrete-time survival models used to estimate the outcome.\n\nCodelong_data &lt;- expand_to_long(cloned)\n\nnrow(long_data) # total person-arm-months\n#&gt; [1] 7052\nhead(long_data)\n#&gt;   id      arm month month2 dead_t1 bc_dead_t1 bc_long\n#&gt; 1  1 STOPBASE    26      0       0          0       0\n#&gt; 2  1 STOPBASE    27      1       0          0       0\n#&gt; 3  1 STOPBASE    28      2       0          0       0\n#&gt; 4  1 STOPBASE    29      3       0          0       0\n#&gt; 5  1 STOPBASE    30      4       0          0       0\n#&gt; 6  1 STOPBASE    31      5       0          0       0\n\n\nThe key columns in the long dataset are:\n\n\nmonth: calendar month (1–108)\n\nmonth2: months since study entry (0-indexed)\n\ndead_t1: death in the next interval: 1 = yes, 0 = no, NA = censored\n\nbc_dead_t1: breast cancer death in the next interval\n\nbc_long: breast cancer diagnosis flag at this month\n\n\nCode# Total events in the long dataset\ntable(long_data$dead_t1, useNA = \"ifany\")\n#&gt; \n#&gt;    0    1 &lt;NA&gt; \n#&gt; 6852   19  181\n\n\n\n4.1 Verifying the Long Format\nA simple check: the number of observed deaths in the long dataset should equal the number of died == 1 rows in the cloned dataset.\n\nCode# Deaths in cloned dataset\nsum(cloned$died)\n#&gt; [1] 19\n\n# Rows with dead_t1 = 1 in long dataset\nsum(long_data$dead_t1 == 1L, na.rm = TRUE)\n#&gt; [1] 19"
+    "text": "4 Step 2: Expand to Long Format\nexpand_to_long() converts the cloned dataset to one row per participant-arm-month. This format is required for the discrete-time survival models used to estimate the outcome.\n\nCodelong_data &lt;- expand_to_long(cloned)\n\nnrow(long_data) # total person-arm-months\n#&gt; [1] 7052\nhead(long_data)\n#&gt;   id      arm month month2 dead_t1 bc_dead_t1 bc_long\n#&gt; 1  1 STOPBASE    26      0       0          0       0\n#&gt; 2  1 STOPBASE    27      1       0          0       0\n#&gt; 3  1 STOPBASE    28      2       0          0       0\n#&gt; 4  1 STOPBASE    29      3       0          0       0\n#&gt; 5  1 STOPBASE    30      4       0          0       0\n#&gt; 6  1 STOPBASE    31      5       0          0       0\n\n\nThe key columns in the long dataset are:\n\n\nmonth: calendar month (1–108)\n\nmonth2: months since study entry (0-indexed)\n\ndead_t1: death in the next interval: 1 = yes, 0 = no, NA = censored\n\nbc_dead_t1: breast cancer death in the next interval\n\nbc_long: breast cancer diagnosis flag at this month\n\n\nCode# Total events in the long dataset\ntable(long_data$dead_t1, useNA = \"ifany\")\n#&gt; \n#&gt;    0    1 &lt;NA&gt; \n#&gt; 6852   19  181\n\n\n\n4.1 Verifying the Long Format\nA simple check: the number of observed deaths in the long dataset should equal the number of died == 1 rows in the cloned dataset.\n\nCode# Deaths in cloned dataset\nsum(cloned$died)\n#&gt; [1] 19\n\n# Rows with dead_t1 = 1 in long dataset\nsum(long_data$dead_t1 == 1L, na.rm = TRUE)\n#&gt; [1] 19",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+    ]
   },
   {
     "objectID": "vignettes/articles/using-ettbc.html#step-3-descriptive-analysis",
     "href": "vignettes/articles/using-ettbc.html#step-3-descriptive-analysis",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "\n5 Step 3: Descriptive Analysis",
-    "text": "5 Step 3: Descriptive Analysis\nBefore fitting weighted outcome models, it is useful to describe the data and examine crude survival by arm.\n\nCode# Compute monthly event rate per arm\narms &lt;- c(\"STOPBASE\", \"CONTINUE\")\ncols &lt;- c(\"#E05C4B\", \"#4B8FE0\")\n\nplot(NA,\n  xlim = c(0, 70), ylim = c(0, 0.15),\n  xlab = \"Months since study entry\",\n  ylab = \"Cumulative mortality (crude)\",\n  main = \"Crude cumulative mortality by arm\"\n)\n\nfor (j in seq_along(arms)) {\n  sub &lt;- long_data[long_data$arm == arms[j], ]\n  # Month-by-month event counts\n  max_t &lt;- max(sub$month2)\n  cum_mort &lt;- numeric(max_t + 1L)\n  n_risk &lt;- numeric(max_t + 1L)\n\n  for (t in 0:max_t) {\n    rows_t &lt;- sub[sub$month2 == t, ]\n    n_risk[t + 1L] &lt;- nrow(rows_t)\n    cum_mort[t + 1L] &lt;- sum(rows_t$dead_t1 == 1L, na.rm = TRUE)\n  }\n  cum_mort &lt;- cumsum(cum_mort) / max(n_risk, 1L)\n  lines(0:max_t, cum_mort, col = cols[j], lwd = 2)\n}\n\nlegend(\"topleft\",\n  legend = arms, col = cols, lwd = 2, bty = \"n\"\n)\n\n\n\nFigure 3: Empirical cumulative mortality by arm (crude, without IPW). Under the null, the two arms should be similar because clones are derived from the same participants.\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe crude curves above do not account for the informative censoring introduced by the clone-censor step. In a complete analysis, inverse probability weights (IPW) would be applied to correct for the different censoring mechanisms in each arm. See García-Albéniz et al. (2020) for the full weighted analysis."
+    "text": "5 Step 3: Descriptive Analysis\nBefore fitting weighted outcome models, it is useful to describe the data and examine crude survival by arm.\n\nCode# Compute monthly event rate per arm\narms &lt;- c(\"STOPBASE\", \"CONTINUE\")\ncols &lt;- c(\"#E05C4B\", \"#4B8FE0\")\n\nplot(NA,\n  xlim = c(0, 70), ylim = c(0, 0.15),\n  xlab = \"Months since study entry\",\n  ylab = \"Cumulative mortality (crude)\",\n  main = \"Crude cumulative mortality by arm\"\n)\n\nfor (j in seq_along(arms)) {\n  sub &lt;- long_data[long_data$arm == arms[j], ]\n  # Month-by-month event counts\n  max_t &lt;- max(sub$month2)\n  cum_mort &lt;- numeric(max_t + 1L)\n  n_risk &lt;- numeric(max_t + 1L)\n\n  for (t in 0:max_t) {\n    rows_t &lt;- sub[sub$month2 == t, ]\n    n_risk[t + 1L] &lt;- nrow(rows_t)\n    cum_mort[t + 1L] &lt;- sum(rows_t$dead_t1 == 1L, na.rm = TRUE)\n  }\n  cum_mort &lt;- cumsum(cum_mort) / max(n_risk, 1L)\n  lines(0:max_t, cum_mort, col = cols[j], lwd = 2)\n}\n\nlegend(\"topleft\",\n  legend = arms, col = cols, lwd = 2, bty = \"n\"\n)\n\n\n\nFigure 3: Empirical cumulative mortality by arm (crude, without IPW). Under the null, the two arms should be similar because clones are derived from the same participants.\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe crude curves above do not account for the informative censoring introduced by the clone-censor step. In a complete analysis, inverse probability weights (IPW) would be applied to correct for the different censoring mechanisms in each arm. See García-Albéniz et al. (2020) for the full weighted analysis.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+    ]
   },
   {
     "objectID": "vignettes/articles/using-ettbc.html#summary",
     "href": "vignettes/articles/using-ettbc.html#summary",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "\n6 Summary",
-    "text": "6 Summary\nThe ettbc package provides two core functions for the clone-censor step of target trial emulation:\n\n\nTable 1: Core ettbc functions\n\n\n\n\n\n\n\n\nFunction\nInput\nOutput\n\n\n\nclone_censor()\ncohort + mammogram events\ntwo rows per participant\n\n\nexpand_to_long()\ncloned dataset\none row per participant-arm-month\n\n\n\n\n\n\nAfter running these steps, the long dataset can be used with standard weighted logistic or pooled logistic regression to estimate the intention-to-treat effect of each screening strategy."
+    "text": "6 Summary\nThe ettbc package provides two core functions for the clone-censor step of target trial emulation:\n\n\nTable 1: Core ettbc functions\n\n\n\n\n\n\n\n\nFunction\nInput\nOutput\n\n\n\nclone_censor()\ncohort + mammogram events\ntwo rows per participant\n\n\nexpand_to_long()\ncloned dataset\none row per participant-arm-month\n\n\n\n\n\n\nAfter running these steps, the long dataset can be used with standard weighted logistic or pooled logistic regression to estimate the intention-to-treat effect of each screening strategy.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+    ]
   },
   {
     "objectID": "vignettes/articles/using-ettbc.html#references",
     "href": "vignettes/articles/using-ettbc.html#references",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "\n7 References",
-    "text": "7 References\n\n\nGarcía-Albéniz, Xabier, Hajime Uno, Deepak L Bhatt, Patrick H McArdle, Marshall M Joffe, and Miguel A Hernán. 2020. “Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study.” Annals of Internal Medicine 172 (6): 381–89. https://doi.org/10.7326/M18-1199.\n\n\nHernán, Miguel A, and James M Robins. 2016. “Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available.” American Journal of Epidemiology 183 (8): 758–64. https://doi.org/10.1093/aje/kwv254."
+    "text": "7 References\n\n\nGarcía-Albéniz, Xabier, Hajime Uno, Deepak L Bhatt, Patrick H McArdle, Marshall M Joffe, and Miguel A Hernán. 2020. “Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study.” Annals of Internal Medicine 172 (6): 381–89. https://doi.org/10.7326/M18-1199.\n\n\nHernán, Miguel A, and James M Robins. 2016. “Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available.” American Journal of Epidemiology 183 (8): 758–64. https://doi.org/10.1093/aje/kwv254.",
+    "crumbs": [
+      "Documentation",
+      "Articles",
+      "Advanced",
+      "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+    ]
   },
   {
     "objectID": "vignettes/articles/using-ettbc-revealjs.html#background",
