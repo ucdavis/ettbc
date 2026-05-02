@@ -34,6 +34,8 @@ website:
             file: vignettes/quarto_vignette.qmd
           - text: "Advanced"
             file: vignettes/articles/quarto_article.qmd
+          - text: "Using ettbc"
+            file: vignettes/articles/using-ettbc.qmd
   sidebar:
     collapse-level: 1
     contents:
@@ -48,6 +50,7 @@ website:
           - section: Advanced
             contents:
               - vignettes/articles/quarto_article.qmd
+              - vignettes/articles/using-ettbc.qmd
       - section: $ALTDOC_MAN_BLOCK
         style: floating
       - text: News
