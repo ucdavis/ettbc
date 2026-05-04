@@ -1,0 +1,3 @@
+id,start_month,end_month,death_month,bc_death,bc_month,arm,censor_month,fup,died,bc_died
+1,10,108,NA,0,NA,STOPBASE,NA,99,0,0
+1,10,23,NA,0,NA,CONTINUE,23,14,0,0

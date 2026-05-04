@@ -4,9 +4,9 @@
 \name{ettbc-package}
 \alias{ettbc}
 \alias{ettbc-package}
-\title{ettbc: What the Package Does (One Line, Title Case)}
+\title{ettbc: Emulating a Target Trial for Breast Cancer Screening}
 \description{
-What the package does (one paragraph).
+Implements the clone-censor step of the target trial emulation methodology for studying the effect of sustained screening mammography on breast cancer mortality, following the approach of García-Albéniz et al. (2020) \doi{10.7326/M18-1199}. Provides functions to clone participants into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules, and expand the resulting dataset to a long format suitable for inverse-probability-weighted survival analysis.
 }
 \seealso{
 Useful links:
@@ -19,5 +19,10 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Douglas Ezra Morrison \email{demorrison@ucdavis.edu} (\href{https://orcid.org/0000-0002-7195-830X}{ORCID})
+
+Authors:
+\itemize{
+  \item Douglas Ezra Morrison \email{demorrison@ucdavis.edu} (\href{https://orcid.org/0000-0002-7195-830X}{ORCID})
+}
 
 }

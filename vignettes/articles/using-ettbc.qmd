@@ -1,0 +1,285 @@
+---
+title: "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
+author: "Douglas Ezra Morrison"
+date: "`r Sys.Date()`"
+format:
+  revealjs:
+    output-file: using-ettbc-revealjs.html
+  html: default
+  docx: default
+bibliography: ../references.bib
+vignette: >
+  %\VignetteIndexEntry{Using ettbc: Emulating a Target Trial for Breast Cancer Screening}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+library(ettbc)
+```
+
+## Background
+
+This article demonstrates how to use the `{ettbc}` package to emulate a
+target trial for breast cancer screening using the **clone-censor-reweight**
+methodology. The methods are based on the study by @garcia-albeniz2020, who
+estimated the effect of continuing annual screening mammography on breast
+cancer mortality in Medicare beneficiaries aged 70–84 years.
+
+### The Target Trial
+
+The study aimed to answer: *Does continuing annual screening mammography
+(compared with stopping) reduce breast cancer mortality in older women?*
+
+Because a randomised trial of this question is unlikely to be conducted, the
+target trial was emulated using Medicare claims data. The key methodological
+challenge is **confounding by indication**: women who continue screening tend
+to be healthier and more health-conscious than those who stop.
+
+### The Clone-Censor-Reweight Approach
+
+The clone-censor-reweight method handles time-varying treatment and censoring
+in three steps [@hernan2016]:
+
+1. **Clone**: Each participant is replicated into two copies — one assigned
+   to the STOPBASE arm (stop screening at study entry) and one to the
+   CONTINUE arm (continue annual screening).
+
+2. **Censor**: Clones are censored in their assigned arm when they deviate
+   from the protocol:
+   - **STOPBASE**: censored at the first screening mammogram received after
+     the initial grace period.
+   - **CONTINUE**: censored when more than 14 months pass without any
+     mammogram.
+
+3. **Reweight**: Inverse probability weights (IPW) are constructed to
+   account for the informative censoring introduced in step 2.
+
+The `{ettbc}` package implements the first two steps with `clone_censor()`
+and provides a helper function `expand_to_long()` to prepare the dataset for
+the IPW outcome analysis.
+
+## Example Data
+
+The package ships with three synthetic datasets that mimic the structure of
+the original study data (but contain entirely simulated values).
+
+```{r}
+# One row per participant
+head(cohort)
+```
+
+```{r}
+# One row per screening mammogram event
+head(screening_mammograms)
+```
+
+```{r}
+# One row per diagnostic mammogram event
+head(diagnostic_mammograms)
+```
+
+Months are numbered consecutively from 1 (January 2000) to 108
+(December 2008). Participants enter the study between months 1 and 60.
+
+```{r}
+#| label: fig-entry-dist
+#| fig-cap: "Distribution of study entry months in the simulated cohort."
+hist(
+  cohort$start_month,
+  breaks = 20,
+  main = "Study Entry Month",
+  xlab = "Month (1 = January 2000)",
+  col = "steelblue",
+  border = "white"
+)
+```
+
+## Step 1: Clone and Censor
+
+`clone_censor()` takes the cohort and mammography event datasets and returns
+a data frame with **two rows per participant** — one for each arm.
+
+```{r}
+cloned <- clone_censor(
+  cohort,
+  screening_mammograms,
+  diagnostic_mammograms
+)
+
+nrow(cloned) # should be 2 × nrow(cohort)
+head(cloned[, c("id", "arm", "start_month", "end_month",
+                "censor_month", "fup", "died", "bc_died")])
+```
+
+The key new columns are:
+
+- `arm`: trial arm (`"STOPBASE"` or `"CONTINUE"`)
+- `end_month`: final observed month (minimum of death, administrative
+  censoring, and protocol censoring)
+- `censor_month`: month of protocol deviation censoring (`NA` if not censored
+  for protocol non-adherence)
+- `fup`: follow-up time in months
+- `died`: overall mortality indicator (1 if death caused end of follow-up)
+- `bc_died`: breast cancer mortality indicator
+
+### Censoring Patterns by Arm
+
+Because participants in STOPBASE are censored when they get a screening
+mammogram, annual screeners are censored early in that arm. Conversely,
+participants in CONTINUE are censored when they go too long without a
+mammogram, so non-adherers are censored early.
+
+```{r}
+#| label: fig-censor-by-arm
+#| fig-cap: "Follow-up time by arm and censoring type."
+par(mfrow = c(1, 2))
+
+stopbase <- cloned[cloned$arm == "STOPBASE", ]
+continue <- cloned[cloned$arm == "CONTINUE", ]
+
+hist(stopbase$fup,
+  breaks = 20, main = "STOPBASE",
+  xlab = "Follow-up (months)", col = "#E05C4B", border = "white",
+  xlim = c(0, 110)
+)
+hist(continue$fup,
+  breaks = 20, main = "CONTINUE",
+  xlab = "Follow-up (months)", col = "#4B8FE0", border = "white",
+  xlim = c(0, 110)
+)
+par(mfrow = c(1, 1))
+```
+
+```{r}
+# Percentage censored for protocol non-adherence in each arm
+prop_censored <- tapply(
+  !is.na(cloned$censor_month),
+  cloned$arm,
+  mean
+)
+round(prop_censored * 100, 1)
+```
+
+As expected, most STOPBASE clones are censored (those who continued getting
+annual mammograms), while only a minority of CONTINUE clones are censored
+(those who stopped getting mammograms).
+
+## Step 2: Expand to Long Format
+
+`expand_to_long()` converts the cloned dataset to **one row per
+participant-arm-month**. This format is required for the discrete-time
+survival models used to estimate the outcome.
+
+```{r}
+long_data <- expand_to_long(cloned)
+
+nrow(long_data) # total person-arm-months
+head(long_data)
+```
+
+The key columns in the long dataset are:
+
+- `month`: calendar month (1–108)
+- `month2`: months since study entry (0-indexed)
+- `dead_t1`: death in the next interval: `1` = yes, `0` = no, `NA` = censored
+- `bc_dead_t1`: breast cancer death in the next interval
+- `bc_long`: breast cancer diagnosis flag at this month
+
+```{r}
+# Total events in the long dataset
+table(long_data$dead_t1, useNA = "ifany")
+```
+
+### Verifying the Long Format
+
+A simple check: the number of observed deaths in the long dataset should
+equal the number of `died == 1` rows in the cloned dataset.
+
+```{r}
+# Deaths in cloned dataset
+sum(cloned$died)
+
+# Rows with dead_t1 = 1 in long dataset
+sum(long_data$dead_t1 == 1L, na.rm = TRUE)
+```
+
+## Step 3: Descriptive Analysis
+
+Before fitting weighted outcome models, it is useful to describe the data
+and examine crude survival by arm.
+
+```{r}
+#| label: fig-cumhaz
+#| fig-cap: >
+#|   Empirical cumulative mortality by arm (crude, without IPW).
+#|   Under the null, the two arms should be similar because clones are derived
+#|   from the same participants.
+
+# Compute monthly event rate per arm
+arms <- c("STOPBASE", "CONTINUE")
+cols <- c("#E05C4B", "#4B8FE0")
+
+plot(NA,
+  xlim = c(0, 70), ylim = c(0, 0.15),
+  xlab = "Months since study entry",
+  ylab = "Cumulative mortality (crude)",
+  main = "Crude cumulative mortality by arm"
+)
+
+for (j in seq_along(arms)) {
+  sub <- long_data[long_data$arm == arms[j], ]
+  # Month-by-month event counts
+  max_t <- max(sub$month2)
+  cum_mort <- numeric(max_t + 1L)
+  n_risk <- numeric(max_t + 1L)
+
+  for (t in 0:max_t) {
+    rows_t <- sub[sub$month2 == t, ]
+    n_risk[t + 1L] <- nrow(rows_t)
+    cum_mort[t + 1L] <- sum(rows_t$dead_t1 == 1L, na.rm = TRUE)
+  }
+  cum_mort <- cumsum(cum_mort) / max(n_risk, 1L)
+  lines(0:max_t, cum_mort, col = cols[j], lwd = 2)
+}
+
+legend("topleft",
+  legend = arms, col = cols, lwd = 2, bty = "n"
+)
+```
+
+::: {.callout-note}
+The crude curves above do not account for the informative censoring introduced
+by the clone-censor step. In a complete analysis, **inverse probability
+weights** (IPW) would be applied to correct for the different censoring
+mechanisms in each arm. See @garcia-albeniz2020 for the full
+weighted analysis.
+:::
+
+## Summary
+
+The `{ettbc}` package provides two core functions for the clone-censor step
+of target trial emulation:
+
+| Function | Input | Output |
+|---|---|---|
+| `clone_censor()` | cohort + mammogram events | two rows per participant |
+| `expand_to_long()` | cloned dataset | one row per participant-arm-month |
+
+: Core ettbc functions {#tbl-functions}
+
+After running these steps, the long dataset can be used with standard
+weighted logistic or pooled logistic regression to estimate the
+**intention-to-treat** effect of each screening strategy.
+
+## References
+
+::: {#refs}
+:::

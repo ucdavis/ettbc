@@ -28,12 +28,8 @@ website:
         file: man/ettbc-package.qmd
       - text: Articles
         menu:
-          - text: "Getting started"
-            file: vignettes/getting-started.qmd
-          - text: "Intro vignette"
-            file: vignettes/quarto_vignette.qmd
-          - text: "Advanced"
-            file: vignettes/articles/quarto_article.qmd
+          - text: "Using ettbc"
+            file: vignettes/articles/using-ettbc.qmd
   sidebar:
     collapse-level: 1
     contents:
@@ -43,11 +39,7 @@ website:
       - section: Articles
         style: floating
         contents:
-          - vignettes/getting-started.qmd
-          - vignettes/quarto_vignette.qmd
-          - section: Advanced
-            contents:
-              - vignettes/articles/quarto_article.qmd
+          - vignettes/articles/using-ettbc.qmd
       - section: $ALTDOC_MAN_BLOCK
         style: floating
       - text: News
