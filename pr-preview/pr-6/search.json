@@ -70,48 +70,28 @@
     "href": "vignettes/getting-started.html",
     "title": "Getting Started",
     "section": "",
-    "text": "Codelibrary(ettbc)",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Getting Started"
-    ]
+    "text": "Codelibrary(ettbc)"
   },
   {
     "objectID": "vignettes/getting-started.html#introduction",
     "href": "vignettes/getting-started.html#introduction",
     "title": "Getting Started",
     "section": "\n1 Introduction",
-    "text": "1 Introduction\nThis vignette provides an introduction to the ettbc package.",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Getting Started"
-    ]
+    "text": "1 Introduction\nThis vignette provides an introduction to the ettbc package."
   },
   {
     "objectID": "vignettes/getting-started.html#basic-usage",
     "href": "vignettes/getting-started.html#basic-usage",
     "title": "Getting Started",
     "section": "\n2 Basic Usage",
-    "text": "2 Basic Usage\nHere’s a basic example:\n\nCode# Example usage\nexample_function(c(1, 2, 3, 4, 5))\n#&gt; [1] 3",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Getting Started"
-    ]
+    "text": "2 Basic Usage\nHere’s a basic example:\n\nCode# Example usage\nexample_function(c(1, 2, 3, 4, 5))\n#&gt; [1] 3"
   },
   {
     "objectID": "vignettes/getting-started.html#next-steps",
     "href": "vignettes/getting-started.html#next-steps",
     "title": "Getting Started",
     "section": "\n3 Next Steps",
-    "text": "3 Next Steps\nFor more information, see the package documentation.",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Getting Started"
-    ]
+    "text": "3 Next Steps\nFor more information, see the package documentation."
   },
   {
     "objectID": "vignettes/getting-started-revealjs.html#introduction",
@@ -209,150 +189,84 @@
     "href": "vignettes/articles/quarto_article.html",
     "title": "Advanced Quarto Article",
     "section": "",
-    "text": "Douglas Ezra Morrison\n\n2026-05-03\nCode\nlibrary(ettbc)",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "Douglas Ezra Morrison\n\n2026-05-04\nCode\nlibrary(ettbc)"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#overview",
     "href": "vignettes/articles/quarto_article.html#overview",
     "title": "Advanced Quarto Article",
     "section": "1 Overview",
-    "text": "1 Overview\nThis article demonstrates advanced features of Quarto for package documentation. Unlike vignettes, articles are only available on the documentation website and are not included in the package bundle.",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "1 Overview\nThis article demonstrates advanced features of Quarto for package documentation. Unlike vignettes, articles are only available on the documentation website and are not included in the package bundle."
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#when-to-use-articles-vs-vignettes",
     "href": "vignettes/articles/quarto_article.html#when-to-use-articles-vs-vignettes",
     "title": "Advanced Quarto Article",
     "section": "2 When to Use Articles vs Vignettes",
-    "text": "2 When to Use Articles vs Vignettes\nVignettes should be used for:\n\nCore package documentation\nEssential usage examples\nContent that users need offline\n\nArticles are better for:\n\nExtended tutorials\nCase studies and detailed examples\nContent with large datasets or external dependencies\nSupplementary material",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "2 When to Use Articles vs Vignettes\nVignettes should be used for:\n\nCore package documentation\nEssential usage examples\nContent that users need offline\n\nArticles are better for:\n\nExtended tutorials\nCase studies and detailed examples\nContent with large datasets or external dependencies\nSupplementary material"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#advanced-quarto-features",
     "href": "vignettes/articles/quarto_article.html#advanced-quarto-features",
     "title": "Advanced Quarto Article",
     "section": "3 Advanced Quarto Features",
-    "text": "3 Advanced Quarto Features\n\n3.1 Cross-References\nQuarto makes it easy to create cross-references. For example, see Figure 1 for a scatter plot and Table 1 for a summary table.\n\n\nCode\n# Generate sample data\nset.seed(123)\nx &lt;- rnorm(100)\ny &lt;- 2 * x + rnorm(100, 0, 0.5)\n\n# Create scatter plot\nplot(x, y, \n     main = \"Example Scatter Plot\",\n     xlab = \"X Variable\",\n     ylab = \"Y Variable\",\n     pch = 16,\n     col = rgb(0.2, 0.4, 0.6, 0.6))\nabline(lm(y ~ x), col = \"red\", lwd = 2)\n\n\n\n\n\nFigure 1: Scatter plot demonstrating cross-referencing\n\n\n\n\n\n\n\n\n\n\n3.2 Summary Tables\n\n\nCode\ndata_summary &lt;- data.frame(\n  Statistic = c(\"Mean\", \"Median\", \"SD\", \"Min\", \"Max\"),\n  X = c(mean(x), median(x), sd(x), min(x), max(x)),\n  Y = c(mean(y), median(y), sd(y), min(y), max(y))\n)\n\nknitr::kable(data_summary, digits = 3)\n\n\n\n\nTable 1: Summary statistics for example data\n\n\n\n\n\n\nStatistic\nX\nY\n\n\n\n\nMean\n0.090\n0.127\n\n\nMedian\n0.062\n0.137\n\n\nSD\n0.913\n1.865\n\n\nMin\n-2.309\n-4.586\n\n\nMax\n2.187\n4.675\n\n\n\n\n\n\n\n\nAs shown in Table 1, the variables have similar distributions.\n\n\n3.3 Code Folding\nYou can make code chunks foldable:\n\n\nShow the code for data preparation\n# Prepare more complex data\ncomplex_data &lt;- data.frame(\n  id = 1:50,\n  group = rep(c(\"A\", \"B\"), each = 25),\n  value1 = rnorm(50, 100, 15),\n  value2 = rnorm(50, 50, 10)\n)\n\n# Calculate group statistics\ngroup_stats &lt;- aggregate(\n  cbind(value1, value2) ~ group, \n  data = complex_data, \n  FUN = function(x) c(mean = mean(x), sd = sd(x))\n)\n\nprint(group_stats)\n#&gt;   group value1.mean value1.sd value2.mean value2.sd\n#&gt; 1     A   101.61247  14.63952   51.727220 10.047051\n#&gt; 2     B    98.13191  13.84514   53.261796  8.934998\n\n\n\n\n3.4 Tabsets\n\nPlot ViewSummary ViewRaw Data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n#&gt;        id              group        value1           value2     \n#&gt;  Min.   : 1.00   Length   :50   Min.   : 79.60   Min.   :32.43  \n#&gt;  1st Qu.:13.25   N.unique : 2   1st Qu.: 89.29   1st Qu.:46.76  \n#&gt;  Median :25.50   N.blank  : 0   Median : 96.64   Median :51.04  \n#&gt;  Mean   :25.50   Min.nchar: 1   Mean   : 99.87   Mean   :52.49  \n#&gt;  3rd Qu.:37.75   Max.nchar: 1   3rd Qu.:107.93   3rd Qu.:59.34  \n#&gt;  Max.   :50.00                  Max.   :132.98   Max.   :72.93\n\n\n\n\n#&gt;    id group    value1   value2\n#&gt; 1   1     A 132.98216 46.24397\n#&gt; 2   2     A 119.68619 44.38124\n#&gt; 3   3     A  96.02282 46.56083\n#&gt; 4   4     A 108.14791 50.90497\n#&gt; 5   5     A  93.78490 65.98509\n#&gt; 6   6     A  92.85630 49.11435\n#&gt; 7   7     A  88.17096 60.80799\n#&gt; 8   8     A  91.08074 56.30754\n#&gt; 9   9     A 124.76361 48.86360\n#&gt; 10 10     A  99.18958 34.67098\n\n\n\n\n\n\n3.5 Advanced Callouts\n\n\n\n\n\n\nImportantImportant Considerations\n\n\n\nWhen using this package in production:\n\nAlways validate input data\nCheck for missing values\nConsider computational complexity\n\n\n\n\n\n\n\n\n\nWarningPerformance Warning\n\n\n\nLarge datasets may require additional memory and processing time.\n\n\n\n\n3.6 Columns Layout\n\n\nLeft Column\nThis demonstrates a two-column layout in Quarto.\n\nFeature 1\nFeature 2\nFeature 3\n\n\nRight Column\nYou can place different content in each column.",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "3 Advanced Quarto Features\n\n3.1 Cross-References\nQuarto makes it easy to create cross-references. For example, see Figure 1 for a scatter plot and Table 1 for a summary table.\n\n\nCode\n# Generate sample data\nset.seed(123)\nx &lt;- rnorm(100)\ny &lt;- 2 * x + rnorm(100, 0, 0.5)\n\n# Create scatter plot\nplot(x, y, \n     main = \"Example Scatter Plot\",\n     xlab = \"X Variable\",\n     ylab = \"Y Variable\",\n     pch = 16,\n     col = rgb(0.2, 0.4, 0.6, 0.6))\nabline(lm(y ~ x), col = \"red\", lwd = 2)\n\n\n\n\n\nFigure 1: Scatter plot demonstrating cross-referencing\n\n\n\n\n\n\n\n\n\n\n3.2 Summary Tables\n\n\nCode\ndata_summary &lt;- data.frame(\n  Statistic = c(\"Mean\", \"Median\", \"SD\", \"Min\", \"Max\"),\n  X = c(mean(x), median(x), sd(x), min(x), max(x)),\n  Y = c(mean(y), median(y), sd(y), min(y), max(y))\n)\n\nknitr::kable(data_summary, digits = 3)\n\n\n\n\nTable 1: Summary statistics for example data\n\n\n\n\n\n\nStatistic\nX\nY\n\n\n\n\nMean\n0.090\n0.127\n\n\nMedian\n0.062\n0.137\n\n\nSD\n0.913\n1.865\n\n\nMin\n-2.309\n-4.586\n\n\nMax\n2.187\n4.675\n\n\n\n\n\n\n\n\nAs shown in Table 1, the variables have similar distributions.\n\n\n3.3 Code Folding\nYou can make code chunks foldable:\n\n\nShow the code for data preparation\n# Prepare more complex data\ncomplex_data &lt;- data.frame(\n  id = 1:50,\n  group = rep(c(\"A\", \"B\"), each = 25),\n  value1 = rnorm(50, 100, 15),\n  value2 = rnorm(50, 50, 10)\n)\n\n# Calculate group statistics\ngroup_stats &lt;- aggregate(\n  cbind(value1, value2) ~ group, \n  data = complex_data, \n  FUN = function(x) c(mean = mean(x), sd = sd(x))\n)\n\nprint(group_stats)\n#&gt;   group value1.mean value1.sd value2.mean value2.sd\n#&gt; 1     A   101.61247  14.63952   51.727220 10.047051\n#&gt; 2     B    98.13191  13.84514   53.261796  8.934998\n\n\n\n\n3.4 Tabsets\n\nPlot ViewSummary ViewRaw Data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n#&gt;        id              group        value1           value2     \n#&gt;  Min.   : 1.00   Length   :50   Min.   : 79.60   Min.   :32.43  \n#&gt;  1st Qu.:13.25   N.unique : 2   1st Qu.: 89.29   1st Qu.:46.76  \n#&gt;  Median :25.50   N.blank  : 0   Median : 96.64   Median :51.04  \n#&gt;  Mean   :25.50   Min.nchar: 1   Mean   : 99.87   Mean   :52.49  \n#&gt;  3rd Qu.:37.75   Max.nchar: 1   3rd Qu.:107.93   3rd Qu.:59.34  \n#&gt;  Max.   :50.00                  Max.   :132.98   Max.   :72.93\n\n\n\n\n#&gt;    id group    value1   value2\n#&gt; 1   1     A 132.98216 46.24397\n#&gt; 2   2     A 119.68619 44.38124\n#&gt; 3   3     A  96.02282 46.56083\n#&gt; 4   4     A 108.14791 50.90497\n#&gt; 5   5     A  93.78490 65.98509\n#&gt; 6   6     A  92.85630 49.11435\n#&gt; 7   7     A  88.17096 60.80799\n#&gt; 8   8     A  91.08074 56.30754\n#&gt; 9   9     A 124.76361 48.86360\n#&gt; 10 10     A  99.18958 34.67098\n\n\n\n\n\n\n3.5 Advanced Callouts\n\n\n\n\n\n\nImportantImportant Considerations\n\n\n\nWhen using this package in production:\n\nAlways validate input data\nCheck for missing values\nConsider computational complexity\n\n\n\n\n\n\n\n\n\nWarningPerformance Warning\n\n\n\nLarge datasets may require additional memory and processing time.\n\n\n\n\n3.6 Columns Layout\n\n\nLeft Column\nThis demonstrates a two-column layout in Quarto.\n\nFeature 1\nFeature 2\nFeature 3\n\n\nRight Column\nYou can place different content in each column."
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#working-with-package-functions",
     "href": "vignettes/articles/quarto_article.html#working-with-package-functions",
     "title": "Advanced Quarto Article",
     "section": "4 Working with Package Functions",
-    "text": "4 Working with Package Functions\nHere’s how to use the package’s example function with different inputs:\n\n\nCode\n# Numeric vector\nexample_function(c(5, 10, 15, 20, 25))\n#&gt; [1] 15\n\n# Using with generated data\nrandom_data &lt;- runif(10, min = 0, max = 100)\nexample_function(random_data)\n#&gt; [1] 47.42519",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "4 Working with Package Functions\nHere’s how to use the package’s example function with different inputs:\n\n\nCode\n# Numeric vector\nexample_function(c(5, 10, 15, 20, 25))\n#&gt; [1] 15\n\n# Using with generated data\nrandom_data &lt;- runif(10, min = 0, max = 100)\nexample_function(random_data)\n#&gt; [1] 47.42519"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#code-annotations",
     "href": "vignettes/articles/quarto_article.html#code-annotations",
     "title": "Advanced Quarto Article",
     "section": "5 Code Annotations",
-    "text": "5 Code Annotations\nQuarto supports code annotations for detailed explanations:\n\n\nCode\n1\n2data &lt;- c(1, 2, 3, 4, 5)\n3result &lt;- example_function(data)\n4print(result)\n#&gt; [1] 3\n\n\n\n1\n\nLoad sample data\n\n2\n\nCreate a simple numeric vector\n\n3\n\nApply the example function from the package\n\n4\n\nDisplay the results",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "5 Code Annotations\nQuarto supports code annotations for detailed explanations:\n\n\nCode\n1\n2data &lt;- c(1, 2, 3, 4, 5)\n3result &lt;- example_function(data)\n4print(result)\n#&gt; [1] 3\n\n\n\n1\n\nLoad sample data\n\n2\n\nCreate a simple numeric vector\n\n3\n\nApply the example function from the package\n\n4\n\nDisplay the results"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#mathematical-notation",
     "href": "vignettes/articles/quarto_article.html#mathematical-notation",
     "title": "Advanced Quarto Article",
     "section": "6 Mathematical Notation",
-    "text": "6 Mathematical Notation\nQuarto excels at mathematical notation. Here’s an example of a statistical formula:\nThe standard error of the mean is calculated as:\n\\[\nSE = \\frac{s}{\\sqrt{n}}\n\\]\nwhere \\(s\\) is the sample standard deviation and \\(n\\) is the sample size.\nFor a confidence interval:\n\\[\nCI = \\bar{x} \\pm t_{\\alpha/2, n-1} \\cdot SE\n\\]",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "6 Mathematical Notation\nQuarto excels at mathematical notation. Here’s an example of a statistical formula:\nThe standard error of the mean is calculated as:\n\\[\nSE = \\frac{s}{\\sqrt{n}}\n\\]\nwhere \\(s\\) is the sample standard deviation and \\(n\\) is the sample size.\nFor a confidence interval:\n\\[\nCI = \\bar{x} \\pm t_{\\alpha/2, n-1} \\cdot SE\n\\]"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#tips-and-best-practices",
     "href": "vignettes/articles/quarto_article.html#tips-and-best-practices",
     "title": "Advanced Quarto Article",
     "section": "7 Tips and Best Practices",
-    "text": "7 Tips and Best Practices\n\n\n\n\n\n\nTipExpanding tip section\n\n\n\n\n\nClick to expand this section for additional tips:\n\nUse descriptive chunk labels for better organization\nSet global chunk options at the beginning\nUse cross-references to link related content\nLeverage callouts for important information\nConsider code folding for long code blocks",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "7 Tips and Best Practices\n\n\n\n\n\n\nTipExpanding tip section\n\n\n\n\n\nClick to expand this section for additional tips:\n\nUse descriptive chunk labels for better organization\nSet global chunk options at the beginning\nUse cross-references to link related content\nLeverage callouts for important information\nConsider code folding for long code blocks"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#conclusion",
     "href": "vignettes/articles/quarto_article.html#conclusion",
     "title": "Advanced Quarto Article",
     "section": "8 Conclusion",
-    "text": "8 Conclusion\nThis article demonstrates the advanced capabilities of Quarto for creating rich, interactive documentation for R packages.",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "8 Conclusion\nThis article demonstrates the advanced capabilities of Quarto for creating rich, interactive documentation for R packages."
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#learn-more",
     "href": "vignettes/articles/quarto_article.html#learn-more",
     "title": "Advanced Quarto Article",
     "section": "9 Learn More",
-    "text": "9 Learn More\n\nVisit the package website\nCheck out the GitHub repository\nRead the Quarto documentation",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "9 Learn More\n\nVisit the package website\nCheck out the GitHub repository\nRead the Quarto documentation"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#references",
     "href": "vignettes/articles/quarto_article.html#references",
     "title": "Advanced Quarto Article",
     "section": "10 References",
-    "text": "10 References",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Advanced",
-      "Advanced Quarto Article"
-    ]
+    "text": "10 References"
   },
   {
     "objectID": "man/expand_to_long.html",
     "href": "man/expand_to_long.html",
     "title": "ettbc",
     "section": "",
-    "text": "Converts the output of clone_censor() from one row per participant-arm to one row per participant-arm-month. The resulting dataset is in a format suitable for discrete-time survival analysis with inverse probability weighting (IPW).\n\nexpand_to_long(\n  data,\n  id_col = \"id\",\n  arm_col = \"arm\",\n  start_col = \"start_month\",\n  end_col = \"end_month\",\n  died_col = \"died\",\n  bc_died_col = \"bc_died\",\n  bc_month_col = \"bc_month\"\n)\n\n\n\n\n\ndata\n\n\nOutput from clone_censor(), or any data frame with the same structure. Must contain columns id, arm, start_month, end_month, died, bc_died, and bc_month (or as specified via *_col arguments).\n\n\n\n\nid_col\n\n\nName of the participant ID column. Default: “id”.\n\n\n\n\narm_col\n\n\nName of the trial arm column. Default: “arm”.\n\n\n\n\nstart_col\n\n\nName of the start month column. Default: “start_month”.\n\n\n\n\nend_col\n\n\nName of the end month column. Default: “end_month”.\n\n\n\n\ndied_col\n\n\nName of the overall death indicator column. Default: “died”.\n\n\n\n\nbc_died_col\n\n\nName of the breast cancer death indicator column. Default: “bc_died”.\n\n\n\n\nbc_month_col\n\n\nName of the breast cancer diagnosis month column. Default: “bc_month”.\n\n\n\nThe binary outcome variable dead_t1 encodes whether the participant died in the interval from month t to month t+1:\n\n\n0: alive at t+1 (confirmed)\n\n\n1: died by t+1\n\n\nNA: censored at month t (follow-up ends, outcome unknown)\n\n\nFor participants who died:\n\n\nRows span from start_month to end_month - 1.\n\n\nThe last row (at end_month - 1) has dead_t1 = 1.\n\n\nNo row is created for end_month.\n\n\nFor censored or surviving participants:\n\n\nRows span from start_month to end_month.\n\n\nThe last row (at end_month) has dead_t1 = NA.\n\n\nAll prior rows have dead_t1 = 0.\n\n\nIf a participant died in the same month they entered the study (end_month == start_month and died == 1), dead_t1 is set to NA (outcome indeterminate within a single month).\nThe breast-cancer-specific outcome bc_dead_t1 mirrors dead_t1 but is set to 0 at the event row when the death was not attributed to breast cancer (bc_died == 0).\n\nA data frame with one row per participant-arm-month, containing:\n\n\nid\n\n\nParticipant identifier\n\n\narm\n\n\nTrial arm (“STOPBASE” or “CONTINUE”)\n\n\nmonth\n\n\nCalendar month (integer, same scale as input)\n\n\nmonth2\n\n\nMonth relative to trial entry, 0-indexed\n\n\ndead_t1\n\n\nDeath in the next interval: 1 / 0 / NA\n\n\nbc_dead_t1\n\n\nBreast cancer death in the next interval\n\n\nbc_long\n\n\nBreast cancer diagnosis at this month (0/1)\n\n\nGarcía-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. Ann Intern Med. 2020;172(6):381–389. doi:10.7326/M18-1199\n\nclone_censor() for the preceding step.\n\n\nCodelibrary(\"ettbc\")\n\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\nlong_data &lt;- expand_to_long(cloned)\nhead(long_data)\n\n  id      arm month month2 dead_t1 bc_dead_t1 bc_long\n1  1 STOPBASE    26      0       0          0       0\n2  1 STOPBASE    27      1       0          0       0\n3  1 STOPBASE    28      2       0          0       0\n4  1 STOPBASE    29      3       0          0       0\n5  1 STOPBASE    30      4       0          0       0\n6  1 STOPBASE    31      5       0          0       0",
+    "text": "Converts the output of clone_censor() from one row per participant-arm to one row per participant-arm-month. The resulting dataset is in a format suitable for discrete-time survival analysis with inverse probability weighting (IPW).\n\nexpand_to_long(\n  data,\n  id_col = \"id\",\n  arm_col = \"arm\",\n  start_col = \"start_month\",\n  end_col = \"end_month\",\n  died_col = \"died\",\n  bc_died_col = \"bc_died\",\n  bc_month_col = \"bc_month\"\n)\n\n\n\n\n\ndata\n\n\nOutput from clone_censor(), or any data frame with the same structure. Must contain columns id, arm, start_month, end_month, died, bc_died, and bc_month (or as specified via *_col arguments).\n\n\n\n\nid_col\n\n\nName of the participant ID column. Default: “id”.\n\n\n\n\narm_col\n\n\nName of the trial arm column. Default: “arm”.\n\n\n\n\nstart_col\n\n\nName of the start month column. Default: “start_month”.\n\n\n\n\nend_col\n\n\nName of the end month column. Default: “end_month”.\n\n\n\n\ndied_col\n\n\nName of the overall death indicator column. Default: “died”.\n\n\n\n\nbc_died_col\n\n\nName of the breast cancer death indicator column. Default: “bc_died”.\n\n\n\n\nbc_month_col\n\n\nName of the breast cancer diagnosis month column. Default: “bc_month”.\n\n\n\nThe binary outcome variable dead_t1 encodes whether the participant died in the interval from month t to month t+1:\n\n\n0: alive at t+1 (confirmed)\n\n\n1: died by t+1\n\n\nNA: censored at month t (follow-up ends, outcome unknown)\n\n\nFor participants who died:\n\n\nRows span from start_month to end_month - 1.\n\n\nThe last row (at end_month - 1) has dead_t1 = 1.\n\n\nNo row is created for end_month.\n\n\nFor censored or surviving participants:\n\n\nRows span from start_month to end_month.\n\n\nThe last row (at end_month) has dead_t1 = NA.\n\n\nAll prior rows have dead_t1 = 0.\n\n\nIf a participant died in the same month they entered the study (end_month == start_month and died == 1), dead_t1 is set to NA (outcome indeterminate within a single month).\nThe breast-cancer-specific outcome bc_dead_t1 mirrors dead_t1 but is set to 0 at the event row when the death was not attributed to breast cancer (bc_died == 0).\n\nA data frame with one row per participant-arm-month, containing:\n\n\nid: Participant identifier\n\n\narm: Trial arm (“STOPBASE” or “CONTINUE”)\n\n\nmonth: Calendar month (integer, same scale as input)\n\n\nmonth2: Month relative to trial entry, 0-indexed\n\n\ndead_t1: Death in the next interval: 1 / 0 / NA\n\n\nbc_dead_t1: Breast cancer death in the next interval\n\n\nbc_long: Breast cancer diagnosis at this month (0/1)\n\n\nGarcía-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. Ann Intern Med. 2020;172(6):381–389. doi:10.7326/M18-1199\n\nclone_censor() for the preceding step.\n\n\nCodelibrary(\"ettbc\")\n\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\nlong_data &lt;- expand_to_long(cloned)\nhead(long_data)\n\n  id      arm month month2 dead_t1 bc_dead_t1 bc_long\n1  1 STOPBASE    26      0       0          0       0\n2  1 STOPBASE    27      1       0          0       0\n3  1 STOPBASE    28      2       0          0       0\n4  1 STOPBASE    29      3       0          0       0\n5  1 STOPBASE    30      4       0          0       0\n6  1 STOPBASE    31      5       0          0       0",
     "crumbs": [
       "Documentation",
       "Reference",
@@ -364,7 +278,7 @@
     "href": "man/expand_to_long.html#expand-cloned-data-to-long-format",
     "title": "ettbc",
     "section": "",
-    "text": "Converts the output of clone_censor() from one row per participant-arm to one row per participant-arm-month. The resulting dataset is in a format suitable for discrete-time survival analysis with inverse probability weighting (IPW).\n\nexpand_to_long(\n  data,\n  id_col = \"id\",\n  arm_col = \"arm\",\n  start_col = \"start_month\",\n  end_col = \"end_month\",\n  died_col = \"died\",\n  bc_died_col = \"bc_died\",\n  bc_month_col = \"bc_month\"\n)\n\n\n\n\n\ndata\n\n\nOutput from clone_censor(), or any data frame with the same structure. Must contain columns id, arm, start_month, end_month, died, bc_died, and bc_month (or as specified via *_col arguments).\n\n\n\n\nid_col\n\n\nName of the participant ID column. Default: “id”.\n\n\n\n\narm_col\n\n\nName of the trial arm column. Default: “arm”.\n\n\n\n\nstart_col\n\n\nName of the start month column. Default: “start_month”.\n\n\n\n\nend_col\n\n\nName of the end month column. Default: “end_month”.\n\n\n\n\ndied_col\n\n\nName of the overall death indicator column. Default: “died”.\n\n\n\n\nbc_died_col\n\n\nName of the breast cancer death indicator column. Default: “bc_died”.\n\n\n\n\nbc_month_col\n\n\nName of the breast cancer diagnosis month column. Default: “bc_month”.\n\n\n\nThe binary outcome variable dead_t1 encodes whether the participant died in the interval from month t to month t+1:\n\n\n0: alive at t+1 (confirmed)\n\n\n1: died by t+1\n\n\nNA: censored at month t (follow-up ends, outcome unknown)\n\n\nFor participants who died:\n\n\nRows span from start_month to end_month - 1.\n\n\nThe last row (at end_month - 1) has dead_t1 = 1.\n\n\nNo row is created for end_month.\n\n\nFor censored or surviving participants:\n\n\nRows span from start_month to end_month.\n\n\nThe last row (at end_month) has dead_t1 = NA.\n\n\nAll prior rows have dead_t1 = 0.\n\n\nIf a participant died in the same month they entered the study (end_month == start_month and died == 1), dead_t1 is set to NA (outcome indeterminate within a single month).\nThe breast-cancer-specific outcome bc_dead_t1 mirrors dead_t1 but is set to 0 at the event row when the death was not attributed to breast cancer (bc_died == 0).\n\nA data frame with one row per participant-arm-month, containing:\n\n\nid\n\n\nParticipant identifier\n\n\narm\n\n\nTrial arm (“STOPBASE” or “CONTINUE”)\n\n\nmonth\n\n\nCalendar month (integer, same scale as input)\n\n\nmonth2\n\n\nMonth relative to trial entry, 0-indexed\n\n\ndead_t1\n\n\nDeath in the next interval: 1 / 0 / NA\n\n\nbc_dead_t1\n\n\nBreast cancer death in the next interval\n\n\nbc_long\n\n\nBreast cancer diagnosis at this month (0/1)\n\n\nGarcía-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. Ann Intern Med. 2020;172(6):381–389. doi:10.7326/M18-1199\n\nclone_censor() for the preceding step.\n\n\nCodelibrary(\"ettbc\")\n\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\nlong_data &lt;- expand_to_long(cloned)\nhead(long_data)\n\n  id      arm month month2 dead_t1 bc_dead_t1 bc_long\n1  1 STOPBASE    26      0       0          0       0\n2  1 STOPBASE    27      1       0          0       0\n3  1 STOPBASE    28      2       0          0       0\n4  1 STOPBASE    29      3       0          0       0\n5  1 STOPBASE    30      4       0          0       0\n6  1 STOPBASE    31      5       0          0       0",
+    "text": "Converts the output of clone_censor() from one row per participant-arm to one row per participant-arm-month. The resulting dataset is in a format suitable for discrete-time survival analysis with inverse probability weighting (IPW).\n\nexpand_to_long(\n  data,\n  id_col = \"id\",\n  arm_col = \"arm\",\n  start_col = \"start_month\",\n  end_col = \"end_month\",\n  died_col = \"died\",\n  bc_died_col = \"bc_died\",\n  bc_month_col = \"bc_month\"\n)\n\n\n\n\n\ndata\n\n\nOutput from clone_censor(), or any data frame with the same structure. Must contain columns id, arm, start_month, end_month, died, bc_died, and bc_month (or as specified via *_col arguments).\n\n\n\n\nid_col\n\n\nName of the participant ID column. Default: “id”.\n\n\n\n\narm_col\n\n\nName of the trial arm column. Default: “arm”.\n\n\n\n\nstart_col\n\n\nName of the start month column. Default: “start_month”.\n\n\n\n\nend_col\n\n\nName of the end month column. Default: “end_month”.\n\n\n\n\ndied_col\n\n\nName of the overall death indicator column. Default: “died”.\n\n\n\n\nbc_died_col\n\n\nName of the breast cancer death indicator column. Default: “bc_died”.\n\n\n\n\nbc_month_col\n\n\nName of the breast cancer diagnosis month column. Default: “bc_month”.\n\n\n\nThe binary outcome variable dead_t1 encodes whether the participant died in the interval from month t to month t+1:\n\n\n0: alive at t+1 (confirmed)\n\n\n1: died by t+1\n\n\nNA: censored at month t (follow-up ends, outcome unknown)\n\n\nFor participants who died:\n\n\nRows span from start_month to end_month - 1.\n\n\nThe last row (at end_month - 1) has dead_t1 = 1.\n\n\nNo row is created for end_month.\n\n\nFor censored or surviving participants:\n\n\nRows span from start_month to end_month.\n\n\nThe last row (at end_month) has dead_t1 = NA.\n\n\nAll prior rows have dead_t1 = 0.\n\n\nIf a participant died in the same month they entered the study (end_month == start_month and died == 1), dead_t1 is set to NA (outcome indeterminate within a single month).\nThe breast-cancer-specific outcome bc_dead_t1 mirrors dead_t1 but is set to 0 at the event row when the death was not attributed to breast cancer (bc_died == 0).\n\nA data frame with one row per participant-arm-month, containing:\n\n\nid: Participant identifier\n\n\narm: Trial arm (“STOPBASE” or “CONTINUE”)\n\n\nmonth: Calendar month (integer, same scale as input)\n\n\nmonth2: Month relative to trial entry, 0-indexed\n\n\ndead_t1: Death in the next interval: 1 / 0 / NA\n\n\nbc_dead_t1: Breast cancer death in the next interval\n\n\nbc_long: Breast cancer diagnosis at this month (0/1)\n\n\nGarcía-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. Ann Intern Med. 2020;172(6):381–389. doi:10.7326/M18-1199\n\nclone_censor() for the preceding step.\n\n\nCodelibrary(\"ettbc\")\n\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\nlong_data &lt;- expand_to_long(cloned)\nhead(long_data)\n\n  id      arm month month2 dead_t1 bc_dead_t1 bc_long\n1  1 STOPBASE    26      0       0          0       0\n2  1 STOPBASE    27      1       0          0       0\n3  1 STOPBASE    28      2       0          0       0\n4  1 STOPBASE    29      3       0          0       0\n5  1 STOPBASE    30      4       0          0       0\n6  1 STOPBASE    31      5       0          0       0",
     "crumbs": [
       "Documentation",
       "Reference",
@@ -479,7 +393,7 @@
     "href": "man/clone_censor.html",
     "title": "ettbc",
     "section": "",
-    "text": "Creates two clones of each participant — one assigned to each of two hypothetical trial arms — and applies the corresponding censoring rules. This implements the \"clone-censor\" step of the target trial emulation methodology described in García-Albéniz et al. (2020).\n\nclone_censor(\n  data,\n  scr_mammo,\n  dx_mammo,\n  id_col = \"id\",\n  start_col = \"start_month\",\n  end_col = \"end_month\",\n  death_col = \"death_month\",\n  bc_death_col = \"bc_death\",\n  bc_month_col = \"bc_month\",\n  mammo_month_col = \"month\",\n  stop_grace_months = 9L,\n  continue_grace_months = 13L,\n  total_months = 108L\n)\n\n\n\n\n\ndata\n\n\nA data frame with one row per participant, containing columns for participant ID, study entry month, last follow-up month, death month, breast cancer death indicator, and breast cancer diagnosis month.\n\n\n\n\nscr_mammo\n\n\nA data frame with one row per screening mammogram event, containing columns for participant ID and event month.\n\n\n\n\ndx_mammo\n\n\nA data frame with one row per diagnostic mammogram event, containing columns for participant ID and event month.\n\n\n\n\nid_col\n\n\nName of the participant ID column in data, scr_mammo, and dx_mammo. Default: “id”.\n\n\n\n\nstart_col\n\n\nName of the study entry month column in data. Default: “start_month”.\n\n\n\n\nend_col\n\n\nName of the last follow-up month column in data (administrative censoring, e.g., end of study or loss to follow-up). Default: “end_month”.\n\n\n\n\ndeath_col\n\n\nName of the death month column in data (NA if alive at end of follow-up). Default: “death_month”.\n\n\n\n\nbc_death_col\n\n\nName of the breast cancer death indicator column in data (0/1). Default: “bc_death”.\n\n\n\n\nbc_month_col\n\n\nName of the breast cancer diagnosis month column in data (NA if no diagnosis). Default: “bc_month”.\n\n\n\n\nmammo_month_col\n\n\nName of the mammogram month column in scr_mammo and dx_mammo. Default: “month”.\n\n\n\n\nstop_grace_months\n\n\nNumber of months after study entry during which a screening mammogram does not trigger censoring in the STOPBASE arm. Default: 9.\n\n\n\n\ncontinue_grace_months\n\n\nLength of the compliance window (in months) in the CONTINUE arm. A participant remains on-protocol for this many months following any mammogram (screening or diagnostic). Default: 13.\n\n\n\n\ntotal_months\n\n\nTotal number of months in the study period. Default: 108 (corresponding to January 2000 through December 2008).\n\n\n\nEach participant is cloned into two arms:\n\n\nSTOPBASE: The clone is censored the first time the participant receives a screening mammogram after the initial grace period (stop_grace_months). Within the grace period, and after a breast cancer diagnosis, screening mammograms do not trigger censoring.\n\n\nCONTINUE: The clone is censored the first time the participant goes longer than continue_grace_months months without any mammogram (screening or diagnostic). Breast cancer diagnosis prevents censoring.\n\n\nMonths are numbered as consecutive integers starting from 1 (representing the first month of the study period), matching the convention used in the original SAS implementation.\n\nA data frame with two rows per participant (one per arm), containing all columns from data plus:\n\n\narm\n\n\nTrial arm: “STOPBASE” or “CONTINUE”\n\n\nend_month\n\n\nLast observed month (minimum of death, administrative censoring, and protocol censoring). Overwrites the input end_col column.\n\n\ncensor_month\n\n\nMonth of protocol deviation censoring, or NA if the participant was not censored for protocol non-adherence.\n\n\nfup\n\n\nFollow-up time in months (end_month - start_month + 1).\n\n\ndied\n\n\nOverall mortality indicator (0/1): 1 if death was the reason for ending follow-up.\n\n\nbc_died\n\n\nBreast cancer mortality indicator (0/1).\n\n\nGarcía-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. Ann Intern Med. 2020;172(6):381–389. doi:10.7326/M18-1199\nHernán MA, Robins JM. Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available. Am J Epidemiol. 2016;183(8):758–764. doi:10.1093/aje/kwv254\n\nexpand_to_long() for expanding the cloned dataset to one row per participant-arm-month.\n\n\nCodelibrary(\"ettbc\")\n\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\nhead(cloned)\n\n  id age start_month end_month death_month bc_death bc_month      arm\n1  1  81          26        38          NA        0       NA STOPBASE\n2  2  81          33        45          NA        0       NA STOPBASE\n3  3  76          28        42          NA        0       NA STOPBASE\n4  4  75           1        12          NA        0       NA STOPBASE\n5  5  77          17        28          NA        0       NA STOPBASE\n6  6  70          40        52          NA        0       NA STOPBASE\n  censor_month fup died bc_died\n1           38  13    0       0\n2           45  13    0       0\n3           42  15    0       0\n4           12  12    0       0\n5           28  12    0       0\n6           52  13    0       0",
+    "text": "Creates two clones of each participant — one assigned to each of two hypothetical trial arms — and applies the corresponding censoring rules. This implements the \"clone-censor\" step of the target trial emulation methodology described in García-Albéniz et al. (2020).\n\nclone_censor(\n  data,\n  scr_mammo,\n  dx_mammo,\n  id_col = \"id\",\n  start_col = \"start_month\",\n  end_col = \"end_month\",\n  death_col = \"death_month\",\n  bc_death_col = \"bc_death\",\n  bc_month_col = \"bc_month\",\n  mammo_month_col = \"month\",\n  stop_grace_months = 9L,\n  continue_grace_months = 13L,\n  total_months = 108L\n)\n\n\n\n\n\ndata\n\n\nA data frame with one row per participant, containing columns for participant ID, study entry month, last follow-up month, death month, breast cancer death indicator, and breast cancer diagnosis month.\n\n\n\n\nscr_mammo\n\n\nA data frame with one row per screening mammogram event, containing columns for participant ID and event month.\n\n\n\n\ndx_mammo\n\n\nA data frame with one row per diagnostic mammogram event, containing columns for participant ID and event month.\n\n\n\n\nid_col\n\n\nName of the participant ID column in data, scr_mammo, and dx_mammo. Default: “id”.\n\n\n\n\nstart_col\n\n\nName of the study entry month column in data. Default: “start_month”.\n\n\n\n\nend_col\n\n\nName of the last follow-up month column in data (administrative censoring, e.g., end of study or loss to follow-up). Default: “end_month”.\n\n\n\n\ndeath_col\n\n\nName of the death month column in data (NA if alive at end of follow-up). Default: “death_month”.\n\n\n\n\nbc_death_col\n\n\nName of the breast cancer death indicator column in data (0/1). Default: “bc_death”.\n\n\n\n\nbc_month_col\n\n\nName of the breast cancer diagnosis month column in data (NA if no diagnosis). Default: “bc_month”.\n\n\n\n\nmammo_month_col\n\n\nName of the mammogram month column in scr_mammo and dx_mammo. Default: “month”.\n\n\n\n\nstop_grace_months\n\n\nNumber of months after study entry during which a screening mammogram does not trigger censoring in the STOPBASE arm. Default: 9.\n\n\n\n\ncontinue_grace_months\n\n\nLength of the compliance window (in months) in the CONTINUE arm. A participant remains on-protocol for this many months following any mammogram (screening or diagnostic). Default: 13.\n\n\n\n\ntotal_months\n\n\nTotal number of months in the study period. Default: 108 (corresponding to January 2000 through December 2008).\n\n\n\nEach participant is cloned into two arms:\n\n\nSTOPBASE: The clone is censored the first time the participant receives a screening mammogram after the initial grace period (stop_grace_months). Within the grace period, and after a breast cancer diagnosis, screening mammograms do not trigger censoring.\n\n\nCONTINUE: The clone is censored the first time the participant goes longer than continue_grace_months months without any mammogram (screening or diagnostic). Breast cancer diagnosis prevents censoring.\n\n\nMonths are numbered as consecutive integers starting from 1 (representing the first month of the study period), matching the convention used in the original SAS implementation.\n\nA data frame with two rows per participant (one per arm), containing all columns from data plus:\n\n\narm: Trial arm: “STOPBASE” or “CONTINUE”\n\n\nend_month: Last observed month (minimum of death, administrative censoring, and protocol censoring). Overwrites the input end_col column.\n\n\ncensor_month: Month of protocol deviation censoring, or NA if the participant was not censored for protocol non-adherence.\n\n\nfup: Follow-up time in months (end_month - start_month + 1).\n\n\ndied: Overall mortality indicator (0/1): 1 if death was the reason for ending follow-up.\n\n\nbc_died: Breast cancer mortality indicator (0/1).\n\n\nGarcía-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. Ann Intern Med. 2020;172(6):381–389. doi:10.7326/M18-1199\nHernán MA, Robins JM. Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available. Am J Epidemiol. 2016;183(8):758–764. doi:10.1093/aje/kwv254\n\nexpand_to_long() for expanding the cloned dataset to one row per participant-arm-month.\n\n\nCodelibrary(\"ettbc\")\n\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\nhead(cloned)\n\n  id age start_month end_month death_month bc_death bc_month      arm\n1  1  81          26        38          NA        0       NA STOPBASE\n2  2  81          33        45          NA        0       NA STOPBASE\n3  3  76          28        42          NA        0       NA STOPBASE\n4  4  75           1        12          NA        0       NA STOPBASE\n5  5  77          17        28          NA        0       NA STOPBASE\n6  6  70          40        52          NA        0       NA STOPBASE\n  censor_month fup died bc_died\n1           38  13    0       0\n2           45  13    0       0\n3           42  15    0       0\n4           12  12    0       0\n5           28  12    0       0\n6           52  13    0       0",
     "crumbs": [
       "Documentation",
       "Reference",
@@ -491,7 +405,7 @@
     "href": "man/clone_censor.html#clone-and-censor-participants-for-target-trial-emulation",
     "title": "ettbc",
     "section": "",
-    "text": "Creates two clones of each participant — one assigned to each of two hypothetical trial arms — and applies the corresponding censoring rules. This implements the \"clone-censor\" step of the target trial emulation methodology described in García-Albéniz et al. (2020).\n\nclone_censor(\n  data,\n  scr_mammo,\n  dx_mammo,\n  id_col = \"id\",\n  start_col = \"start_month\",\n  end_col = \"end_month\",\n  death_col = \"death_month\",\n  bc_death_col = \"bc_death\",\n  bc_month_col = \"bc_month\",\n  mammo_month_col = \"month\",\n  stop_grace_months = 9L,\n  continue_grace_months = 13L,\n  total_months = 108L\n)\n\n\n\n\n\ndata\n\n\nA data frame with one row per participant, containing columns for participant ID, study entry month, last follow-up month, death month, breast cancer death indicator, and breast cancer diagnosis month.\n\n\n\n\nscr_mammo\n\n\nA data frame with one row per screening mammogram event, containing columns for participant ID and event month.\n\n\n\n\ndx_mammo\n\n\nA data frame with one row per diagnostic mammogram event, containing columns for participant ID and event month.\n\n\n\n\nid_col\n\n\nName of the participant ID column in data, scr_mammo, and dx_mammo. Default: “id”.\n\n\n\n\nstart_col\n\n\nName of the study entry month column in data. Default: “start_month”.\n\n\n\n\nend_col\n\n\nName of the last follow-up month column in data (administrative censoring, e.g., end of study or loss to follow-up). Default: “end_month”.\n\n\n\n\ndeath_col\n\n\nName of the death month column in data (NA if alive at end of follow-up). Default: “death_month”.\n\n\n\n\nbc_death_col\n\n\nName of the breast cancer death indicator column in data (0/1). Default: “bc_death”.\n\n\n\n\nbc_month_col\n\n\nName of the breast cancer diagnosis month column in data (NA if no diagnosis). Default: “bc_month”.\n\n\n\n\nmammo_month_col\n\n\nName of the mammogram month column in scr_mammo and dx_mammo. Default: “month”.\n\n\n\n\nstop_grace_months\n\n\nNumber of months after study entry during which a screening mammogram does not trigger censoring in the STOPBASE arm. Default: 9.\n\n\n\n\ncontinue_grace_months\n\n\nLength of the compliance window (in months) in the CONTINUE arm. A participant remains on-protocol for this many months following any mammogram (screening or diagnostic). Default: 13.\n\n\n\n\ntotal_months\n\n\nTotal number of months in the study period. Default: 108 (corresponding to January 2000 through December 2008).\n\n\n\nEach participant is cloned into two arms:\n\n\nSTOPBASE: The clone is censored the first time the participant receives a screening mammogram after the initial grace period (stop_grace_months). Within the grace period, and after a breast cancer diagnosis, screening mammograms do not trigger censoring.\n\n\nCONTINUE: The clone is censored the first time the participant goes longer than continue_grace_months months without any mammogram (screening or diagnostic). Breast cancer diagnosis prevents censoring.\n\n\nMonths are numbered as consecutive integers starting from 1 (representing the first month of the study period), matching the convention used in the original SAS implementation.\n\nA data frame with two rows per participant (one per arm), containing all columns from data plus:\n\n\narm\n\n\nTrial arm: “STOPBASE” or “CONTINUE”\n\n\nend_month\n\n\nLast observed month (minimum of death, administrative censoring, and protocol censoring). Overwrites the input end_col column.\n\n\ncensor_month\n\n\nMonth of protocol deviation censoring, or NA if the participant was not censored for protocol non-adherence.\n\n\nfup\n\n\nFollow-up time in months (end_month - start_month + 1).\n\n\ndied\n\n\nOverall mortality indicator (0/1): 1 if death was the reason for ending follow-up.\n\n\nbc_died\n\n\nBreast cancer mortality indicator (0/1).\n\n\nGarcía-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. Ann Intern Med. 2020;172(6):381–389. doi:10.7326/M18-1199\nHernán MA, Robins JM. Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available. Am J Epidemiol. 2016;183(8):758–764. doi:10.1093/aje/kwv254\n\nexpand_to_long() for expanding the cloned dataset to one row per participant-arm-month.\n\n\nCodelibrary(\"ettbc\")\n\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\nhead(cloned)\n\n  id age start_month end_month death_month bc_death bc_month      arm\n1  1  81          26        38          NA        0       NA STOPBASE\n2  2  81          33        45          NA        0       NA STOPBASE\n3  3  76          28        42          NA        0       NA STOPBASE\n4  4  75           1        12          NA        0       NA STOPBASE\n5  5  77          17        28          NA        0       NA STOPBASE\n6  6  70          40        52          NA        0       NA STOPBASE\n  censor_month fup died bc_died\n1           38  13    0       0\n2           45  13    0       0\n3           42  15    0       0\n4           12  12    0       0\n5           28  12    0       0\n6           52  13    0       0",
+    "text": "Creates two clones of each participant — one assigned to each of two hypothetical trial arms — and applies the corresponding censoring rules. This implements the \"clone-censor\" step of the target trial emulation methodology described in García-Albéniz et al. (2020).\n\nclone_censor(\n  data,\n  scr_mammo,\n  dx_mammo,\n  id_col = \"id\",\n  start_col = \"start_month\",\n  end_col = \"end_month\",\n  death_col = \"death_month\",\n  bc_death_col = \"bc_death\",\n  bc_month_col = \"bc_month\",\n  mammo_month_col = \"month\",\n  stop_grace_months = 9L,\n  continue_grace_months = 13L,\n  total_months = 108L\n)\n\n\n\n\n\ndata\n\n\nA data frame with one row per participant, containing columns for participant ID, study entry month, last follow-up month, death month, breast cancer death indicator, and breast cancer diagnosis month.\n\n\n\n\nscr_mammo\n\n\nA data frame with one row per screening mammogram event, containing columns for participant ID and event month.\n\n\n\n\ndx_mammo\n\n\nA data frame with one row per diagnostic mammogram event, containing columns for participant ID and event month.\n\n\n\n\nid_col\n\n\nName of the participant ID column in data, scr_mammo, and dx_mammo. Default: “id”.\n\n\n\n\nstart_col\n\n\nName of the study entry month column in data. Default: “start_month”.\n\n\n\n\nend_col\n\n\nName of the last follow-up month column in data (administrative censoring, e.g., end of study or loss to follow-up). Default: “end_month”.\n\n\n\n\ndeath_col\n\n\nName of the death month column in data (NA if alive at end of follow-up). Default: “death_month”.\n\n\n\n\nbc_death_col\n\n\nName of the breast cancer death indicator column in data (0/1). Default: “bc_death”.\n\n\n\n\nbc_month_col\n\n\nName of the breast cancer diagnosis month column in data (NA if no diagnosis). Default: “bc_month”.\n\n\n\n\nmammo_month_col\n\n\nName of the mammogram month column in scr_mammo and dx_mammo. Default: “month”.\n\n\n\n\nstop_grace_months\n\n\nNumber of months after study entry during which a screening mammogram does not trigger censoring in the STOPBASE arm. Default: 9.\n\n\n\n\ncontinue_grace_months\n\n\nLength of the compliance window (in months) in the CONTINUE arm. A participant remains on-protocol for this many months following any mammogram (screening or diagnostic). Default: 13.\n\n\n\n\ntotal_months\n\n\nTotal number of months in the study period. Default: 108 (corresponding to January 2000 through December 2008).\n\n\n\nEach participant is cloned into two arms:\n\n\nSTOPBASE: The clone is censored the first time the participant receives a screening mammogram after the initial grace period (stop_grace_months). Within the grace period, and after a breast cancer diagnosis, screening mammograms do not trigger censoring.\n\n\nCONTINUE: The clone is censored the first time the participant goes longer than continue_grace_months months without any mammogram (screening or diagnostic). Breast cancer diagnosis prevents censoring.\n\n\nMonths are numbered as consecutive integers starting from 1 (representing the first month of the study period), matching the convention used in the original SAS implementation.\n\nA data frame with two rows per participant (one per arm), containing all columns from data plus:\n\n\narm: Trial arm: “STOPBASE” or “CONTINUE”\n\n\nend_month: Last observed month (minimum of death, administrative censoring, and protocol censoring). Overwrites the input end_col column.\n\n\ncensor_month: Month of protocol deviation censoring, or NA if the participant was not censored for protocol non-adherence.\n\n\nfup: Follow-up time in months (end_month - start_month + 1).\n\n\ndied: Overall mortality indicator (0/1): 1 if death was the reason for ending follow-up.\n\n\nbc_died: Breast cancer mortality indicator (0/1).\n\n\nGarcía-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. Ann Intern Med. 2020;172(6):381–389. doi:10.7326/M18-1199\nHernán MA, Robins JM. Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available. Am J Epidemiol. 2016;183(8):758–764. doi:10.1093/aje/kwv254\n\nexpand_to_long() for expanding the cloned dataset to one row per participant-arm-month.\n\n\nCodelibrary(\"ettbc\")\n\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\nhead(cloned)\n\n  id age start_month end_month death_month bc_death bc_month      arm\n1  1  81          26        38          NA        0       NA STOPBASE\n2  2  81          33        45          NA        0       NA STOPBASE\n3  3  76          28        42          NA        0       NA STOPBASE\n4  4  75           1        12          NA        0       NA STOPBASE\n5  5  77          17        28          NA        0       NA STOPBASE\n6  6  70          40        52          NA        0       NA STOPBASE\n  censor_month fup died bc_died\n1           38  13    0       0\n2           45  13    0       0\n3           42  15    0       0\n4           12  12    0       0\n5           28  12    0       0\n6           52  13    0       0",
     "crumbs": [
       "Documentation",
       "Reference",
@@ -575,11 +489,10 @@
     "href": "vignettes/articles/using-ettbc.html",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "",
-    "text": "Douglas Ezra Morrison\n\n2026-05-03",
+    "text": "Douglas Ezra Morrison\n\n2026-05-04",
     "crumbs": [
       "Documentation",
       "Articles",
-      "Advanced",
       "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
     ]
   },
@@ -592,7 +505,6 @@
     "crumbs": [
       "Documentation",
       "Articles",
-      "Advanced",
       "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
     ]
   },
@@ -605,7 +517,6 @@
     "crumbs": [
       "Documentation",
       "Articles",
-      "Advanced",
       "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
     ]
   },
@@ -614,11 +525,10 @@
     "href": "vignettes/articles/using-ettbc.html#step-1-clone-and-censor",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "\n3 Step 1: Clone and Censor",
-    "text": "3 Step 1: Clone and Censor\nclone_censor() takes the cohort and mammography event datasets and returns a data frame with two rows per participant — one for each arm.\n\nCodecloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\n\nnrow(cloned) # should be 2 × nrow(cohort)\n#&gt; [1] 200\nhead(cloned[, c(\"id\", \"arm\", \"start_month\", \"end_month\",\n                \"censor_month\", \"fup\", \"died\", \"bc_died\")])\n#&gt;   id      arm start_month end_month censor_month fup died bc_died\n#&gt; 1  1 STOPBASE          26        38           38  13    0       0\n#&gt; 2  2 STOPBASE          33        45           45  13    0       0\n#&gt; 3  3 STOPBASE          28        42           42  15    0       0\n#&gt; 4  4 STOPBASE           1        12           12  12    0       0\n#&gt; 5  5 STOPBASE          17        28           28  12    0       0\n#&gt; 6  6 STOPBASE          40        52           52  13    0       0\n\n\nThe key new columns are:\n\n\narm: trial arm (\"STOPBASE\" or \"CONTINUE\")\n\nend_month: final observed month (minimum of death, administrative censoring, and protocol censoring)\n\ncensor_month: month of protocol deviation censoring (NA if not censored for protocol non-adherence)\n\nfup: follow-up time in months\n\ndied: overall mortality indicator (1 if death caused end of follow-up)\n\nbc_died: breast cancer mortality indicator\n\n\n3.1 Censoring Patterns by Arm\nBecause participants in STOPBASE are censored when they get a screening mammogram, annual screeners are censored early in that arm. Conversely, participants in CONTINUE are censored when they go too long without a mammogram, so non-adherers are censored early.\n\nCodepar(mfrow = c(1, 2))\n\nstopbase &lt;- cloned[cloned$arm == \"STOPBASE\", ]\ncontinue &lt;- cloned[cloned$arm == \"CONTINUE\", ]\n\nhist(stopbase$fup,\n  breaks = 20, main = \"STOPBASE\",\n  xlab = \"Follow-up (months)\", col = \"#E05C4B\", border = \"white\",\n  xlim = c(0, 110)\n)\nhist(continue$fup,\n  breaks = 20, main = \"CONTINUE\",\n  xlab = \"Follow-up (months)\", col = \"#4B8FE0\", border = \"white\",\n  xlim = c(0, 110)\n)\npar(mfrow = c(1, 1))\n\n\n\nFigure 2: Follow-up time by arm and censoring type.\n\n\n\n\n\n\n\n\nCode# Percentage censored for protocol non-adherence in each arm\nprop_censored &lt;- tapply(\n  !is.na(cloned$censor_month),\n  cloned$arm,\n  mean\n)\nround(prop_censored * 100, 1)\n#&gt; CONTINUE STOPBASE \n#&gt;       41       90\n\n\nAs expected, most STOPBASE clones are censored (those who continued getting annual mammograms), while only a minority of CONTINUE clones are censored (those who stopped getting mammograms).",
+    "text": "3 Step 1: Clone and Censor\nclone_censor() takes the cohort and mammography event datasets and returns a data frame with two rows per participant — one for each arm.\n\nCodecloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\n\nnrow(cloned) # should be 2 × nrow(cohort)\n#&gt; [1] 200\nhead(cloned[, c(\"id\", \"arm\", \"start_month\", \"end_month\",\n                \"censor_month\", \"fup\", \"died\", \"bc_died\")])\n#&gt;   id      arm start_month end_month censor_month fup died bc_died\n#&gt; 1  1 STOPBASE          26        38           38  13    0       0\n#&gt; 2  2 STOPBASE          33        45           45  13    0       0\n#&gt; 3  3 STOPBASE          28        42           42  15    0       0\n#&gt; 4  4 STOPBASE           1        12           12  12    0       0\n#&gt; 5  5 STOPBASE          17        28           28  12    0       0\n#&gt; 6  6 STOPBASE          40        52           52  13    0       0\n\n\nThe key new columns are:\n\n\narm: trial arm (\"STOPBASE\" or \"CONTINUE\")\n\nend_month: final observed month (minimum of death, administrative censoring, and protocol censoring)\n\ncensor_month: month of protocol deviation censoring (NA if not censored for protocol non-adherence)\n\nfup: follow-up time in months\n\ndied: overall mortality indicator (1 if death caused end of follow-up)\n\nbc_died: breast cancer mortality indicator\n\n\n3.1 Censoring Patterns by Arm\nBecause participants in STOPBASE are censored when they get a screening mammogram, annual screeners are censored early in that arm. Conversely, participants in CONTINUE are censored when they go too long without a mammogram, so non-adherers are censored early.\n\nCodepar(mfrow = c(1, 2))\n\nstopbase &lt;- cloned[cloned$arm == \"STOPBASE\", ]\ncontinue &lt;- cloned[cloned$arm == \"CONTINUE\", ]\n\nhist(stopbase$fup,\n  breaks = 20, main = \"STOPBASE\",\n  xlab = \"Follow-up (months)\", col = \"#E05C4B\", border = \"white\",\n  xlim = c(0, 110)\n)\nhist(continue$fup,\n  breaks = 20, main = \"CONTINUE\",\n  xlab = \"Follow-up (months)\", col = \"#4B8FE0\", border = \"white\",\n  xlim = c(0, 110)\n)\npar(mfrow = c(1, 1))\n\n\n\nFigure 2: Follow-up time by arm and censoring type.\n\n\n\n\n\n\n\n\nCode# Percentage censored for protocol non-adherence in each arm\nprop_censored &lt;- tapply(\n  !is.na(cloned$censor_month),\n  cloned$arm,\n  mean\n)\nround(prop_censored * 100, 1)\n#&gt; CONTINUE STOPBASE \n#&gt;       34       90\n\n\nAs expected, most STOPBASE clones are censored (those who continued getting annual mammograms), while only a minority of CONTINUE clones are censored (those who stopped getting mammograms).",
     "crumbs": [
       "Documentation",
       "Articles",
-      "Advanced",
       "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
     ]
   },
@@ -631,7 +541,6 @@
     "crumbs": [
       "Documentation",
       "Articles",
-      "Advanced",
       "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
     ]
   },
@@ -644,7 +553,6 @@
     "crumbs": [
       "Documentation",
       "Articles",
-      "Advanced",
       "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
     ]
   },
@@ -657,7 +565,6 @@
     "crumbs": [
       "Documentation",
       "Articles",
-      "Advanced",
       "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
     ]
   },
@@ -670,7 +577,6 @@
     "crumbs": [
       "Documentation",
       "Articles",
-      "Advanced",
       "Using ettbc: Emulating a Target Trial for Breast Cancer Screening"
     ]
   },
@@ -693,7 +599,7 @@
     "href": "vignettes/articles/using-ettbc-revealjs.html#step-1-clone-and-censor",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "3 Step 1: Clone and Censor",
-    "text": "3 Step 1: Clone and Censor\nclone_censor() takes the cohort and mammography event datasets and returns a data frame with two rows per participant — one for each arm.\n\n\nCode\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\n\nnrow(cloned) # should be 2 × nrow(cohort)\n#&gt; [1] 200\nhead(cloned[, c(\"id\", \"arm\", \"start_month\", \"end_month\",\n                \"censor_month\", \"fup\", \"died\", \"bc_died\")])\n#&gt;   id      arm start_month end_month censor_month fup died bc_died\n#&gt; 1  1 STOPBASE          26        38           38  13    0       0\n#&gt; 2  2 STOPBASE          33        45           45  13    0       0\n#&gt; 3  3 STOPBASE          28        42           42  15    0       0\n#&gt; 4  4 STOPBASE           1        12           12  12    0       0\n#&gt; 5  5 STOPBASE          17        28           28  12    0       0\n#&gt; 6  6 STOPBASE          40        52           52  13    0       0\n\n\nThe key new columns are:\n\narm: trial arm (\"STOPBASE\" or \"CONTINUE\")\nend_month: final observed month (minimum of death, administrative censoring, and protocol censoring)\ncensor_month: month of protocol deviation censoring (NA if not censored for protocol non-adherence)\nfup: follow-up time in months\ndied: overall mortality indicator (1 if death caused end of follow-up)\nbc_died: breast cancer mortality indicator\n\nCensoring Patterns by Arm\nBecause participants in STOPBASE are censored when they get a screening mammogram, annual screeners are censored early in that arm. Conversely, participants in CONTINUE are censored when they go too long without a mammogram, so non-adherers are censored early.\n\n\nCode\npar(mfrow = c(1, 2))\n\nstopbase &lt;- cloned[cloned$arm == \"STOPBASE\", ]\ncontinue &lt;- cloned[cloned$arm == \"CONTINUE\", ]\n\nhist(stopbase$fup,\n  breaks = 20, main = \"STOPBASE\",\n  xlab = \"Follow-up (months)\", col = \"#E05C4B\", border = \"white\",\n  xlim = c(0, 110)\n)\nhist(continue$fup,\n  breaks = 20, main = \"CONTINUE\",\n  xlab = \"Follow-up (months)\", col = \"#4B8FE0\", border = \"white\",\n  xlim = c(0, 110)\n)\npar(mfrow = c(1, 1))\n\n\n\n\nFigure 2: Follow-up time by arm and censoring type.\n\n\nCode\n# Percentage censored for protocol non-adherence in each arm\nprop_censored &lt;- tapply(\n  !is.na(cloned$censor_month),\n  cloned$arm,\n  mean\n)\nround(prop_censored * 100, 1)\n#&gt; CONTINUE STOPBASE \n#&gt;       41       90\n\n\nAs expected, most STOPBASE clones are censored (those who continued getting annual mammograms), while only a minority of CONTINUE clones are censored (those who stopped getting mammograms)."
+    "text": "3 Step 1: Clone and Censor\nclone_censor() takes the cohort and mammography event datasets and returns a data frame with two rows per participant — one for each arm.\n\n\nCode\ncloned &lt;- clone_censor(\n  cohort,\n  screening_mammograms,\n  diagnostic_mammograms\n)\n\nnrow(cloned) # should be 2 × nrow(cohort)\n#&gt; [1] 200\nhead(cloned[, c(\"id\", \"arm\", \"start_month\", \"end_month\",\n                \"censor_month\", \"fup\", \"died\", \"bc_died\")])\n#&gt;   id      arm start_month end_month censor_month fup died bc_died\n#&gt; 1  1 STOPBASE          26        38           38  13    0       0\n#&gt; 2  2 STOPBASE          33        45           45  13    0       0\n#&gt; 3  3 STOPBASE          28        42           42  15    0       0\n#&gt; 4  4 STOPBASE           1        12           12  12    0       0\n#&gt; 5  5 STOPBASE          17        28           28  12    0       0\n#&gt; 6  6 STOPBASE          40        52           52  13    0       0\n\n\nThe key new columns are:\n\narm: trial arm (\"STOPBASE\" or \"CONTINUE\")\nend_month: final observed month (minimum of death, administrative censoring, and protocol censoring)\ncensor_month: month of protocol deviation censoring (NA if not censored for protocol non-adherence)\nfup: follow-up time in months\ndied: overall mortality indicator (1 if death caused end of follow-up)\nbc_died: breast cancer mortality indicator\n\nCensoring Patterns by Arm\nBecause participants in STOPBASE are censored when they get a screening mammogram, annual screeners are censored early in that arm. Conversely, participants in CONTINUE are censored when they go too long without a mammogram, so non-adherers are censored early.\n\n\nCode\npar(mfrow = c(1, 2))\n\nstopbase &lt;- cloned[cloned$arm == \"STOPBASE\", ]\ncontinue &lt;- cloned[cloned$arm == \"CONTINUE\", ]\n\nhist(stopbase$fup,\n  breaks = 20, main = \"STOPBASE\",\n  xlab = \"Follow-up (months)\", col = \"#E05C4B\", border = \"white\",\n  xlim = c(0, 110)\n)\nhist(continue$fup,\n  breaks = 20, main = \"CONTINUE\",\n  xlab = \"Follow-up (months)\", col = \"#4B8FE0\", border = \"white\",\n  xlim = c(0, 110)\n)\npar(mfrow = c(1, 1))\n\n\n\n\nFigure 2: Follow-up time by arm and censoring type.\n\n\nCode\n# Percentage censored for protocol non-adherence in each arm\nprop_censored &lt;- tapply(\n  !is.na(cloned$censor_month),\n  cloned$arm,\n  mean\n)\nround(prop_censored * 100, 1)\n#&gt; CONTINUE STOPBASE \n#&gt;       34       90\n\n\nAs expected, most STOPBASE clones are censored (those who continued getting annual mammograms), while only a minority of CONTINUE clones are censored (those who stopped getting mammograms)."
   },
   {
     "objectID": "vignettes/articles/using-ettbc-revealjs.html#step-2-expand-to-long-format",
@@ -784,108 +690,63 @@
     "href": "vignettes/quarto_vignette.html",
     "title": "Quarto Vignette Example",
     "section": "",
-    "text": "Codelibrary(ettbc)",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "Codelibrary(ettbc)"
   },
   {
     "objectID": "vignettes/quarto_vignette.html#introduction",
     "href": "vignettes/quarto_vignette.html#introduction",
     "title": "Quarto Vignette Example",
     "section": "\n1 Introduction",
-    "text": "1 Introduction\nThis vignette demonstrates how to use Quarto (.qmd) files as vignettes in R packages. Quarto is the next-generation version of R Markdown, offering enhanced features and better integration with multiple programming languages.",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "1 Introduction\nThis vignette demonstrates how to use Quarto (.qmd) files as vignettes in R packages. Quarto is the next-generation version of R Markdown, offering enhanced features and better integration with multiple programming languages."
   },
   {
     "objectID": "vignettes/quarto_vignette.html#why-use-quarto",
     "href": "vignettes/quarto_vignette.html#why-use-quarto",
     "title": "Quarto Vignette Example",
     "section": "\n2 Why Use Quarto?",
-    "text": "2 Why Use Quarto?\nQuarto offers several advantages over traditional R Markdown:\n\n\nEnhanced features: Better support for cross-references, callouts, and other advanced formatting\n\nMultiple engines: Works with R, Python, Julia, and Observable\n\nModern syntax: Cleaner YAML and chunk options using #| syntax\n\nBetter publishing: Improved website and book publishing capabilities",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "2 Why Use Quarto?\nQuarto offers several advantages over traditional R Markdown:\n\n\nEnhanced features: Better support for cross-references, callouts, and other advanced formatting\n\nMultiple engines: Works with R, Python, Julia, and Observable\n\nModern syntax: Cleaner YAML and chunk options using #| syntax\n\nBetter publishing: Improved website and book publishing capabilities"
   },
   {
     "objectID": "vignettes/quarto_vignette.html#basic-example",
     "href": "vignettes/quarto_vignette.html#basic-example",
     "title": "Quarto Vignette Example",
     "section": "\n3 Basic Example",
-    "text": "3 Basic Example\nHere’s a basic example using the package:\n\nCode# Create some sample data\nsample_data &lt;- c(1, 2, 3, 4, 5, 10, 15, 20)\n\n# Use the example function\nresult &lt;- example_function(sample_data)\nresult\n#&gt; [1] 4.5",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "3 Basic Example\nHere’s a basic example using the package:\n\nCode# Create some sample data\nsample_data &lt;- c(1, 2, 3, 4, 5, 10, 15, 20)\n\n# Use the example function\nresult &lt;- example_function(sample_data)\nresult\n#&gt; [1] 4.5"
   },
   {
     "objectID": "vignettes/quarto_vignette.html#quarto-features",
     "href": "vignettes/quarto_vignette.html#quarto-features",
     "title": "Quarto Vignette Example",
     "section": "\n4 Quarto Features",
-    "text": "4 Quarto Features\n\n4.1 Callouts\n\n\n\n\n\n\nNote\n\n\n\nThis is a callout block that highlights important information.\n\n\n\n\n\n\n\n\nTip\n\n\n\nQuarto supports multiple types of callouts: note, tip, warning, important, and caution.\n\n\n\n4.2 Code Chunks with Modern Syntax\nYou can use the modern #| syntax for chunk options:\n\nCode# Create a simple plot\nplot(sample_data, \n     main = \"Sample Data\", \n     xlab = \"Index\", \n     ylab = \"Value\",\n     pch = 19,\n     col = \"steelblue\")\n\n\n\nFigure 1: Example plot showing data distribution",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "4 Quarto Features\n\n4.1 Callouts\n\n\n\n\n\n\nNote\n\n\n\nThis is a callout block that highlights important information.\n\n\n\n\n\n\n\n\nTip\n\n\n\nQuarto supports multiple types of callouts: note, tip, warning, important, and caution.\n\n\n\n4.2 Code Chunks with Modern Syntax\nYou can use the modern #| syntax for chunk options:\n\nCode# Create a simple plot\nplot(sample_data, \n     main = \"Sample Data\", \n     xlab = \"Index\", \n     ylab = \"Value\",\n     pch = 19,\n     col = \"steelblue\")\n\n\n\nFigure 1: Example plot showing data distribution"
   },
   {
     "objectID": "vignettes/quarto_vignette.html#equations",
     "href": "vignettes/quarto_vignette.html#equations",
     "title": "Quarto Vignette Example",
     "section": "\n5 Equations",
-    "text": "5 Equations\nQuarto has excellent support for mathematical equations using LaTeX syntax:\nInline equation: \\(E = mc^2\\)\nDisplay equation:\n\\[\n\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\n\\]",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "5 Equations\nQuarto has excellent support for mathematical equations using LaTeX syntax:\nInline equation: \\(E = mc^2\\)\nDisplay equation:\n\\[\n\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\n\\]"
   },
   {
     "objectID": "vignettes/quarto_vignette.html#tables",
     "href": "vignettes/quarto_vignette.html#tables",
     "title": "Quarto Vignette Example",
     "section": "\n6 Tables",
-    "text": "6 Tables\n\n\nTable 1: Comparison of R Markdown and Quarto\n\n\n\nFeature\nR Markdown\nQuarto\n\n\n\nYAML\nStandard\nEnhanced\n\n\nChunks\n{r, option=value}\n#| option: value\n\n\nPublishing\nGood\nExcellent\n\n\nCross-refs\nLimited\nNative",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "6 Tables\n\n\nTable 1: Comparison of R Markdown and Quarto\n\n\n\nFeature\nR Markdown\nQuarto\n\n\n\nYAML\nStandard\nEnhanced\n\n\nChunks\n{r, option=value}\n#| option: value\n\n\nPublishing\nGood\nExcellent\n\n\nCross-refs\nLimited\nNative"
   },
   {
     "objectID": "vignettes/quarto_vignette.html#summary",
     "href": "vignettes/quarto_vignette.html#summary",
     "title": "Quarto Vignette Example",
     "section": "\n7 Summary",
-    "text": "7 Summary\nQuarto vignettes provide a modern, feature-rich way to document R packages. They integrate seamlessly with documentation systems and offer enhanced capabilities for technical documentation.",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "7 Summary\nQuarto vignettes provide a modern, feature-rich way to document R packages. They integrate seamlessly with documentation systems and offer enhanced capabilities for technical documentation."
   },
   {
     "objectID": "vignettes/quarto_vignette.html#references",
     "href": "vignettes/quarto_vignette.html#references",
     "title": "Quarto Vignette Example",
     "section": "\n8 References",
-    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nMorrison (2024)",
-    "crumbs": [
-      "Documentation",
-      "Articles",
-      "Quarto Vignette Example"
-    ]
+    "text": "8 References\nFor more information, see:\n\nQuarto Documentation\nUsing Quarto with R\nR Core Team (2024)\nMorrison (2024)"
   },
   {
     "objectID": "CODE_OF_CONDUCT.html",

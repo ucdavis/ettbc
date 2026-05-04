@@ -294,18 +294,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
 <li>
-    <a class="dropdown-item" href="../vignettes/getting-started.html">
- <span class="dropdown-text">Getting started</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../vignettes/quarto_vignette.html">
- <span class="dropdown-text">Intro vignette</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../vignettes/articles/quarto_article.html">
- <span class="dropdown-text">Advanced</span></a>
-  </li>  
-        <li>
     <a class="dropdown-item" href="../vignettes/articles/using-ettbc.html">
  <span class="dropdown-text">Using ettbc</span></a>
   </li>  
@@ -353,50 +341,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../vignettes/getting-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Getting Started</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../vignettes/quarto_vignette.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Quarto Vignette Example</span></a>
-  </div>
-</li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Advanced</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../vignettes/articles/quarto_article.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Advanced Quarto Article</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../vignettes/articles/using-ettbc.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Using ettbc: Emulating a Target Trial for Breast Cancer Screening</span></a>
   </div>
 </li>
       </ul>
 </li>
-      </ul>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Reference</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/clone_censor.html" class="sidebar-item-text sidebar-link">
@@ -617,50 +576,29 @@ Name of the breast cancer diagnosis month column. Default: <code>“bc_month”<
 <p>The breast-cancer-specific outcome <code>bc_dead_t1</code> mirrors <code>dead_t1</code> but is set to <code>0</code> at the event row when the death was not attributed to breast cancer (<code>bc_died == 0</code>).</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A data frame with one row per participant-arm-month, containing:</p>
-<dl>
-<dt>
-<code>id</code>
-</dt>
-<dd>
-Participant identifier
-</dd>
-<dt>
-<code>arm</code>
-</dt>
-<dd>
-Trial arm (<code>“STOPBASE”</code> or <code>“CONTINUE”</code>)
-</dd>
-<dt>
-<code>month</code>
-</dt>
-<dd>
-Calendar month (integer, same scale as input)
-</dd>
-<dt>
-<code>month2</code>
-</dt>
-<dd>
-Month relative to trial entry, 0-indexed
-</dd>
-<dt>
-<code>dead_t1</code>
-</dt>
-<dd>
-Death in the next interval: 1 / 0 / <code>NA</code>
-</dd>
-<dt>
-<code>bc_dead_t1</code>
-</dt>
-<dd>
-Breast cancer death in the next interval
-</dd>
-<dt>
-<code>bc_long</code>
-</dt>
-<dd>
-Breast cancer diagnosis at this month (0/1)
-</dd>
-</dl></section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
+<ul>
+<li>
+<p><code>id</code>: Participant identifier</p>
+</li>
+<li>
+<p><code>arm</code>: Trial arm (<code>“STOPBASE”</code> or <code>“CONTINUE”</code>)</p>
+</li>
+<li>
+<p><code>month</code>: Calendar month (integer, same scale as input)</p>
+</li>
+<li>
+<p><code>month2</code>: Month relative to trial entry, 0-indexed</p>
+</li>
+<li>
+<p><code>dead_t1</code>: Death in the next interval: 1 / 0 / <code>NA</code></p>
+</li>
+<li>
+<p><code>bc_dead_t1</code>: Breast cancer death in the next interval</p>
+</li>
+<li>
+<p><code>bc_long</code>: Breast cancer diagnosis at this month (0/1)</p>
+</li>
+</ul></section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
 <p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381–389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
 </section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
 <p><code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code> for the preceding step.</p>
