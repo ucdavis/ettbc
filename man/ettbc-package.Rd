@@ -6,7 +6,7 @@
 \alias{ettbc-package}
 \title{ettbc: Emulating a Target Trial for Breast Cancer Screening}
 \description{
-Implements the clone-censor step of the target trial emulation methodology for studying the effect of sustained screening mammography on breast cancer mortality, following the approach of García-Albéniz et al. (2020) \doi{10.7326/M18-1199}. Provides functions to clone participants into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules, and expand the resulting dataset to a long format suitable for inverse-probability-weighted survival analysis.
+Implements the clone-censor step of the target trial emulation methodology for studying the effect of sustained screening mammography on breast cancer mortality, following the approach of García-Albéniz et al. (2020) \doi{10.7326/M18-1199}. Provides functions to clone participants into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules, expand the resulting dataset to a long format suitable for inverse-probability-weighted survival analysis, compute IPW weights, estimate marginal survival curves via g-computation, and extract mammogram events from Medicare claims data.
 }
 \seealso{
 Useful links:

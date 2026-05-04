@@ -1,0 +1,189 @@
+#' Compute Inverse Probability Weighting (IPW) Weights
+#'
+#' Computes stabilised inverse probability weights for each
+#' participant-arm-month row in long-format data, based on the predicted
+#' probability of receiving a screening mammogram. Weights are truncated at
+#' the 99th percentile.
+#'
+#' @details
+#' Separate weight models are used for the two trial arms:
+#'
+#' - **STOPBASE**: The weight tracks the probability of *not* receiving a
+#'   screening mammogram. After a grace period of `grace_months` months, the
+#'   denominator is `1 - p_scrmammo` at each month (or 1 if a breast cancer
+#'   diagnosis has occurred). If the time since last mammogram is 10 or fewer
+#'   months (`tslm_lag <= 10`), the effective screening probability is set to
+#'   0 (no screening expected that soon).
+#'
+#' - **CONTINUE**: The weight tracks the probability of *receiving* a screening
+#'   mammogram at the end of the compliance window. A weight update occurs when
+#'   a screening mammogram is observed late in the compliance window
+#'   (`scrmammo == 1` and `tslm_lag >= 11`). The numerator uses a discrete
+#'   uniform distribution over the three boundary months
+#'   (`tslm_lag` = 11, 12, or 13), and the denominator is the model-predicted
+#'   probability.
+#'
+#' Weights within each arm are cumulative products initialised at 1.
+#' The final column `wp99` is the weight truncated at the arm-combined 99th
+#' percentile.
+#'
+#' @param long_data A data frame in long format (one row per
+#'   participant-arm-month), as produced by [expand_to_long()] and augmented
+#'   with mammogram and time-since-last-mammogram columns.
+#' @param pred_prob_col Name of the column containing the model-predicted
+#'   probability of a screening mammogram at each row.
+#' @param arm_col Name of the trial arm column. Default: `"arm"`.
+#' @param id_col Name of the participant identifier column. Default: `"id"`.
+#' @param month2_col Name of the 0-indexed month-from-entry column.
+#'   Default: `"month2"`.
+#' @param bc_month_col Name of the column containing the month2 at which breast
+#'   cancer was diagnosed (`NA` if no diagnosis). Default: `"monthBC"`.
+#' @param scrmammo_col Name of the binary screening-mammogram indicator column.
+#'   Default: `"scrmammo"`.
+#' @param anymammo_col Name of the binary any-mammogram indicator column.
+#'   Default: `"anymammo"`.
+#' @param tslm_lag_col Name of the lagged time-since-last-mammogram column.
+#'   Default: `"tslm_lag"`.
+#' @param grace_months Number of months from trial entry during which weights
+#'   are held at 1 for the STOPBASE arm. Default: `11L`.
+#'
+#' @return `long_data` with two additional columns:
+#'
+#'   - `w`: Cumulative IPW weight at each participant-arm-month.
+#'   - `wp99`: IPW weight truncated at the 99th percentile of `w` across both
+#'     arms combined.
+#'
+#' @seealso [predict_survival_ipw()], [expand_to_long()]
+#'
+#' @references
+#' García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA.
+#' Continuation of Annual Screening Mammography and Breast Cancer Mortality in
+#' Women Older Than 70 Years: A Prospective Observational Study.
+#' *Ann Intern Med.* 2020;172(6):381–389. \doi{10.7326/M18-1199}
+#'
+#' @export
+#'
+#' @examples
+#' cloned <- clone_censor(cohort, screening_mammograms, diagnostic_mammograms)
+#' long_data <- expand_to_long(cloned)
+#' long_data$p_scrmammo <- 0.3
+#' long_data$monthBC <- NA_integer_
+#' long_data$scrmammo <- 0L
+#' long_data$anymammo <- 0L
+#' long_data$tslm_lag <- 5L
+#' result <- compute_ipw_weights(long_data, pred_prob_col = "p_scrmammo")
+#' head(result[, c("id", "arm", "month2", "w", "wp99")])
+compute_ipw_weights <- function(
+    long_data,
+    pred_prob_col,
+    arm_col = "arm",
+    id_col = "id",
+    month2_col = "month2",
+    bc_month_col = "monthBC",
+    scrmammo_col = "scrmammo",
+    anymammo_col = "anymammo",
+    tslm_lag_col = "tslm_lag",
+    grace_months = 11L) {
+  if (nrow(long_data) == 0L) {
+    long_data$w <- numeric(0)
+    long_data$wp99 <- numeric(0)
+    return(long_data)
+  }
+
+  # Preserve original row order
+  long_data$.row_idx <- seq_len(nrow(long_data))
+
+  grp_key <- paste(long_data[[id_col]], long_data[[arm_col]], sep = "\x1f")
+  d_list <- split(long_data, grp_key)
+
+  d_list <- lapply(d_list, function(grp) {
+    if (nrow(grp) == 0L) return(grp)
+    grp <- grp[order(grp[[month2_col]]), , drop = FALSE]
+    arm <- grp[[arm_col]][1L]
+    grp$w <- if (arm == "STOPBASE") {
+      compute_w_stopbase_grp(
+        grp, pred_prob_col, month2_col, bc_month_col,
+        tslm_lag_col, grace_months
+      )
+    } else {
+      compute_w_continue_grp(grp, pred_prob_col, scrmammo_col, tslm_lag_col)
+    }
+    grp
+  })
+
+  out <- do.call(rbind, d_list)
+  out <- out[order(out$.row_idx), , drop = FALSE]
+  out$.row_idx <- NULL
+  rownames(out) <- NULL
+
+  p99 <- stats::quantile(out$w, 0.99, na.rm = TRUE)
+  out$wp99 <- pmin(out$w, p99)
+  out
+}
+
+# Internal helpers --------------------------------------------------------
+
+#' @noRd
+compute_w_stopbase_grp <- function(
+    grp, pred_prob_col, month2_col, bc_month_col,
+    tslm_lag_col, grace_months) {
+  n <- nrow(grp)
+  w_vec <- numeric(n)
+  running_w <- 1.0
+  month_bc <- grp[[bc_month_col]][1L]
+
+  for (j in seq_len(n)) {
+    month2 <- grp[[month2_col]][j]
+    tslm_lag <- grp[[tslm_lag_col]][j]
+    p_pred <- grp[[pred_prob_col]][j]
+
+    # When tslm_lag <= 10, no screening is expected yet
+    p_eff <- if (!is.na(tslm_lag) && tslm_lag <= 10L) {
+      0.0
+    } else {
+      if (is.na(p_pred)) 0.0 else p_pred
+    }
+
+    if (month2 <= grace_months) {
+      running_w <- 1.0
+    } else {
+      has_bc <- !is.na(month_bc) && month2 >= month_bc
+      den <- if (has_bc) 1.0 else max(1.0 - p_eff, 1e-6)
+      running_w <- running_w / den
+    }
+    w_vec[j] <- running_w
+  }
+  w_vec
+}
+
+#' @noRd
+compute_w_continue_grp <- function(
+    grp, pred_prob_col, scrmammo_col, tslm_lag_col) {
+  n <- nrow(grp)
+  w_vec <- numeric(n)
+  running_w <- 1.0
+
+  for (j in seq_len(n)) {
+    tslm_lag <- grp[[tslm_lag_col]][j]
+    scrmammo <- grp[[scrmammo_col]][j]
+    p_pred <- grp[[pred_prob_col]][j]
+
+    # Flag: screening mammogram observed late in the compliance window
+    flag <- (
+      !is.na(tslm_lag) &&
+        !is.na(scrmammo) &&
+        scrmammo == 1L &&
+        tslm_lag >= 11L
+    )
+
+    if (flag) {
+      # Numerator: discrete uniform over months 11, 12, 13 of the window
+      tslm_val <- min(tslm_lag, 13L)
+      num <- (tslm_val - 10L) / 3.0
+      den <- max(if (is.na(p_pred)) 1e-6 else p_pred, 1e-6)
+      running_w <- running_w * num / den
+    }
+    w_vec[j] <- running_w
+  }
+  w_vec
+}
