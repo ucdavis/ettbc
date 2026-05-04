@@ -192,11 +192,11 @@ build_ucen_stop <- function(bc_month, start, stop_grace_months, total_months) {
 
 # Find first screening mammogram that triggers censoring in STOPBASE arm
 find_stop_censor <- function(scr, ucen_stop, start, total_months) {
-  if (start + 1L > total_months) return(NA_integer_)
-  for (m in seq.int(start + 1L, total_months)) {
-    if (m %in% scr && !ucen_stop[m]) return(m)
-  }
-  NA_integer_
+  scr_post <- scr[scr > start & scr <= total_months]
+  if (length(scr_post) == 0L) return(NA_integer_)
+  candidates <- scr_post[!ucen_stop[scr_post]]
+  if (length(candidates) == 0L) return(NA_integer_)
+  min(candidates)
 }
 
 # Build CONTINUE uncensorable indicator vector

@@ -8,6 +8,10 @@ format:
   html: default
   docx: default
 bibliography: ../references.bib
+vignette: >
+  %\VignetteIndexEntry{Using ettbc: Emulating a Target Trial for Breast Cancer Screening}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup}
