@@ -13,7 +13,7 @@
 
   <meta name="author" content="Douglas Ezra Morrison">
   <meta name="dcterms.date" content="2026-05-04">
-  <title>ettbc – Advanced Quarto Article</title>
+  <title>ettbc – Using ettbc: Emulating a Target Trial for Breast Cancer Screening</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -219,7 +219,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Advanced Quarto Article</h1>
+  <h1 class="title">Using ettbc: Emulating a Target Trial for Breast Cancer Screening</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -231,358 +231,321 @@ Douglas Ezra Morrison
 
   <p class="date">2026-05-04</p>
 </section>
-<section class="slide level2">
+<section id="background" class="slide level2 scrollable" data-number="1">
+<h2><span class="header-section-number">1</span> Background</h2>
+<p>This article demonstrates how to use the <code>{ettbc}</code> package to emulate a target trial for breast cancer screening using the <strong>clone-censor-reweight</strong> methodology. The methods are based on the study by <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span>, who estimated the effect of continuing annual screening mammography on breast cancer mortality in Medicare beneficiaries aged 70–84 years.</p>
+<h3 id="the-target-trial">The Target Trial</h3>
+<p>The study aimed to answer: <em>Does continuing annual screening mammography (compared with stopping) reduce breast cancer mortality in older women?</em></p>
+<p>Because a randomised trial of this question is unlikely to be conducted, the target trial was emulated using Medicare claims data. The key methodological challenge is <strong>confounding by indication</strong>: women who continue screening tend to be healthier and more health-conscious than those who stop.</p>
+<h3 id="the-clone-censor-reweight-approach">The Clone-Censor-Reweight Approach</h3>
+<p>The clone-censor-reweight method handles time-varying treatment and censoring in three steps <span class="citation" data-cites="hernan2016">(<a href="#/references" role="doc-biblioref" onclick="">Hernán and Robins 2016</a>)</span>:</p>
+<ol type="1">
+<li><p><strong>Clone</strong>: Each participant is replicated into two copies — one assigned to the STOPBASE arm (stop screening at study entry) and one to the CONTINUE arm (continue annual screening).</p></li>
+<li><p><strong>Censor</strong>: Clones are censored in their assigned arm when they deviate from the protocol:</p>
+<ul>
+<li><strong>STOPBASE</strong>: censored at the first screening mammogram received after the initial grace period.</li>
+<li><strong>CONTINUE</strong>: censored when more than 14 months pass without any mammogram.</li>
+</ul></li>
+<li><p><strong>Reweight</strong>: Inverse probability weights (IPW) are constructed to account for the informative censoring introduced in step 2.</p></li>
+</ol>
+<p>The <code>{ettbc}</code> package implements the first two steps with <code>clone_censor()</code> and provides a helper function <code>expand_to_long()</code> to prepare the dataset for the IPW outcome analysis.</p>
+</section>
+<section id="example-data" class="slide level2" data-number="2">
+<h2><span class="header-section-number">2</span> Example Data</h2>
+<p>The package ships with three synthetic datasets that mimic the structure of the original study data (but contain entirely simulated values).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="co"># One row per participant</span></span>
+<span id="cb1-2"><a></a><span class="fu">head</span>(cohort)</span>
+<span id="cb1-3"><a></a><span class="co">#&gt;   id age start_month end_month death_month bc_death bc_month</span></span>
+<span id="cb1-4"><a></a><span class="co">#&gt; 1  1  81          26       108          NA        0       NA</span></span>
+<span id="cb1-5"><a></a><span class="co">#&gt; 2  2  81          33       108          NA        0       NA</span></span>
+<span id="cb1-6"><a></a><span class="co">#&gt; 3  3  76          28       108          NA        0       NA</span></span>
+<span id="cb1-7"><a></a><span class="co">#&gt; 4  4  75           1       108          NA        0       NA</span></span>
+<span id="cb1-8"><a></a><span class="co">#&gt; 5  5  77          17       108          NA        0       NA</span></span>
+<span id="cb1-9"><a></a><span class="co">#&gt; 6  6  70          40       108          NA        0       NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="co"># One row per screening mammogram event</span></span>
+<span id="cb2-2"><a></a><span class="fu">head</span>(screening_mammograms)</span>
+<span id="cb2-3"><a></a><span class="co">#&gt;   id month</span></span>
+<span id="cb2-4"><a></a><span class="co">#&gt; 1  1    16</span></span>
+<span id="cb2-5"><a></a><span class="co">#&gt; 2  1    38</span></span>
+<span id="cb2-6"><a></a><span class="co">#&gt; 3  1    50</span></span>
+<span id="cb2-7"><a></a><span class="co">#&gt; 4  1    63</span></span>
+<span id="cb2-8"><a></a><span class="co">#&gt; 5  1    77</span></span>
+<span id="cb2-9"><a></a><span class="co">#&gt; 6  1    88</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co"># One row per diagnostic mammogram event</span></span>
+<span id="cb3-2"><a></a><span class="fu">head</span>(diagnostic_mammograms)</span>
+<span id="cb3-3"><a></a><span class="co">#&gt;   id month</span></span>
+<span id="cb3-4"><a></a><span class="co">#&gt; 1 98    46</span></span>
+<span id="cb3-5"><a></a><span class="co">#&gt; 2  4    55</span></span>
+<span id="cb3-6"><a></a><span class="co">#&gt; 3 84    95</span></span>
+<span id="cb3-7"><a></a><span class="co">#&gt; 4 68    60</span></span>
+<span id="cb3-8"><a></a><span class="co">#&gt; 5 77    70</span></span>
+<span id="cb3-9"><a></a><span class="co">#&gt; 6 93    35</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Months are numbered consecutively from 1 (January 2000) to 108 (December 2008). Participants enter the study between months 1 and 60.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">hist</span>(</span>
+<span id="cb4-2"><a></a>  cohort<span class="sc">$</span>start_month,</span>
+<span id="cb4-3"><a></a>  <span class="at">breaks =</span> <span class="dv">20</span>,</span>
+<span id="cb4-4"><a></a>  <span class="at">main =</span> <span class="st">"Study Entry Month"</span>,</span>
+<span id="cb4-5"><a></a>  <span class="at">xlab =</span> <span class="st">"Month (1 = January 2000)"</span>,</span>
+<span id="cb4-6"><a></a>  <span class="at">col =</span> <span class="st">"steelblue"</span>,</span>
+<span id="cb4-7"><a></a>  <span class="at">border =</span> <span class="st">"white"</span></span>
+<span id="cb4-8"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 
+</div>
+<img data-src="using-ettbc_files/figure-revealjs/fig-entry-dist-1.png" width="672" class="r-stretch quarto-figure-center" id="fig-entry-dist"><p class="caption">
+Figure&nbsp;1: Distribution of study entry months in the simulated cohort.
+</p></section>
+<section id="step-1-clone-and-censor" class="slide level2" data-number="3">
+<h2><span class="header-section-number">3</span> Step 1: Clone and Censor</h2>
+<p><code>clone_censor()</code> takes the cohort and mammography event datasets and returns a data frame with <strong>two rows per participant</strong> — one for each arm.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(ettbc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>cloned <span class="ot">&lt;-</span> <span class="fu">clone_censor</span>(</span>
+<span id="cb5-2"><a></a>  cohort,</span>
+<span id="cb5-3"><a></a>  screening_mammograms,</span>
+<span id="cb5-4"><a></a>  diagnostic_mammograms</span>
+<span id="cb5-5"><a></a>)</span>
+<span id="cb5-6"><a></a></span>
+<span id="cb5-7"><a></a><span class="fu">nrow</span>(cloned) <span class="co"># should be 2 × nrow(cohort)</span></span>
+<span id="cb5-8"><a></a><span class="co">#&gt; [1] 200</span></span>
+<span id="cb5-9"><a></a><span class="fu">head</span>(cloned[, <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"arm"</span>, <span class="st">"start_month"</span>, <span class="st">"end_month"</span>,</span>
+<span id="cb5-10"><a></a>                <span class="st">"censor_month"</span>, <span class="st">"fup"</span>, <span class="st">"died"</span>, <span class="st">"bc_died"</span>)])</span>
+<span id="cb5-11"><a></a><span class="co">#&gt;   id      arm start_month end_month censor_month fup died bc_died</span></span>
+<span id="cb5-12"><a></a><span class="co">#&gt; 1  1 STOPBASE          26        38           38  13    0       0</span></span>
+<span id="cb5-13"><a></a><span class="co">#&gt; 2  2 STOPBASE          33        45           45  13    0       0</span></span>
+<span id="cb5-14"><a></a><span class="co">#&gt; 3  3 STOPBASE          28        42           42  15    0       0</span></span>
+<span id="cb5-15"><a></a><span class="co">#&gt; 4  4 STOPBASE           1        12           12  12    0       0</span></span>
+<span id="cb5-16"><a></a><span class="co">#&gt; 5  5 STOPBASE          17        28           28  12    0       0</span></span>
+<span id="cb5-17"><a></a><span class="co">#&gt; 6  6 STOPBASE          40        52           52  13    0       0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-</section>
-<section id="overview" class="slide level2" data-number="1">
-<h2><span class="header-section-number">1</span> Overview</h2>
-<p>This article demonstrates advanced features of Quarto for package documentation. Unlike vignettes, articles are only available on the documentation website and are not included in the package bundle.</p>
-</section>
-<section id="when-to-use-articles-vs-vignettes" class="slide level2" data-number="2">
-<h2><span class="header-section-number">2</span> When to Use Articles vs Vignettes</h2>
-<p><strong>Vignettes</strong> should be used for:</p>
+<p>The key new columns are:</p>
 <ul>
-<li>Core package documentation</li>
-<li>Essential usage examples</li>
-<li>Content that users need offline</li>
+<li><code>arm</code>: trial arm (<code>"STOPBASE"</code> or <code>"CONTINUE"</code>)</li>
+<li><code>end_month</code>: final observed month (minimum of death, administrative censoring, and protocol censoring)</li>
+<li><code>censor_month</code>: month of protocol deviation censoring (<code>NA</code> if not censored for protocol non-adherence)</li>
+<li><code>fup</code>: follow-up time in months</li>
+<li><code>died</code>: overall mortality indicator (1 if death caused end of follow-up)</li>
+<li><code>bc_died</code>: breast cancer mortality indicator</li>
 </ul>
-<p><strong>Articles</strong> are better for:</p>
-<ul>
-<li>Extended tutorials</li>
-<li>Case studies and detailed examples</li>
-<li>Content with large datasets or external dependencies</li>
-<li>Supplementary material</li>
-</ul>
+<h3 id="censoring-patterns-by-arm">Censoring Patterns by Arm</h3>
+<p>Because participants in STOPBASE are censored when they get a screening mammogram, annual screeners are censored early in that arm. Conversely, participants in CONTINUE are censored when they go too long without a mammogram, so non-adherers are censored early.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb6-2"><a></a></span>
+<span id="cb6-3"><a></a>stopbase <span class="ot">&lt;-</span> cloned[cloned<span class="sc">$</span>arm <span class="sc">==</span> <span class="st">"STOPBASE"</span>, ]</span>
+<span id="cb6-4"><a></a>continue <span class="ot">&lt;-</span> cloned[cloned<span class="sc">$</span>arm <span class="sc">==</span> <span class="st">"CONTINUE"</span>, ]</span>
+<span id="cb6-5"><a></a></span>
+<span id="cb6-6"><a></a><span class="fu">hist</span>(stopbase<span class="sc">$</span>fup,</span>
+<span id="cb6-7"><a></a>  <span class="at">breaks =</span> <span class="dv">20</span>, <span class="at">main =</span> <span class="st">"STOPBASE"</span>,</span>
+<span id="cb6-8"><a></a>  <span class="at">xlab =</span> <span class="st">"Follow-up (months)"</span>, <span class="at">col =</span> <span class="st">"#E05C4B"</span>, <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb6-9"><a></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">110</span>)</span>
+<span id="cb6-10"><a></a>)</span>
+<span id="cb6-11"><a></a><span class="fu">hist</span>(continue<span class="sc">$</span>fup,</span>
+<span id="cb6-12"><a></a>  <span class="at">breaks =</span> <span class="dv">20</span>, <span class="at">main =</span> <span class="st">"CONTINUE"</span>,</span>
+<span id="cb6-13"><a></a>  <span class="at">xlab =</span> <span class="st">"Follow-up (months)"</span>, <span class="at">col =</span> <span class="st">"#4B8FE0"</span>, <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb6-14"><a></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">110</span>)</span>
+<span id="cb6-15"><a></a>)</span>
+<span id="cb6-16"><a></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+
+</div>
+<img data-src="using-ettbc_files/figure-revealjs/fig-censor-by-arm-1.png" width="672" class="r-stretch quarto-figure-center" id="fig-censor-by-arm"><p class="caption">
+Figure&nbsp;2: Follow-up time by arm and censoring type.
+</p><div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co"># Percentage censored for protocol non-adherence in each arm</span></span>
+<span id="cb7-2"><a></a>prop_censored <span class="ot">&lt;-</span> <span class="fu">tapply</span>(</span>
+<span id="cb7-3"><a></a>  <span class="sc">!</span><span class="fu">is.na</span>(cloned<span class="sc">$</span>censor_month),</span>
+<span id="cb7-4"><a></a>  cloned<span class="sc">$</span>arm,</span>
+<span id="cb7-5"><a></a>  mean</span>
+<span id="cb7-6"><a></a>)</span>
+<span id="cb7-7"><a></a><span class="fu">round</span>(prop_censored <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>)</span>
+<span id="cb7-8"><a></a><span class="co">#&gt; CONTINUE STOPBASE </span></span>
+<span id="cb7-9"><a></a><span class="co">#&gt;       34       90</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>As expected, most STOPBASE clones are censored (those who continued getting annual mammograms), while only a minority of CONTINUE clones are censored (those who stopped getting mammograms).</p>
 </section>
-<section id="advanced-quarto-features" class="slide level2 scrollable" data-number="3">
-<h2><span class="header-section-number">3</span> Advanced Quarto Features</h2>
-<h3 id="cross-references">Cross-References</h3>
-<p>Quarto makes it easy to create cross-references. For example, see <a href="#/fig-scatter" class="quarto-xref">Figure&nbsp;1</a> for a scatter plot and <a href="#/tbl-summary" class="quarto-xref">Table&nbsp;1</a> for a summary table.</p>
+<section id="step-2-expand-to-long-format" class="slide level2" data-number="4">
+<h2><span class="header-section-number">4</span> Step 2: Expand to Long Format</h2>
+<p><code>expand_to_long()</code> converts the cloned dataset to <strong>one row per participant-arm-month</strong>. This format is required for the discrete-time survival models used to estimate the outcome.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="co"># Generate sample data</span></span>
-<span id="cb2-2"><a></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb2-3"><a></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
-<span id="cb2-4"><a></a>y <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
-<span id="cb2-5"><a></a></span>
-<span id="cb2-6"><a></a><span class="co"># Create scatter plot</span></span>
-<span id="cb2-7"><a></a><span class="fu">plot</span>(x, y, </span>
-<span id="cb2-8"><a></a>     <span class="at">main =</span> <span class="st">"Example Scatter Plot"</span>,</span>
-<span id="cb2-9"><a></a>     <span class="at">xlab =</span> <span class="st">"X Variable"</span>,</span>
-<span id="cb2-10"><a></a>     <span class="at">ylab =</span> <span class="st">"Y Variable"</span>,</span>
-<span id="cb2-11"><a></a>     <span class="at">pch =</span> <span class="dv">16</span>,</span>
-<span id="cb2-12"><a></a>     <span class="at">col =</span> <span class="fu">rgb</span>(<span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.6</span>))</span>
-<span id="cb2-13"><a></a><span class="fu">abline</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a>long_data <span class="ot">&lt;-</span> <span class="fu">expand_to_long</span>(cloned)</span>
+<span id="cb8-2"><a></a></span>
+<span id="cb8-3"><a></a><span class="fu">nrow</span>(long_data) <span class="co"># total person-arm-months</span></span>
+<span id="cb8-4"><a></a><span class="co">#&gt; [1] 7052</span></span>
+<span id="cb8-5"><a></a><span class="fu">head</span>(long_data)</span>
+<span id="cb8-6"><a></a><span class="co">#&gt;   id      arm month month2 dead_t1 bc_dead_t1 bc_long</span></span>
+<span id="cb8-7"><a></a><span class="co">#&gt; 1  1 STOPBASE    26      0       0          0       0</span></span>
+<span id="cb8-8"><a></a><span class="co">#&gt; 2  1 STOPBASE    27      1       0          0       0</span></span>
+<span id="cb8-9"><a></a><span class="co">#&gt; 3  1 STOPBASE    28      2       0          0       0</span></span>
+<span id="cb8-10"><a></a><span class="co">#&gt; 4  1 STOPBASE    29      3       0          0       0</span></span>
+<span id="cb8-11"><a></a><span class="co">#&gt; 5  1 STOPBASE    30      4       0          0       0</span></span>
+<span id="cb8-12"><a></a><span class="co">#&gt; 6  1 STOPBASE    31      5       0          0       0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<div id="fig-scatter" class="quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-fig">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Scatter plot demonstrating cross-referencing
-</figcaption>
-<div aria-describedby="fig-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="quarto_article_files/figure-revealjs/fig-scatter-1.png" width="672">
 </div>
-</figure>
-</div>
-</div>
-</div>
-<h3 id="summary-tables">Summary Tables</h3>
+<p>The key columns in the long dataset are:</p>
+<ul>
+<li><code>month</code>: calendar month (1–108)</li>
+<li><code>month2</code>: months since study entry (0-indexed)</li>
+<li><code>dead_t1</code>: death in the next interval: <code>1</code> = yes, <code>0</code> = no, <code>NA</code> = censored</li>
+<li><code>bc_dead_t1</code>: breast cancer death in the next interval</li>
+<li><code>bc_long</code>: breast cancer diagnosis flag at this month</li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>data_summary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb3-2"><a></a>  <span class="at">Statistic =</span> <span class="fu">c</span>(<span class="st">"Mean"</span>, <span class="st">"Median"</span>, <span class="st">"SD"</span>, <span class="st">"Min"</span>, <span class="st">"Max"</span>),</span>
-<span id="cb3-3"><a></a>  <span class="at">X =</span> <span class="fu">c</span>(<span class="fu">mean</span>(x), <span class="fu">median</span>(x), <span class="fu">sd</span>(x), <span class="fu">min</span>(x), <span class="fu">max</span>(x)),</span>
-<span id="cb3-4"><a></a>  <span class="at">Y =</span> <span class="fu">c</span>(<span class="fu">mean</span>(y), <span class="fu">median</span>(y), <span class="fu">sd</span>(y), <span class="fu">min</span>(y), <span class="fu">max</span>(y))</span>
-<span id="cb3-5"><a></a>)</span>
-<span id="cb3-6"><a></a></span>
-<span id="cb3-7"><a></a>knitr<span class="sc">::</span><span class="fu">kable</span>(data_summary, <span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="co"># Total events in the long dataset</span></span>
+<span id="cb9-2"><a></a><span class="fu">table</span>(long_data<span class="sc">$</span>dead_t1, <span class="at">useNA =</span> <span class="st">"ifany"</span>)</span>
+<span id="cb9-3"><a></a><span class="co">#&gt; </span></span>
+<span id="cb9-4"><a></a><span class="co">#&gt;    0    1 &lt;NA&gt; </span></span>
+<span id="cb9-5"><a></a><span class="co">#&gt; 6852   19  181</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div id="tbl-summary" class="cell quarto-float quarto-figure quarto-figure-center">
+</div>
+<h3 id="verifying-the-long-format">Verifying the Long Format</h3>
+<p>A simple check: the number of observed deaths in the long dataset should equal the number of <code>died == 1</code> rows in the cloned dataset.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="co"># Deaths in cloned dataset</span></span>
+<span id="cb10-2"><a></a><span class="fu">sum</span>(cloned<span class="sc">$</span>died)</span>
+<span id="cb10-3"><a></a><span class="co">#&gt; [1] 19</span></span>
+<span id="cb10-4"><a></a></span>
+<span id="cb10-5"><a></a><span class="co"># Rows with dead_t1 = 1 in long dataset</span></span>
+<span id="cb10-6"><a></a><span class="fu">sum</span>(long_data<span class="sc">$</span>dead_t1 <span class="sc">==</span> <span class="dv">1</span>L, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-7"><a></a><span class="co">#&gt; [1] 19</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-3-descriptive-analysis" class="slide level2" data-number="5">
+<h2><span class="header-section-number">5</span> Step 3: Descriptive Analysis</h2>
+<p>Before fitting weighted outcome models, it is useful to describe the data and examine crude survival by arm.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="co"># Compute monthly event rate per arm</span></span>
+<span id="cb11-2"><a></a>arms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"STOPBASE"</span>, <span class="st">"CONTINUE"</span>)</span>
+<span id="cb11-3"><a></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#E05C4B"</span>, <span class="st">"#4B8FE0"</span>)</span>
+<span id="cb11-4"><a></a></span>
+<span id="cb11-5"><a></a><span class="fu">plot</span>(<span class="cn">NA</span>,</span>
+<span id="cb11-6"><a></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">70</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>),</span>
+<span id="cb11-7"><a></a>  <span class="at">xlab =</span> <span class="st">"Months since study entry"</span>,</span>
+<span id="cb11-8"><a></a>  <span class="at">ylab =</span> <span class="st">"Cumulative mortality (crude)"</span>,</span>
+<span id="cb11-9"><a></a>  <span class="at">main =</span> <span class="st">"Crude cumulative mortality by arm"</span></span>
+<span id="cb11-10"><a></a>)</span>
+<span id="cb11-11"><a></a></span>
+<span id="cb11-12"><a></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_along</span>(arms)) {</span>
+<span id="cb11-13"><a></a>  sub <span class="ot">&lt;-</span> long_data[long_data<span class="sc">$</span>arm <span class="sc">==</span> arms[j], ]</span>
+<span id="cb11-14"><a></a>  <span class="co"># Month-by-month event counts</span></span>
+<span id="cb11-15"><a></a>  max_t <span class="ot">&lt;-</span> <span class="fu">max</span>(sub<span class="sc">$</span>month2)</span>
+<span id="cb11-16"><a></a>  cum_mort <span class="ot">&lt;-</span> <span class="fu">numeric</span>(max_t <span class="sc">+</span> <span class="dv">1</span>L)</span>
+<span id="cb11-17"><a></a>  n_risk <span class="ot">&lt;-</span> <span class="fu">numeric</span>(max_t <span class="sc">+</span> <span class="dv">1</span>L)</span>
+<span id="cb11-18"><a></a></span>
+<span id="cb11-19"><a></a>  <span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>max_t) {</span>
+<span id="cb11-20"><a></a>    rows_t <span class="ot">&lt;-</span> sub[sub<span class="sc">$</span>month2 <span class="sc">==</span> t, ]</span>
+<span id="cb11-21"><a></a>    n_risk[t <span class="sc">+</span> <span class="dv">1</span>L] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(rows_t)</span>
+<span id="cb11-22"><a></a>    cum_mort[t <span class="sc">+</span> <span class="dv">1</span>L] <span class="ot">&lt;-</span> <span class="fu">sum</span>(rows_t<span class="sc">$</span>dead_t1 <span class="sc">==</span> <span class="dv">1</span>L, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-23"><a></a>  }</span>
+<span id="cb11-24"><a></a>  cum_mort <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(cum_mort) <span class="sc">/</span> <span class="fu">max</span>(n_risk, <span class="dv">1</span>L)</span>
+<span id="cb11-25"><a></a>  <span class="fu">lines</span>(<span class="dv">0</span><span class="sc">:</span>max_t, cum_mort, <span class="at">col =</span> cols[j], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb11-26"><a></a>}</span>
+<span id="cb11-27"><a></a></span>
+<span id="cb11-28"><a></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
+<span id="cb11-29"><a></a>  <span class="at">legend =</span> arms, <span class="at">col =</span> cols, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span></span>
+<span id="cb11-30"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+
+</div>
+<img data-src="using-ettbc_files/figure-revealjs/fig-cumhaz-1.png" width="672" class="r-stretch quarto-figure-center" id="fig-cumhaz"><p class="caption">
+Figure&nbsp;3: Empirical cumulative mortality by arm (crude, without IPW). Under the null, the two arms should be similar because clones are derived from the same participants.
+</p><div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The crude curves above do not account for the informative censoring introduced by the clone-censor step. In a complete analysis, <strong>inverse probability weights</strong> (IPW) would be applied to correct for the different censoring mechanisms in each arm. See <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span> for the full weighted analysis.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="slide level2" data-number="6">
+<h2><span class="header-section-number">6</span> Summary</h2>
+<p>The <code>{ettbc}</code> package provides two core functions for the clone-censor step of target trial emulation:</p>
+<div id="tbl-functions" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Summary statistics for example data
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Core ettbc functions
 </figcaption>
-<div aria-describedby="tbl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="cell caption-top">
+<div aria-describedby="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Statistic</th>
-<th style="text-align: right;">X</th>
-<th style="text-align: right;">Y</th>
+<th>Function</th>
+<th>Input</th>
+<th>Output</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Mean</td>
-<td style="text-align: right;">0.090</td>
-<td style="text-align: right;">0.127</td>
+<td><code>clone_censor()</code></td>
+<td>cohort + mammogram events</td>
+<td>two rows per participant</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Median</td>
-<td style="text-align: right;">0.062</td>
-<td style="text-align: right;">0.137</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SD</td>
-<td style="text-align: right;">0.913</td>
-<td style="text-align: right;">1.865</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Min</td>
-<td style="text-align: right;">-2.309</td>
-<td style="text-align: right;">-4.586</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Max</td>
-<td style="text-align: right;">2.187</td>
-<td style="text-align: right;">4.675</td>
+<td><code>expand_to_long()</code></td>
+<td>cloned dataset</td>
+<td>one row per participant-arm-month</td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
 </figure>
 </div>
-</div>
-<p>As shown in <a href="#/tbl-summary" class="quarto-xref">Table&nbsp;1</a>, the variables have similar distributions.</p>
-<h3 id="code-folding">Code Folding</h3>
-<p>You can make code chunks foldable:</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show the code for data preparation</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="co"># Prepare more complex data</span></span>
-<span id="cb4-2"><a></a>complex_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb4-3"><a></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>,</span>
-<span id="cb4-4"><a></a>  <span class="at">group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> <span class="dv">25</span>),</span>
-<span id="cb4-5"><a></a>  <span class="at">value1 =</span> <span class="fu">rnorm</span>(<span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">15</span>),</span>
-<span id="cb4-6"><a></a>  <span class="at">value2 =</span> <span class="fu">rnorm</span>(<span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">10</span>)</span>
-<span id="cb4-7"><a></a>)</span>
-<span id="cb4-8"><a></a></span>
-<span id="cb4-9"><a></a><span class="co"># Calculate group statistics</span></span>
-<span id="cb4-10"><a></a>group_stats <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(</span>
-<span id="cb4-11"><a></a>  <span class="fu">cbind</span>(value1, value2) <span class="sc">~</span> group, </span>
-<span id="cb4-12"><a></a>  <span class="at">data =</span> complex_data, </span>
-<span id="cb4-13"><a></a>  <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">sd =</span> <span class="fu">sd</span>(x))</span>
-<span id="cb4-14"><a></a>)</span>
-<span id="cb4-15"><a></a></span>
-<span id="cb4-16"><a></a><span class="fu">print</span>(group_stats)</span>
-<span id="cb4-17"><a></a><span class="co">#&gt;   group value1.mean value1.sd value2.mean value2.sd</span></span>
-<span id="cb4-18"><a></a><span class="co">#&gt; 1     A   101.61247  14.63952   51.727220 10.047051</span></span>
-<span id="cb4-19"><a></a><span class="co">#&gt; 2     B    98.13191  13.84514   53.261796  8.934998</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<h3 id="tabsets">Tabsets</h3>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Plot View</a></li><li><a href="#tabset-1-2">Summary View</a></li><li><a href="#tabset-1-3">Raw Data</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="quarto_article_files/figure-revealjs/unnamed-chunk-3-1.png" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-2">
-<div class="cell">
-<pre><code>#&gt;        id              group        value1           value2     
-#&gt;  Min.   : 1.00   Length   :50   Min.   : 79.60   Min.   :32.43  
-#&gt;  1st Qu.:13.25   N.unique : 2   1st Qu.: 89.29   1st Qu.:46.76  
-#&gt;  Median :25.50   N.blank  : 0   Median : 96.64   Median :51.04  
-#&gt;  Mean   :25.50   Min.nchar: 1   Mean   : 99.87   Mean   :52.49  
-#&gt;  3rd Qu.:37.75   Max.nchar: 1   3rd Qu.:107.93   3rd Qu.:59.34  
-#&gt;  Max.   :50.00                  Max.   :132.98   Max.   :72.93</code></pre>
-</div>
-</div>
-<div id="tabset-1-3">
-<div class="cell">
-<pre><code>#&gt;    id group    value1   value2
-#&gt; 1   1     A 132.98216 46.24397
-#&gt; 2   2     A 119.68619 44.38124
-#&gt; 3   3     A  96.02282 46.56083
-#&gt; 4   4     A 108.14791 50.90497
-#&gt; 5   5     A  93.78490 65.98509
-#&gt; 6   6     A  92.85630 49.11435
-#&gt; 7   7     A  88.17096 60.80799
-#&gt; 8   8     A  91.08074 56.30754
-#&gt; 9   9     A 124.76361 48.86360
-#&gt; 10 10     A  99.18958 34.67098</code></pre>
-</div>
-</div>
-</div>
-</div>
-<h3 id="advanced-callouts">Advanced Callouts</h3>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Important Considerations</strong></p>
-</div>
-<div class="callout-content">
-<p>When using this package in production:</p>
-<ol type="1">
-<li>Always validate input data</li>
-<li>Check for missing values</li>
-<li>Consider computational complexity</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="callout callout-warning callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Performance Warning</strong></p>
-</div>
-<div class="callout-content">
-<p>Large datasets may require additional memory and processing time.</p>
-</div>
-</div>
-</div>
-<h3 id="columns-layout">Columns Layout</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Left Column</strong></p>
-<p>This demonstrates a two-column layout in Quarto.</p>
-<ul>
-<li>Feature 1</li>
-<li>Feature 2</li>
-<li>Feature 3</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Right Column</strong></p>
-<p>You can place different content in each column.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="quarto_article_files/figure-revealjs/unnamed-chunk-6-1.png" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
+<p>After running these steps, the long dataset can be used with standard weighted logistic or pooled logistic regression to estimate the <strong>intention-to-treat</strong> effect of each screening strategy.</p>
 </section>
-<section id="working-with-package-functions" class="slide level2" data-number="4">
-<h2><span class="header-section-number">4</span> Working with Package Functions</h2>
-<p>Here’s how to use the package’s example function with different inputs:</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co"># Numeric vector</span></span>
-<span id="cb7-2"><a></a><span class="fu">example_function</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>))</span>
-<span id="cb7-3"><a></a><span class="co">#&gt; [1] 15</span></span>
-<span id="cb7-4"><a></a></span>
-<span id="cb7-5"><a></a><span class="co"># Using with generated data</span></span>
-<span id="cb7-6"><a></a>random_data <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">10</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">100</span>)</span>
-<span id="cb7-7"><a></a><span class="fu">example_function</span>(random_data)</span>
-<span id="cb7-8"><a></a><span class="co">#&gt; [1] 47.42519</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<section id="references" class="slide level2 smaller scrollable" data-number="7">
+<h2><span class="header-section-number">7</span> References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-garcia-albeniz2020" class="csl-entry" role="listitem">
+García-Albéniz, Xabier, Hajime Uno, Deepak L Bhatt, Patrick H McArdle, Marshall M Joffe, and Miguel A Hernán. 2020. <span>“Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study.”</span> <em>Annals of Internal Medicine</em> 172 (6): 381–89. <a href="https://doi.org/10.7326/M18-1199">https://doi.org/10.7326/M18-1199</a>.
 </div>
-</section>
-<section id="code-annotations" class="slide level2" data-number="5">
-<h2><span class="header-section-number">5</span> Code Annotations</h2>
-<p>Quarto supports code annotations for detailed explanations:</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-1" class="code-annotation-target"><a href="#annotated-cell-6-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-2" class="code-annotation-target"><a href="#annotated-cell-6-2"></a>data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-6-3" class="code-annotation-target"><a href="#annotated-cell-6-3"></a>result <span class="ot">&lt;-</span> <span class="fu">example_function</span>(data)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4"></a><span class="fu">print</span>(result)</span>
-<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5"></a><span class="co">#&gt; [1] 3</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-annotation">
-<dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="1" data-code-annotation="1">Load sample data</span>
-</dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="2" data-code-annotation="2">Create a simple numeric vector</span>
-</dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="3" data-code-annotation="3">Apply the example function from the package</span>
-</dd>
-<dt data-target-cell="annotated-cell-6" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="4">Display the results</span>
-</dd>
-</dl>
+<div id="ref-hernan2016" class="csl-entry" role="listitem">
+Hernán, Miguel A, and James M Robins. 2016. <span>“Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available.”</span> <em>American Journal of Epidemiology</em> 183 (8): 758–64. <a href="https://doi.org/10.1093/aje/kwv254">https://doi.org/10.1093/aje/kwv254</a>.
 </div>
-</div>
-</section>
-<section id="mathematical-notation" class="slide level2" data-number="6">
-<h2><span class="header-section-number">6</span> Mathematical Notation</h2>
-<p>Quarto excels at mathematical notation. Here’s an example of a statistical formula:</p>
-<p>The standard error of the mean is calculated as:</p>
-<p><span class="math display">\[
-SE = \frac{s}{\sqrt{n}}
-\]</span></p>
-<p>where <span class="math inline">\(s\)</span> is the sample standard deviation and <span class="math inline">\(n\)</span> is the sample size.</p>
-<p>For a confidence interval:</p>
-<p><span class="math display">\[
-CI = \bar{x} \pm t_{\alpha/2, n-1} \cdot SE
-\]</span></p>
-</section>
-<section id="tips-and-best-practices" class="slide level2 scrollable" data-number="7">
-<h2><span class="header-section-number">7</span> Tips and Best Practices</h2>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Expanding tip section</strong></p>
-</div>
-<div class="callout-content">
-<p>Click to expand this section for additional tips:</p>
-<ol type="1">
-<li>Use descriptive chunk labels for better organization</li>
-<li>Set global chunk options at the beginning</li>
-<li>Use cross-references to link related content</li>
-<li>Leverage callouts for important information</li>
-<li>Consider code folding for long code blocks</li>
-</ol>
-</div>
-</div>
-</div>
-</section>
-<section id="conclusion" class="slide level2" data-number="8">
-<h2><span class="header-section-number">8</span> Conclusion</h2>
-<p>This article demonstrates the advanced capabilities of Quarto for creating rich, interactive documentation for R packages.</p>
-</section>
-<section id="learn-more" class="slide level2" data-number="9">
-<h2><span class="header-section-number">9</span> Learn More</h2>
-<ul>
-<li>Visit the <a href="https://ucdavis.github.io/ettbc/">package website</a></li>
-<li>Check out the <a href="https://github.com/ucdavis/ettbc">GitHub repository</a></li>
-<li>Read the <a href="https://quarto.org/">Quarto documentation</a></li>
-</ul>
-</section>
-<section id="references" class="slide level2 smaller scrollable" data-number="10">
-<h2><span class="header-section-number">10</span> References</h2>
-<div id="refs" role="list">
-
 </div>
 
 
