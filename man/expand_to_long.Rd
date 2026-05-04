@@ -39,14 +39,14 @@ Default: \code{"bc_month"}.}
 }
 \value{
 A data frame with one row per participant-arm-month, containing:
-\describe{
-\item{\code{id}}{Participant identifier}
-\item{\code{arm}}{Trial arm (\code{"STOPBASE"} or \code{"CONTINUE"})}
-\item{\code{month}}{Calendar month (integer, same scale as input)}
-\item{\code{month2}}{Month relative to trial entry, 0-indexed}
-\item{\code{dead_t1}}{Death in the next interval: 1 / 0 / \code{NA}}
-\item{\code{bc_dead_t1}}{Breast cancer death in the next interval}
-\item{\code{bc_long}}{Breast cancer diagnosis at this month (0/1)}
+\itemize{
+\item \code{id}: Participant identifier
+\item \code{arm}: Trial arm (\code{"STOPBASE"} or \code{"CONTINUE"})
+\item \code{month}: Calendar month (integer, same scale as input)
+\item \code{month2}: Month relative to trial entry, 0-indexed
+\item \code{dead_t1}: Death in the next interval: 1 / 0 / \code{NA}
+\item \code{bc_dead_t1}: Breast cancer death in the next interval
+\item \code{bc_long}: Breast cancer diagnosis at this month (0/1)
 }
 }
 \description{

@@ -67,18 +67,17 @@ Default: \code{108} (corresponding to January 2000 through December 2008).}
 \value{
 A data frame with two rows per participant (one per arm), containing
 all columns from \code{data} plus:
-\describe{
-\item{\code{arm}}{Trial arm: \code{"STOPBASE"} or \code{"CONTINUE"}}
-\item{\code{end_month}}{Last observed month (minimum of death, administrative
+\itemize{
+\item \code{arm}: Trial arm: \code{"STOPBASE"} or \code{"CONTINUE"}
+\item \code{end_month}: Last observed month (minimum of death, administrative
 censoring, and protocol censoring). Overwrites the input \code{end_col}
-column.}
-\item{\code{censor_month}}{Month of protocol deviation censoring,
-or \code{NA} if the participant was not censored for protocol
-non-adherence.}
-\item{\code{fup}}{Follow-up time in months (\code{end_month - start_month + 1}).}
-\item{\code{died}}{Overall mortality indicator (0/1): 1 if death was the
-reason for ending follow-up.}
-\item{\code{bc_died}}{Breast cancer mortality indicator (0/1).}
+column.
+\item \code{censor_month}: Month of protocol deviation censoring, or \code{NA} if the
+participant was not censored for protocol non-adherence.
+\item \code{fup}: Follow-up time in months (\code{end_month - start_month + 1}).
+\item \code{died}: Overall mortality indicator (0/1): 1 if death was the reason for
+ending follow-up.
+\item \code{bc_died}: Breast cancer mortality indicator (0/1).
 }
 }
 \description{

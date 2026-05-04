@@ -31,6 +31,7 @@ Suggests:
     altdoc,
     knitr,
     rmarkdown,
+    snapr,
     spelling,
     testthat (>= 3.0.0),
     withr,
@@ -41,5 +42,6 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr, quarto
 Config/Needs/website: quarto
 Config/roxygen2/version: 8.0.0
+Remotes: d-morrison/snapr
 LazyData: true
 RoxygenNote: 8.0.0

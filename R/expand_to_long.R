@@ -45,15 +45,14 @@
 #'   Default: `"bc_month"`.
 #'
 #' @return A data frame with one row per participant-arm-month, containing:
-#'   \describe{
-#'     \item{`id`}{Participant identifier}
-#'     \item{`arm`}{Trial arm (`"STOPBASE"` or `"CONTINUE"`)}
-#'     \item{`month`}{Calendar month (integer, same scale as input)}
-#'     \item{`month2`}{Month relative to trial entry, 0-indexed}
-#'     \item{`dead_t1`}{Death in the next interval: 1 / 0 / `NA`}
-#'     \item{`bc_dead_t1`}{Breast cancer death in the next interval}
-#'     \item{`bc_long`}{Breast cancer diagnosis at this month (0/1)}
-#'   }
+#'
+#'   - `id`: Participant identifier
+#'   - `arm`: Trial arm (`"STOPBASE"` or `"CONTINUE"`)
+#'   - `month`: Calendar month (integer, same scale as input)
+#'   - `month2`: Month relative to trial entry, 0-indexed
+#'   - `dead_t1`: Death in the next interval: 1 / 0 / `NA`
+#'   - `bc_dead_t1`: Breast cancer death in the next interval
+#'   - `bc_long`: Breast cancer diagnosis at this month (0/1)
 #'
 #' @seealso [clone_censor()] for the preceding step.
 #'
@@ -83,50 +82,59 @@ expand_to_long <- function(
     bc_died_col = "bc_died",
     bc_month_col = "bc_month") {
   n <- nrow(data)
+  if (n == 0L) {
+    return(data.frame(
+      id = integer(0), arm = character(0), month = integer(0),
+      month2 = integer(0), dead_t1 = integer(0),
+      bc_dead_t1 = integer(0), bc_long = integer(0),
+      stringsAsFactors = FALSE
+    ))
+  }
+
   row_list <- vector("list", n)
 
   for (i in seq_len(n)) {
-    start <- data[[start_col]][i]
-    end <- data[[end_col]][i]
-    died <- data[[died_col]][i]
-    bc_died <- data[[bc_died_col]][i]
-    bc_month <- data[[bc_month_col]][i]
-
-    if (died == 1L && end > start) {
-      # Participant died: rows from start to end-1, dead_t1 = 1 at end-1
-      months <- seq.int(start, end - 1L)
-      nrows <- length(months)
-      dead_t1 <- c(rep(0L, nrows - 1L), 1L)
-    } else {
-      # Censored or died in entry month: rows from start to end,
-      # dead_t1 = NA at end
-      months <- seq.int(start, end)
-      nrows <- length(months)
-      dead_t1 <- c(rep(0L, nrows - 1L), NA_integer_)
-    }
-
-    # Breast-cancer-specific death indicator
-    bc_dead_t1 <- dead_t1
-    if (died == 1L && end > start && (is.na(bc_died) || bc_died == 0L)) {
-      bc_dead_t1[nrows] <- 0L
-    }
-
-    # Breast cancer diagnosis flag
-    bc_long <- as.integer(!is.na(bc_month) & months == bc_month)
-
-    row_list[[i]] <- data.frame(
-      id = rep(data[[id_col]][i], nrows),
-      arm = rep(data[[arm_col]][i], nrows),
-      month = months,
-      month2 = months - start,
-      dead_t1 = dead_t1,
-      bc_dead_t1 = bc_dead_t1,
-      bc_long = bc_long,
-      stringsAsFactors = FALSE
+    row_list[[i]] <- expand_participant(
+      id = data[[id_col]][i],
+      arm = data[[arm_col]][i],
+      start = data[[start_col]][i],
+      end = data[[end_col]][i],
+      died = data[[died_col]][i],
+      bc_died = data[[bc_died_col]][i],
+      bc_month = data[[bc_month_col]][i]
     )
   }
 
   out <- do.call(rbind, row_list)
   rownames(out) <- NULL
   out
+}
+
+# Expand one participant-arm row to one row per month
+expand_participant <- function(id, arm, start, end, died, bc_died, bc_month) {
+  if (died == 1L && end > start) {
+    months <- seq.int(start, end - 1L)
+    nrows <- length(months)
+    dead_t1 <- c(rep(0L, nrows - 1L), 1L)
+  } else {
+    months <- seq.int(start, end)
+    nrows <- length(months)
+    dead_t1 <- c(rep(0L, nrows - 1L), NA_integer_)
+  }
+
+  bc_dead_t1 <- dead_t1
+  if (died == 1L && end > start && (is.na(bc_died) || bc_died == 0L)) {
+    bc_dead_t1[nrows] <- 0L
+  }
+
+  data.frame(
+    id = rep(id, nrows),
+    arm = rep(arm, nrows),
+    month = months,
+    month2 = months - start,
+    dead_t1 = dead_t1,
+    bc_dead_t1 = bc_dead_t1,
+    bc_long = as.integer(!is.na(bc_month) & months == bc_month),
+    stringsAsFactors = FALSE
+  )
 }

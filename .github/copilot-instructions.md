@@ -148,6 +148,15 @@ altdoc::preview_docs()    # Launch preview server
 
 - Follow the [tidyverse style guide](https://style.tidyverse.org)
 - Use roxygen2 for documentation
+- In roxygen2 `@return` and `@details` sections, use markdown bullet-list syntax
+  (`-`) rather than `\describe{}`/`\item{}` for listing fields or items.
+  Example:
+  ```r
+  #' @return A data frame containing:
+  #'
+  #'   - `col_a`: Description of column a.
+  #'   - `col_b`: Description of column b.
+  ```
 - Include tests for all exported functions
 - Update NEWS.md for user-facing changes
   - Use the `(#issue_number)` notation to link to issues (e.g., `(#123)`)
