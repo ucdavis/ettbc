@@ -115,7 +115,7 @@ fit_outcome_hr <- function(
 #' @noRd
 compute_or_ci <- function(fit, fit_data, cluster_id_col) {
   if (!is.null(cluster_id_col) &&
-        requireNamespace("sandwich", quietly = TRUE)) {
+      requireNamespace("sandwich", quietly = TRUE)) { # nolint: indentation_linter
     cluster_var <- fit_data[[cluster_id_col]]
     vcov_robust <- sandwich::vcovCL(fit, cluster = cluster_var)
     se_robust <- sqrt(vcov_robust["STOPBASE", "STOPBASE"])
