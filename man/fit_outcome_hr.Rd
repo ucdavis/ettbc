@@ -51,10 +51,11 @@ Default: \code{c(6, 48, 72)}.}
 A named list with three elements:
 \itemize{
 \item \code{model}: The fitted \link[stats:glm]{stats::glm} object.
-\item \code{or}: Odds ratio for the STOPBASE arm (exp of the STOPBASE coefficient).
-\item \code{or_ci}: Named numeric vector of length 2 giving the 95\% confidence
+\item \code{or}: Odds ratio for the STOPBASE arm (exp of the STOPBASE main-effect
+coefficient at baseline month = 0).
+\item \code{or_ci}: Named numeric vector of length 2 giving the Wald 95\% confidence
 interval for the odds ratio (cluster-robust if \code{sandwich} is available
-and \code{cluster_id_col} is set, otherwise Wald).
+and \code{cluster_id_col} is set, otherwise standard).
 }
 }
 \description{
@@ -66,20 +67,28 @@ splines.
 \details{
 The model formula is:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{dead_t1 ~ STOPBASE + STOPBASE:month + STOPBASE:rcs1 + STOPBASE:rcs2
-          + month + rcs1 + rcs2 [+ covariate_cols]
+\if{html}{\out{<div class="sourceCode">}}\preformatted{dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + STOPBASE:ns2
+          + month3 + ns1 + ns2 [+ covariate_cols]
 }\if{html}{\out{</div>}}
 
+where \code{month3} is the 0-indexed follow-up month, and \code{ns1}/\code{ns2} are the
+two columns of the natural spline basis for time (from \code{\link[splines:ns]{splines::ns()}}).
+
 Participant-level IPW weights from \code{weight_col} are passed to
-\code{\link[stats:glm]{stats::glm()}}. The returned odds ratio corresponds to the \code{STOPBASE}
-coefficient, which approximates the hazard ratio when the event is rare.
+\code{\link[stats:glm]{stats::glm()}}. The returned odds ratio is the exponentiated \code{STOPBASE}
+main-effect coefficient. Because the formula includes arm-by-time
+interaction terms, this coefficient represents the instantaneous log-odds
+ratio at baseline (month = 0), not an unconditional overall ratio; it is
+retained as a hazard ratio approximation consistent with the SAS \code{cann20}
+macro output.
 
 Because the dataset contains repeated person-month observations per
 participant, standard \code{\link[stats:glm]{stats::glm()}} confidence intervals understate
 uncertainty. When \code{cluster_id_col} is provided and the \code{sandwich} package
 is installed, cluster-robust (HC) variance estimates are used to form the
 confidence interval, matching the variance estimation in the SAS
-\verb{PROC SURVEYLOGISTIC} implementation.
+\verb{PROC SURVEYLOGISTIC} implementation. A Wald confidence interval is used
+in both branches for consistent output type.
 }
 \examples{
 cloned <- clone_censor(cohort, screening_mammograms, diagnostic_mammograms)

@@ -1,5 +1,22 @@
 # ettbc (development version)
 
+* Applied second-round review feedback to analysis helpers:
+  - `fit_outcome_hr()`: fixed doc formula variable names (`month3`/`ns1`/`ns2`);
+    clarified that the STOPBASE main-effect OR is the baseline-time ratio from a
+    model with arm-by-time interactions; confidence intervals now use Wald
+    formula in both the sandwich and fallback branches (consistent named numeric
+    vector output).
+  - `compute_ipw_weights()`: arm-specific p99 truncation no longer errors when
+    only one arm is present in the input.
+  - `extract_mammograms_impl()`: empty-result `id` column now preserves the
+    type of `claims[[id_col]]` instead of defaulting to `integer(0)`.
+  - `bootstrap_ci()`: failed iterations are now counted; a `cli::cli_warn()` is
+    issued when the failure rate exceeds `fail_threshold` (new argument, default
+    10%). `cli` added to `Imports`.
+* Added tests for `predict_survival_baseline_adjusted()` and
+  `predict_survival_ipw()` (output structure, empty-data handling, and
+  weight-handling).
+
 * Applied review feedback to analysis helpers:
   - `predict_survival_unadjusted()`, `predict_survival_baseline_adjusted()`,
     and `predict_survival_ipw()` now apply `max_month` filtering **before**

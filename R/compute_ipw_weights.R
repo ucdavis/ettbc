@@ -118,14 +118,19 @@ compute_ipw_weights <- function(
   out$.row_idx <- NULL
   rownames(out) <- NULL
 
-  # Truncate at the 99th percentile computed separately within each arm
+  # Truncate at the 99th percentile computed separately within each arm.
+  # Guard against one arm being absent (e.g., single-arm subsets).
   stop_rows <- out[[arm_col]] == "STOPBASE"
   cont_rows <- !stop_rows
-  p99_stop <- stats::quantile(out$w[stop_rows], 0.99, na.rm = TRUE)
-  p99_cont <- stats::quantile(out$w[cont_rows], 0.99, na.rm = TRUE)
   out$wp99 <- out$w
-  out$wp99[stop_rows] <- pmin(out$w[stop_rows], p99_stop)
-  out$wp99[cont_rows] <- pmin(out$w[cont_rows], p99_cont)
+  if (any(stop_rows)) {
+    p99_stop <- stats::quantile(out$w[stop_rows], 0.99, na.rm = TRUE)
+    out$wp99[stop_rows] <- pmin(out$w[stop_rows], p99_stop)
+  }
+  if (any(cont_rows)) {
+    p99_cont <- stats::quantile(out$w[cont_rows], 0.99, na.rm = TRUE)
+    out$wp99[cont_rows] <- pmin(out$w[cont_rows], p99_cont)
+  }
   out
 }
 

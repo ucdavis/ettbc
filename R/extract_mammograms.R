@@ -166,7 +166,7 @@ extract_mammograms_impl <- function(
   filtered <- claims[claims[[hcpcs_col]] %in% hcpcs_codes, , drop = FALSE]
   if (nrow(filtered) == 0L) {
     return(data.frame(
-      id = integer(0), month = integer(0),
+      id = claims[[id_col]][0L], month = integer(0),
       stringsAsFactors = FALSE
     ))
   }

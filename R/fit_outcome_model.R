@@ -9,20 +9,28 @@
 #' The model formula is:
 #'
 #' ```
-#' dead_t1 ~ STOPBASE + STOPBASE:month + STOPBASE:rcs1 + STOPBASE:rcs2
-#'           + month + rcs1 + rcs2 [+ covariate_cols]
+#' dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + STOPBASE:ns2
+#'           + month3 + ns1 + ns2 [+ covariate_cols]
 #' ```
 #'
+#' where `month3` is the 0-indexed follow-up month, and `ns1`/`ns2` are the
+#' two columns of the natural spline basis for time (from [splines::ns()]).
+#'
 #' Participant-level IPW weights from `weight_col` are passed to
-#' [stats::glm()]. The returned odds ratio corresponds to the `STOPBASE`
-#' coefficient, which approximates the hazard ratio when the event is rare.
+#' [stats::glm()]. The returned odds ratio is the exponentiated `STOPBASE`
+#' main-effect coefficient. Because the formula includes arm-by-time
+#' interaction terms, this coefficient represents the instantaneous log-odds
+#' ratio at baseline (month = 0), not an unconditional overall ratio; it is
+#' retained as a hazard ratio approximation consistent with the SAS `cann20`
+#' macro output.
 #'
 #' Because the dataset contains repeated person-month observations per
 #' participant, standard [stats::glm()] confidence intervals understate
 #' uncertainty. When `cluster_id_col` is provided and the `sandwich` package
 #' is installed, cluster-robust (HC) variance estimates are used to form the
 #' confidence interval, matching the variance estimation in the SAS
-#' `PROC SURVEYLOGISTIC` implementation.
+#' `PROC SURVEYLOGISTIC` implementation. A Wald confidence interval is used
+#' in both branches for consistent output type.
 #'
 #' @param long_data A data frame in long format (one row per
 #'   participant-arm-month), as produced by [expand_to_long()].
@@ -48,10 +56,11 @@
 #' @return A named list with three elements:
 #'
 #'   - `model`: The fitted [stats::glm] object.
-#'   - `or`: Odds ratio for the STOPBASE arm (exp of the STOPBASE coefficient).
-#'   - `or_ci`: Named numeric vector of length 2 giving the 95% confidence
+#'   - `or`: Odds ratio for the STOPBASE arm (exp of the STOPBASE main-effect
+#'     coefficient at baseline month = 0).
+#'   - `or_ci`: Named numeric vector of length 2 giving the Wald 95% confidence
 #'     interval for the odds ratio (cluster-robust if `sandwich` is available
-#'     and `cluster_id_col` is set, otherwise Wald).
+#'     and `cluster_id_col` is set, otherwise standard).
 #'
 #' @seealso [compute_ipw_weights()], [predict_survival_ipw()],
 #'   [expand_to_long()]
@@ -114,16 +123,16 @@ fit_outcome_hr <- function(
 
 #' @noRd
 compute_or_ci <- function(fit, fit_data, cluster_id_col) {
+  beta <- stats::coef(fit)[["STOPBASE"]]
   if (!is.null(cluster_id_col) &&
       requireNamespace("sandwich", quietly = TRUE)) { # nolint: indentation_linter
     cluster_var <- fit_data[[cluster_id_col]]
     vcov_robust <- sandwich::vcovCL(fit, cluster = cluster_var)
-    se_robust <- sqrt(vcov_robust["STOPBASE", "STOPBASE"])
-    beta <- stats::coef(fit)[["STOPBASE"]]
-    ci_raw <- beta + c(-1, 1) * stats::qnorm(0.975) * se_robust
-    names(ci_raw) <- c("2.5 %", "97.5 %")
-    return(exp(ci_raw))
+    se <- sqrt(vcov_robust["STOPBASE", "STOPBASE"])
+  } else {
+    se <- sqrt(stats::vcov(fit)["STOPBASE", "STOPBASE"])
   }
-  ci_raw <- suppressMessages(stats::confint(fit, parm = "STOPBASE"))
+  ci_raw <- beta + c(-1, 1) * stats::qnorm(0.975) * se
+  names(ci_raw) <- c("2.5 %", "97.5 %")
   exp(ci_raw)
 }

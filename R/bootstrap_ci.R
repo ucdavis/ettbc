@@ -34,6 +34,9 @@
 #' @param n_boot Number of bootstrap iterations. Default: `500L`.
 #' @param seed Integer seed for reproducibility. `NULL` means no seed is set.
 #'   Default: `NULL`.
+#' @param fail_threshold Maximum proportion of bootstrap iterations that may
+#'   fail before a warning is issued. Default: `0.1` (warn if more than 10%
+#'   of iterations fail).
 #'
 #' @return A data frame with one row per month (0 through `max_month`),
 #'   containing:
@@ -75,7 +78,8 @@ bootstrap_ci <- function(
     max_month = 95L,
     rcs_knots = c(6, 48, 72),
     n_boot = 500L,
-    seed = NULL) {
+    seed = NULL,
+    fail_threshold = 0.1) {
   n_months <- max_month + 1L
 
   empty_result <- data.frame(
@@ -117,6 +121,7 @@ bootstrap_ci <- function(
   boot_diffs <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
   boot_s_cont <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
   boot_s_stop <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
+  n_failed <- 0L
 
   for (b in seq_len(n_boot)) {
     boot_ids <- sample(ids, size = n_ids, replace = TRUE)
@@ -152,8 +157,20 @@ bootstrap_ci <- function(
         boot_s_cont[b, ] <- boot_surv$s_continue
         boot_s_stop[b, ] <- boot_surv$s_stopbase
       },
-      error = function(e) NULL
+      error = function(e) {
+        n_failed <<- n_failed + 1L
+      }
     )
+  }
+
+  if (n_failed > 0L) {
+    fail_rate <- n_failed / n_boot
+    if (fail_rate > fail_threshold) {
+      cli::cli_warn(
+        "{n_failed} of {n_boot} bootstrap iterations failed \\
+        ({round(fail_rate * 100)}%)."
+      )
+    }
   }
 
   col_quantile <- function(mat, prob) {

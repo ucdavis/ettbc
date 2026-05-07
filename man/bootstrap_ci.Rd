@@ -15,7 +15,8 @@ bootstrap_ci(
   max_month = 95L,
   rcs_knots = c(6, 48, 72),
   n_boot = 500L,
-  seed = NULL
+  seed = NULL,
+  fail_threshold = 0.1
 )
 }
 \arguments{
@@ -48,6 +49,10 @@ spline knots. Default: \code{c(6, 48, 72)}.}
 
 \item{seed}{Integer seed for reproducibility. \code{NULL} means no seed is set.
 Default: \code{NULL}.}
+
+\item{fail_threshold}{Maximum proportion of bootstrap iterations that may
+fail before a warning is issued. Default: \code{0.1} (warn if more than 10\%
+of iterations fail).}
 }
 \value{
 A data frame with one row per month (0 through \code{max_month}),
