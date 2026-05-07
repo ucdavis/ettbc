@@ -497,8 +497,19 @@ ul.task-list li input[type="checkbox"] {
 <section id="ettbc-development-version" class="level1">
 <h1>ettbc (development version)</h1>
 <ul>
+<li><p>Applied review feedback to analysis helpers:</p>
+<ul>
+<li><code>predict_survival_unadjusted()</code>, <code>predict_survival_baseline_adjusted()</code>, and <code>predict_survival_ipw()</code> now apply <code>max_month</code> filtering <strong>before</strong> model fitting, matching the SAS <code>cann15/16/21</code> implementation. Added <code>id_col</code> parameter and fixed hardcoded <code>"id"</code> column in baseline deduplication.</li>
+<li><code>compute_ipw_weights()</code> now computes separate 99th-percentile truncation thresholds for each arm (STOPBASE and CONTINUE), and the CONTINUE arm helper now tracks compliance-window resets from any mammogram via <code>anymammo_col</code>.</li>
+<li><code>false_positives()</code> now filters histological evaluations to within each arm’s observed follow-up, uses the 0-indexed <code>month2</code> for first-round/beyond-first-round classification, and deduplicates repeat evaluations within <code>window_months</code> months per participant-arm. An empty result is now returned safely when no events match the cohort.</li>
+<li><code>fit_outcome_hr()</code> now uses cluster-robust (sandwich) confidence intervals when the <code>sandwich</code> package is installed (new <code>cluster_id_col</code> argument), matching the SAS <code>PROC SURVEYLOGISTIC</code> cluster-variance approach.</li>
+<li><code>bootstrap_ci()</code> now returns an NA-filled result for empty input instead of erroring.</li>
+</ul></li>
+<li><p>Added <code>sandwich</code> to <code>Suggests</code>.</p></li>
+<li><p>Added tests for <code>false_positives()</code>, <code>extract_mammograms()</code>, and <code>bootstrap_ci()</code> seed reproducibility and empty-input handling.</p></li>
+<li><p>Fixed British spellings in documentation and <code>NEWS.md</code> (<code>stabilised</code> → <code>stabilized</code>); added technical terms to spell-check wordlist.</p></li>
 <li><p>Added <code>predict_survival_unadjusted()</code>, <code>predict_survival_baseline_adjusted()</code>, and <code>predict_survival_ipw()</code>: fit pooled logistic regression models with restricted cubic spline time terms and arm-by-time interactions, then apply g-computation to produce marginal survival curves for each trial arm (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
-<li><p>Added <code>compute_ipw_weights()</code>: computes stabilised cumulative IPW weights for each participant-arm-month, with separate weight models for the STOPBASE and CONTINUE arms, truncated at the 99th percentile (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
+<li><p>Added <code>compute_ipw_weights()</code>: computes stabilized cumulative IPW weights for each participant-arm-month, with separate weight models for the STOPBASE and CONTINUE arms, truncated at the 99th percentile (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
 <li><p>Added <code>fit_outcome_hr()</code>: fits an IPW-weighted pooled logistic regression and returns the odds ratio (hazard ratio approximation) for the STOPBASE arm with 95% confidence interval (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
 <li><p>Added <code>bootstrap_ci()</code>: nonparametric bootstrap for 95% percentile confidence intervals on the IPW-estimated survival difference (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
 <li><p>Added <code>false_positives()</code>: computes false positive rates for histological evaluations, stratified by trial arm and screening round (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>

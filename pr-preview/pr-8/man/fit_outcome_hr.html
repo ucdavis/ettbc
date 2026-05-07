@@ -516,7 +516,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/bootstrap_ci.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/fit_outcome_hr.html">fit_outcome_hr</a></li></ol></nav></header><section id="fit-ipw-weighted-outcome-hazard-ratio-model" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="fit-ipw-weighted-outcome-hazard-ratio-model">Fit IPW-Weighted Outcome Hazard Ratio Model</h2>
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Fits an inverse-probability-weighted pooled logistic regression to estimate the odds ratio (as a hazard ratio approximation) for the STOPBASE arm relative to the CONTINUE arm, with time modelled via restricted cubic splines.</p>
+<p>Fits an inverse-probability-weighted pooled logistic regression to estimate the odds ratio (as a hazard ratio approximation) for the STOPBASE arm relative to the CONTINUE arm, with time modeled via restricted cubic splines.</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <pre><code class="language-R">fit_outcome_hr(
   long_data,
@@ -526,6 +526,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   arm_col = "arm",
   month_col = "month2",
   id_col = "id",
+  cluster_id_col = id_col,
   max_month = 95L,
   rcs_knots = c(6, 48, 72)
 )
@@ -585,7 +586,15 @@ Name of the 0-indexed month-from-entry column. Default: <code>“month2”</code
 <code id="id_col">id_col</code>
 </td>
 <td>
-Name of the participant identifier column (reserved for future use with robust standard errors). Default: <code>“id”</code>.
+Name of the participant identifier column. Default: <code>“id”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="cluster_id_col">cluster_id_col</code>
+</td>
+<td>
+Name of the column to use for clustering standard errors. When non-<code>NULL</code> and the <code>sandwich</code> package is available, cluster-robust confidence intervals are returned. Defaults to <code>id_col</code>.
 </td>
 </tr>
 <tr>
@@ -612,6 +621,7 @@ Numeric vector of length 3: <code>c(left_boundary, interior_knot, right_boundary
 </pre>
 </div>
 <p>Participant-level IPW weights from <code>weight_col</code> are passed to <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code>. The returned odds ratio corresponds to the <code>STOPBASE</code> coefficient, which approximates the hazard ratio when the event is rare.</p>
+<p>Because the dataset contains repeated person-month observations per participant, standard <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code> confidence intervals understate uncertainty. When <code>cluster_id_col</code> is provided and the <code>sandwich</code> package is installed, cluster-robust (HC) variance estimates are used to form the confidence interval, matching the variance estimation in the SAS <code style="white-space: pre;">PROC SURVEYLOGISTIC</code> implementation.</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A named list with three elements:</p>
 <ul>
@@ -622,7 +632,7 @@ Numeric vector of length 3: <code>c(left_boundary, interior_knot, right_boundary
 <p><code>or</code>: Odds ratio for the STOPBASE arm (exp of the STOPBASE coefficient).</p>
 </li>
 <li>
-<p><code>or_ci</code>: Named numeric vector of length 2 giving the 95% confidence interval for the odds ratio.</p>
+<p><code>or_ci</code>: Named numeric vector of length 2 giving the 95% confidence interval for the odds ratio (cluster-robust if <code>sandwich</code> is available and <code>cluster_id_col</code> is set, otherwise Wald).</p>
 </li>
 </ul></section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
 <p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381–389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>

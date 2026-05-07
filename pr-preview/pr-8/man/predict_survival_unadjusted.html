@@ -516,13 +516,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/bootstrap_ci.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/predict_survival_unadjusted.html">predict_survival_unadjusted</a></li></ol></nav></header><section id="predict-unadjusted-survival-curves" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="predict-unadjusted-survival-curves">Predict Unadjusted Survival Curves</h2>
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Fits a pooled logistic regression with time modelled using restricted cubic splines and arm-by-time interaction terms, then uses g-computation to generate marginal survival curves for each trial arm.</p>
+<p>Fits a pooled logistic regression with time modeled using restricted cubic splines and arm-by-time interaction terms, then uses g-computation to generate marginal survival curves for each trial arm.</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <pre><code class="language-R">predict_survival_unadjusted(
   long_data,
   outcome_col = "dead_t1",
   arm_col = "arm",
   month_col = "month2",
+  id_col = "id",
   max_month = 95L,
   rcs_knots = c(6, 48, 72)
 )
@@ -563,10 +564,18 @@ Name of the time variable column (0-indexed month relative to trial entry). Defa
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="id_col">id_col</code>
+</td>
+<td>
+Name of the participant identifier column, used to deduplicate baseline rows during standardization. Default: <code>“id”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="max_month">max_month</code>
 </td>
 <td>
-Maximum month for survival prediction. Default: <code>95</code>.
+Maximum month for survival prediction. Rows with month beyond this value are excluded from both model fitting and prediction. Default: <code>95</code>.
 </td>
 </tr>
 <tr>
@@ -613,12 +622,12 @@ Numeric vector of length 3 specifying the boundary and interior knots for the re
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">surv</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code>  month s_continue s_stopbase
-1     0  0.9960018  0.9979071
-2     1  0.9921447  0.9957995
-3     2  0.9884232  0.9936770
-4     3  0.9848322  0.9915398
-5     4  0.9813666  0.9893876
-6     5  0.9780218  0.9872205</code></pre>
+1     0  0.9961485  0.9979071
+2     1  0.9924180  0.9957995
+3     2  0.9888043  0.9936770
+4     3  0.9853035  0.9915398
+5     4  0.9819117  0.9893876
+6     5  0.9786251  0.9872205</code></pre>
 </div>
 </div>
 

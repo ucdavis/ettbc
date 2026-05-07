@@ -517,7 +517,7 @@ ul.task-list li input[type="checkbox"] {
   arm_col = "arm",
   month2_col = "month2",
   bc_month_col = "monthBC",
-  hist_month_col = "month",
+  hist_month2_col = "month2",
   first_round_months = 9L,
   window_months = 6L
 )
@@ -531,7 +531,7 @@ ul.task-list li input[type="checkbox"] {
 <code id="long_data">long_data</code>
 </td>
 <td>
-A data frame in long format (one row per participant-arm-month), as produced by <code>expand_to_long()</code>. Must include <code>id_col</code>, <code>arm_col</code>, and <code>bc_month_col</code>.
+A data frame in long format (one row per participant-arm-month), as produced by <code>expand_to_long()</code>. Must include <code>id_col</code>, <code>arm_col</code>, <code>month2_col</code>, and <code>bc_month_col</code>.
 </td>
 </tr>
 <tr>
@@ -539,7 +539,7 @@ A data frame in long format (one row per participant-arm-month), as produced by 
 <code id="hist_data">hist_data</code>
 </td>
 <td>
-A data frame with one row per histological evaluation (biopsy or lumpectomy), containing columns <code>id_col</code> and <code>hist_month_col</code>.
+A data frame with one row per histological evaluation (biopsy or lumpectomy), containing <code>id_col</code> and <code>hist_month2_col</code> (0-indexed follow-up month of the evaluation, on the same scale as <code>month2_col</code>).
 </td>
 </tr>
 <tr>
@@ -576,10 +576,10 @@ Name of the column containing the month2 of breast cancer diagnosis (<code>NA</c
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="hist_month_col">hist_month_col</code>
+<code id="hist_month2_col">hist_month2_col</code>
 </td>
 <td>
-Name of the histological evaluation month column in <code>hist_data</code>. Default: <code>“month”</code>.
+Name of the 0-indexed evaluation month column in <code>hist_data</code>. Must be on the same scale as <code>month2_col</code>. Default: <code>“month2”</code>.
 </td>
 </tr>
 <tr>
@@ -587,7 +587,7 @@ Name of the histological evaluation month column in <code>hist_data</code>. Defa
 <code id="first_round_months">first_round_months</code>
 </td>
 <td>
-Month threshold (0-indexed) for defining the first screening round. Default: <code>9L</code>.
+Month2 threshold for defining the first screening round. Default: <code>9L</code>.
 </td>
 </tr>
 <tr>
@@ -595,21 +595,30 @@ Month threshold (0-indexed) for defining the first screening round. Default: <co
 <code id="window_months">window_months</code>
 </td>
 <td>
-Number of months after a histological evaluation during which a breast cancer diagnosis counts as a true positive. Default: <code>6L</code>.
+Number of months (in month2 units) after a histological evaluation during which a breast cancer diagnosis counts as a true positive. Also used for deduplication: repeat evaluations within this many months of a prior one are dropped. Default: <code>6L</code>.
 </td>
 </tr>
 </tbody></table>
 </section>
 <section id="details" class="level3">
 <h3 class="anchored" data-anchor-id="details">Details</h3>
-<p>A histological evaluation is classified as a <strong>true positive</strong> if a breast cancer diagnosis is recorded within <code>window_months</code> months of the procedure month (inclusive). All other histological evaluations are classified as <strong>false positives</strong>.</p>
-<p>Evaluations are stratified by period:</p>
+<p>A histological evaluation is classified as a <strong>true positive</strong> if a breast cancer diagnosis is recorded within <code>window_months</code> months of the evaluation (in month2 units, inclusive). All other evaluations are <strong>false positives</strong>.</p>
+<p>Before classification, the following pre-processing steps are applied:</p>
 <ul>
 <li>
-<p><strong>first_round</strong>: Histological evaluation month (0-indexed) is at or before <code>first_round_months</code>.</p>
+<p><strong>Censoring filter</strong>: Only evaluations that fall within the observed follow-up period for the participant-arm are counted. Evaluations that occur after the last observed <code>month2</code> for a given arm are excluded.</p>
 </li>
 <li>
-<p><strong>beyond_first_round</strong>: Histological evaluation month exceeds <code>first_round_months</code>.</p>
+<p><strong>Deduplication</strong>: Repeat evaluations within <code>window_months</code> months of a prior evaluation (per participant-arm) are dropped so that one diagnostic episode is not counted multiple times.</p>
+</li>
+</ul>
+<p>Evaluations are stratified by period based on the 0-indexed follow-up month (<code>month2</code>):</p>
+<ul>
+<li>
+<p><strong>first_round</strong>: Evaluation <code>month2</code> is at or below <code>first_round_months</code>.</p>
+</li>
+<li>
+<p><strong>beyond_first_round</strong>: Evaluation <code>month2</code> exceeds <code>first_round_months</code>.</p>
 </li>
 </ul>
 </section>
@@ -624,7 +633,7 @@ Number of months after a histological evaluation during which a breast cancer di
 <p><code>period</code>: Screening period (<code>“first_round”</code> or <code>“beyond_first_round”</code>).</p>
 </li>
 <li>
-<p><code>n_hist</code>: Total number of histological evaluations.</p>
+<p><code>n_hist</code>: Total number of histological evaluations (after deduplication).</p>
 </li>
 <li>
 <p><code>n_positive</code>: Number that led to a breast cancer diagnosis.</p>
