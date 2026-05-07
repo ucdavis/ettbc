@@ -616,12 +616,13 @@ Numeric vector of length 3: <code>c(left_boundary, interior_knot, right_boundary
 </tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>The model formula is:</p>
 <div class="sourceCode">
-<pre>dead_t1 ~ STOPBASE + STOPBASE:month + STOPBASE:rcs1 + STOPBASE:rcs2
-          + month + rcs1 + rcs2 [+ covariate_cols]
+<pre>dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + STOPBASE:ns2
+          + month3 + ns1 + ns2 [+ covariate_cols]
 </pre>
 </div>
-<p>Participant-level IPW weights from <code>weight_col</code> are passed to <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code>. The returned odds ratio corresponds to the <code>STOPBASE</code> coefficient, which approximates the hazard ratio when the event is rare.</p>
-<p>Because the dataset contains repeated person-month observations per participant, standard <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code> confidence intervals understate uncertainty. When <code>cluster_id_col</code> is provided and the <code>sandwich</code> package is installed, cluster-robust (HC) variance estimates are used to form the confidence interval, matching the variance estimation in the SAS <code style="white-space: pre;">PROC SURVEYLOGISTIC</code> implementation.</p>
+<p>where <code>month3</code> is the 0-indexed follow-up month, and <code>ns1</code>/<code>ns2</code> are the two columns of the natural spline basis for time (from <code><a href="https://rdrr.io/r/splines/ns.html">splines::ns()</a></code>).</p>
+<p>Participant-level IPW weights from <code>weight_col</code> are passed to <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code>. The returned odds ratio is the exponentiated <code>STOPBASE</code> main-effect coefficient. Because the formula includes arm-by-time interaction terms, this coefficient represents the instantaneous log-odds ratio at baseline (month = 0), not an unconditional overall ratio; it is retained as a hazard ratio approximation consistent with the SAS <code>cann20</code> macro output.</p>
+<p>Because the dataset contains repeated person-month observations per participant, standard <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code> confidence intervals understate uncertainty. When <code>cluster_id_col</code> is provided and the <code>sandwich</code> package is installed, cluster-robust (HC) variance estimates are used to form the confidence interval, matching the variance estimation in the SAS <code style="white-space: pre;">PROC SURVEYLOGISTIC</code> implementation. A Wald confidence interval is used in both branches for consistent output type.</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A named list with three elements:</p>
 <ul>
@@ -629,10 +630,10 @@ Numeric vector of length 3: <code>c(left_boundary, interior_knot, right_boundary
 <p><code>model</code>: The fitted stats::glm object.</p>
 </li>
 <li>
-<p><code>or</code>: Odds ratio for the STOPBASE arm (exp of the STOPBASE coefficient).</p>
+<p><code>or</code>: Odds ratio for the STOPBASE arm (exp of the STOPBASE main-effect coefficient at baseline month = 0).</p>
 </li>
 <li>
-<p><code>or_ci</code>: Named numeric vector of length 2 giving the 95% confidence interval for the odds ratio (cluster-robust if <code>sandwich</code> is available and <code>cluster_id_col</code> is set, otherwise Wald).</p>
+<p><code>or_ci</code>: Named numeric vector of length 2 giving the Wald 95% confidence interval for the odds ratio (cluster-robust if <code>sandwich</code> is available and <code>cluster_id_col</code> is set, otherwise standard).</p>
 </li>
 </ul></section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
 <p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381–389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>

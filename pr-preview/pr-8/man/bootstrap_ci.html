@@ -521,7 +521,8 @@ ul.task-list li input[type="checkbox"] {
   max_month = 95L,
   rcs_knots = c(6, 48, 72),
   n_boot = 500L,
-  seed = NULL
+  seed = NULL,
+  fail_threshold = 0.1
 )
 </code></pre>
 </section>
@@ -614,6 +615,14 @@ Number of bootstrap iterations. Default: <code>500L</code>.
 </td>
 <td>
 Integer seed for reproducibility. <code>NULL</code> means no seed is set. Default: <code>NULL</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="fail_threshold">fail_threshold</code>
+</td>
+<td>
+Maximum proportion of bootstrap iterations that may fail before a warning is issued. Default: <code>0.1</code> (warn if more than 10% of iterations fail).
 </td>
 </tr>
 </tbody></table>
