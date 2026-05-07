@@ -12,6 +12,7 @@ fit_outcome_hr(
   arm_col = "arm",
   month_col = "month2",
   id_col = "id",
+  cluster_id_col = id_col,
   max_month = 95L,
   rcs_knots = c(6, 48, 72)
 )
@@ -34,8 +35,11 @@ for unweighted estimation. Default: \code{"wp99"}.}
 \item{month_col}{Name of the 0-indexed month-from-entry column.
 Default: \code{"month2"}.}
 
-\item{id_col}{Name of the participant identifier column (reserved for
-future use with robust standard errors). Default: \code{"id"}.}
+\item{id_col}{Name of the participant identifier column. Default: \code{"id"}.}
+
+\item{cluster_id_col}{Name of the column to use for clustering standard
+errors. When non-\code{NULL} and the \code{sandwich} package is available,
+cluster-robust confidence intervals are returned. Defaults to \code{id_col}.}
 
 \item{max_month}{Maximum month included in the model. Rows beyond this
 month are excluded. Default: \code{95L}.}
@@ -49,13 +53,14 @@ A named list with three elements:
 \item \code{model}: The fitted \link[stats:glm]{stats::glm} object.
 \item \code{or}: Odds ratio for the STOPBASE arm (exp of the STOPBASE coefficient).
 \item \code{or_ci}: Named numeric vector of length 2 giving the 95\% confidence
-interval for the odds ratio.
+interval for the odds ratio (cluster-robust if \code{sandwich} is available
+and \code{cluster_id_col} is set, otherwise Wald).
 }
 }
 \description{
 Fits an inverse-probability-weighted pooled logistic regression to estimate
 the odds ratio (as a hazard ratio approximation) for the STOPBASE arm
-relative to the CONTINUE arm, with time modelled via restricted cubic
+relative to the CONTINUE arm, with time modeled via restricted cubic
 splines.
 }
 \details{
@@ -68,6 +73,13 @@ The model formula is:
 Participant-level IPW weights from \code{weight_col} are passed to
 \code{\link[stats:glm]{stats::glm()}}. The returned odds ratio corresponds to the \code{STOPBASE}
 coefficient, which approximates the hazard ratio when the event is rare.
+
+Because the dataset contains repeated person-month observations per
+participant, standard \code{\link[stats:glm]{stats::glm()}} confidence intervals understate
+uncertainty. When \code{cluster_id_col} is provided and the \code{sandwich} package
+is installed, cluster-robust (HC) variance estimates are used to form the
+confidence interval, matching the variance estimation in the SAS
+\verb{PROC SURVEYLOGISTIC} implementation.
 }
 \examples{
 cloned <- clone_censor(cohort, screening_mammograms, diagnostic_mammograms)

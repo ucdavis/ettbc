@@ -6,7 +6,10 @@ CodeFactor
 Codecov
 DL
 Epidemiol
+FQHC
 García
+HC
+HCPCS
 Hernán
 IPW
 JM
@@ -24,10 +27,13 @@ altdoc
 callout
 callouts
 cdot
+deduplicate
+deduplication
 doi
 et
 foldable
 frac
+histological
 mc
 pre
 randomised
@@ -35,3 +41,5 @@ reweight
 screeners
 slidebreak
 tabset
+th
+unbootstrapped

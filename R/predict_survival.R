@@ -1,6 +1,6 @@
 #' Predict Unadjusted Survival Curves
 #'
-#' Fits a pooled logistic regression with time modelled using restricted cubic
+#' Fits a pooled logistic regression with time modeled using restricted cubic
 #' splines and arm-by-time interaction terms, then uses g-computation to
 #' generate marginal survival curves for each trial arm.
 #'
@@ -27,7 +27,11 @@
 #'   Default: `"arm"`.
 #' @param month_col Name of the time variable column (0-indexed month relative
 #'   to trial entry). Default: `"month2"`.
-#' @param max_month Maximum month for survival prediction. Default: `95`.
+#' @param id_col Name of the participant identifier column, used to
+#'   deduplicate baseline rows during standardization. Default: `"id"`.
+#' @param max_month Maximum month for survival prediction. Rows with month
+#'   beyond this value are excluded from both model fitting and prediction.
+#'   Default: `95`.
 #' @param rcs_knots Numeric vector of length 3 specifying the boundary and
 #'   interior knots for the restricted cubic spline: `c(left_boundary,
 #'   interior_knot, right_boundary)`. Default: `c(6, 48, 72)`.
@@ -60,6 +64,7 @@ predict_survival_unadjusted <- function(
     outcome_col = "dead_t1",
     arm_col = "arm",
     month_col = "month2",
+    id_col = "id",
     max_month = 95L,
     rcs_knots = c(6, 48, 72)) {
   if (nrow(long_data) == 0L) {
@@ -72,25 +77,29 @@ predict_survival_unadjusted <- function(
   fit_data <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
-  fit_data <- fit_data[!is.na(fit_data$dead_t1), , drop = FALSE]
+  fit_data <- fit_data[
+    !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
+    ,
+    drop = FALSE
+  ]
   formula_obj <- build_model_formula()
   fit <- stats::glm(
     formula_obj,
     data = fit_data,
     family = stats::binomial(link = "logit")
   )
-  standardize_survival(fit, fit_data, max_month, rcs_knots)
+  standardize_survival(fit, fit_data, max_month, rcs_knots, id_col)
 }
 
 #' Predict Baseline-Adjusted Survival Curves
 #'
 #' Fits a pooled logistic regression that includes baseline covariates alongside
-#' time-by-arm interaction terms, then uses g-computation (standardisation) to
+#' time-by-arm interaction terms, then uses g-computation (standardization) to
 #' generate marginal survival curves for each trial arm.
 #'
 #' @details
 #' Extends [predict_survival_unadjusted()] by adding baseline covariate
-#' columns to the right-hand side of the regression formula. Standardisation
+#' columns to the right-hand side of the regression formula. Standardization
 #' averages predicted survival over the empirical distribution of baseline
 #' covariates so that the returned curves are marginal (population-averaged)
 #' rather than conditional.
@@ -132,6 +141,7 @@ predict_survival_baseline_adjusted <- function( # nolint: object_length_linter
     outcome_col = "dead_t1",
     arm_col = "arm",
     month_col = "month2",
+    id_col = "id",
     max_month = 95L,
     rcs_knots = c(6, 48, 72)) {
   if (nrow(long_data) == 0L) {
@@ -144,20 +154,24 @@ predict_survival_baseline_adjusted <- function( # nolint: object_length_linter
   fit_data <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
-  fit_data <- fit_data[!is.na(fit_data$dead_t1), , drop = FALSE]
+  fit_data <- fit_data[
+    !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
+    ,
+    drop = FALSE
+  ]
   formula_obj <- build_model_formula(covariate_cols)
   fit <- stats::glm(
     formula_obj,
     data = fit_data,
     family = stats::binomial(link = "logit")
   )
-  standardize_survival(fit, fit_data, max_month, rcs_knots)
+  standardize_survival(fit, fit_data, max_month, rcs_knots, id_col)
 }
 
 #' Predict IPW-Weighted Survival Curves
 #'
 #' Fits an inverse-probability-weighted pooled logistic regression with
-#' time modelled using restricted cubic splines and arm-by-time interaction
+#' time modeled using restricted cubic splines and arm-by-time interaction
 #' terms, then uses g-computation to generate marginal survival curves for
 #' each trial arm.
 #'
@@ -209,6 +223,7 @@ predict_survival_ipw <- function(
     outcome_col = "dead_t1",
     arm_col = "arm",
     month_col = "month2",
+    id_col = "id",
     max_month = 95L,
     rcs_knots = c(6, 48, 72)) {
   if (nrow(long_data) == 0L) {
@@ -221,7 +236,11 @@ predict_survival_ipw <- function(
   fit_data <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
-  fit_data <- fit_data[!is.na(fit_data$dead_t1), , drop = FALSE]
+  fit_data <- fit_data[
+    !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
+    ,
+    drop = FALSE
+  ]
   formula_obj <- build_model_formula(covariate_cols)
   glm_args <- list(
     formula = formula_obj,
@@ -232,7 +251,7 @@ predict_survival_ipw <- function(
     glm_args$weights <- fit_data[[weight_col]]
   }
   fit <- do.call(stats::glm, glm_args)
-  standardize_survival(fit, fit_data, max_month, rcs_knots)
+  standardize_survival(fit, fit_data, max_month, rcs_knots, id_col)
 }
 
 # Internal helpers --------------------------------------------------------
@@ -265,11 +284,15 @@ build_model_data <- function(
 }
 
 #' @noRd
-standardize_survival <- function(fit, fit_data, max_month, rcs_knots) {
-  # One row per individual at baseline
+standardize_survival <- function(fit, fit_data, max_month, rcs_knots, id_col) {
+  # One row per individual at baseline (deduplicate on id_col)
   is_baseline <- fit_data$month3 == 0L
   baseline_data <- fit_data[is_baseline, , drop = FALSE]
-  baseline_data <- baseline_data[!duplicated(baseline_data$id), , drop = FALSE]
+  baseline_data <- baseline_data[
+    !duplicated(baseline_data[[id_col]]),
+    ,
+    drop = FALSE
+  ]
   n_indiv <- nrow(baseline_data)
 
   if (n_indiv == 0L) {

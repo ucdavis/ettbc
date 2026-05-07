@@ -76,11 +76,27 @@ bootstrap_ci <- function(
     rcs_knots = c(6, 48, 72),
     n_boot = 500L,
     seed = NULL) {
+  n_months <- max_month + 1L
+
+  empty_result <- data.frame(
+    month = 0L:max_month,
+    diff = rep(NA_real_, n_months),
+    diff_lo = rep(NA_real_, n_months),
+    diff_hi = rep(NA_real_, n_months),
+    s_continue = rep(NA_real_, n_months),
+    s_stopbase = rep(NA_real_, n_months),
+    s_continue_lo = rep(NA_real_, n_months),
+    s_continue_hi = rep(NA_real_, n_months),
+    s_stopbase_lo = rep(NA_real_, n_months),
+    s_stopbase_hi = rep(NA_real_, n_months)
+  )
+
+  if (nrow(long_data) == 0L) return(empty_result)
+
   if (!is.null(seed)) set.seed(seed)
 
   ids <- unique(long_data[[id_col]])
   n_ids <- length(ids)
-  n_months <- max_month + 1L
 
   # Point estimate
   long_data_w <- compute_ipw_weights( # nolint: object_usage_linter

@@ -11,7 +11,7 @@ false_positives(
   arm_col = "arm",
   month2_col = "month2",
   bc_month_col = "monthBC",
-  hist_month_col = "month",
+  hist_month2_col = "month2",
   first_round_months = 9L,
   window_months = 6L
 )
@@ -19,10 +19,12 @@ false_positives(
 \arguments{
 \item{long_data}{A data frame in long format (one row per
 participant-arm-month), as produced by \code{\link[=expand_to_long]{expand_to_long()}}. Must include
-\code{id_col}, \code{arm_col}, and \code{bc_month_col}.}
+\code{id_col}, \code{arm_col}, \code{month2_col}, and \code{bc_month_col}.}
 
 \item{hist_data}{A data frame with one row per histological evaluation
-(biopsy or lumpectomy), containing columns \code{id_col} and \code{hist_month_col}.}
+(biopsy or lumpectomy), containing \code{id_col} and \code{hist_month2_col}
+(0-indexed follow-up month of the evaluation, on the same scale as
+\code{month2_col}).}
 
 \item{id_col}{Name of the participant identifier column. Default: \code{"id"}.}
 
@@ -34,14 +36,17 @@ participant-arm-month), as produced by \code{\link[=expand_to_long]{expand_to_lo
 \item{bc_month_col}{Name of the column containing the month2 of breast
 cancer diagnosis (\code{NA} if no diagnosis). Default: \code{"monthBC"}.}
 
-\item{hist_month_col}{Name of the histological evaluation month column in
-\code{hist_data}. Default: \code{"month"}.}
+\item{hist_month2_col}{Name of the 0-indexed evaluation month column in
+\code{hist_data}. Must be on the same scale as \code{month2_col}.
+Default: \code{"month2"}.}
 
-\item{first_round_months}{Month threshold (0-indexed) for defining the
-first screening round. Default: \code{9L}.}
+\item{first_round_months}{Month2 threshold for defining the first screening
+round. Default: \code{9L}.}
 
-\item{window_months}{Number of months after a histological evaluation during
-which a breast cancer diagnosis counts as a true positive. Default: \code{6L}.}
+\item{window_months}{Number of months (in month2 units) after a histological
+evaluation during which a breast cancer diagnosis counts as a true
+positive. Also used for deduplication: repeat evaluations within this
+many months of a prior one are dropped. Default: \code{6L}.}
 }
 \value{
 A data frame with one row per arm-period combination, containing:
@@ -49,7 +54,8 @@ A data frame with one row per arm-period combination, containing:
 \item \code{arm}: Trial arm (\code{"STOPBASE"} or \code{"CONTINUE"}).
 \item \code{period}: Screening period (\code{"first_round"} or
 \code{"beyond_first_round"}).
-\item \code{n_hist}: Total number of histological evaluations.
+\item \code{n_hist}: Total number of histological evaluations (after
+deduplication).
 \item \code{n_positive}: Number that led to a breast cancer diagnosis.
 \item \code{fpr}: False positive rate (\code{1 - n_positive / n_hist}).
 }
@@ -61,16 +67,24 @@ by trial arm and screening round (first round versus beyond first round).
 }
 \details{
 A histological evaluation is classified as a \strong{true positive} if a breast
-cancer diagnosis is recorded within \code{window_months} months of the procedure
-month (inclusive). All other histological evaluations are classified as
-\strong{false positives}.
+cancer diagnosis is recorded within \code{window_months} months of the evaluation
+(in month2 units, inclusive). All other evaluations are \strong{false positives}.
 
-Evaluations are stratified by period:
+Before classification, the following pre-processing steps are applied:
 \itemize{
-\item \strong{first_round}: Histological evaluation month (0-indexed) is at or before
-\code{first_round_months}.
-\item \strong{beyond_first_round}: Histological evaluation month exceeds
-\code{first_round_months}.
+\item \strong{Censoring filter}: Only evaluations that fall within the observed
+follow-up period for the participant-arm are counted.  Evaluations that
+occur after the last observed \code{month2} for a given arm are excluded.
+\item \strong{Deduplication}: Repeat evaluations within \code{window_months} months of a
+prior evaluation (per participant-arm) are dropped so that one diagnostic
+episode is not counted multiple times.
+}
+
+Evaluations are stratified by period based on the 0-indexed follow-up month
+(\code{month2}):
+\itemize{
+\item \strong{first_round}: Evaluation \code{month2} is at or below \code{first_round_months}.
+\item \strong{beyond_first_round}: Evaluation \code{month2} exceeds \code{first_round_months}.
 }
 }
 \references{

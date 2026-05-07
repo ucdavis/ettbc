@@ -51,15 +51,15 @@ are held at 1 for the STOPBASE arm. Default: \code{11L}.}
 \code{long_data} with two additional columns:
 \itemize{
 \item \code{w}: Cumulative IPW weight at each participant-arm-month.
-\item \code{wp99}: IPW weight truncated at the 99th percentile of \code{w} across both
-arms combined.
+\item \code{wp99}: IPW weight truncated at the 99th percentile of \code{w} within each
+arm separately.
 }
 }
 \description{
-Computes stabilised inverse probability weights for each
+Computes stabilized inverse probability weights for each
 participant-arm-month row in long-format data, based on the predicted
 probability of receiving a screening mammogram. Weights are truncated at
-the 99th percentile.
+the 99th percentile computed separately within each arm.
 }
 \details{
 Separate weight models are used for the two trial arms:
@@ -70,18 +70,17 @@ denominator is \code{1 - p_scrmammo} at each month (or 1 if a breast cancer
 diagnosis has occurred). If the time since last mammogram is 10 or fewer
 months (\code{tslm_lag <= 10}), the effective screening probability is set to
 0 (no screening expected that soon).
-\item \strong{CONTINUE}: The weight tracks the probability of \emph{receiving} a screening
-mammogram at the end of the compliance window. A weight update occurs when
-a screening mammogram is observed late in the compliance window
-(\code{scrmammo == 1} and \code{tslm_lag >= 11}). The numerator uses a discrete
-uniform distribution over the three boundary months
-(\code{tslm_lag} = 11, 12, or 13), and the denominator is the model-predicted
-probability.
+\item \strong{CONTINUE}: The compliance window is reset by any mammogram (screening
+or diagnostic). A weight update occurs when a screening mammogram is
+observed late in the compliance window (\code{scrmammo == 1} and
+\code{tslm_lag >= 11}). The numerator uses a discrete uniform distribution
+over the three boundary months (\code{tslm_lag} = 11, 12, or 13), and the
+denominator is the model-predicted probability.
 }
 
-Weights within each arm are cumulative products initialised at 1.
-The final column \code{wp99} is the weight truncated at the arm-combined 99th
-percentile.
+Weights within each arm are cumulative products initialized at 1.
+The final column \code{wp99} is the weight truncated at the 99th percentile of
+\code{w} computed \strong{separately within each arm}.
 }
 \examples{
 cloned <- clone_censor(cohort, screening_mammograms, diagnostic_mammograms)

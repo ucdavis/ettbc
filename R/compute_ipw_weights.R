@@ -1,9 +1,9 @@
 #' Compute Inverse Probability Weighting (IPW) Weights
 #'
-#' Computes stabilised inverse probability weights for each
+#' Computes stabilized inverse probability weights for each
 #' participant-arm-month row in long-format data, based on the predicted
 #' probability of receiving a screening mammogram. Weights are truncated at
-#' the 99th percentile.
+#' the 99th percentile computed separately within each arm.
 #'
 #' @details
 #' Separate weight models are used for the two trial arms:
@@ -15,17 +15,16 @@
 #'   months (`tslm_lag <= 10`), the effective screening probability is set to
 #'   0 (no screening expected that soon).
 #'
-#' - **CONTINUE**: The weight tracks the probability of *receiving* a screening
-#'   mammogram at the end of the compliance window. A weight update occurs when
-#'   a screening mammogram is observed late in the compliance window
-#'   (`scrmammo == 1` and `tslm_lag >= 11`). The numerator uses a discrete
-#'   uniform distribution over the three boundary months
-#'   (`tslm_lag` = 11, 12, or 13), and the denominator is the model-predicted
-#'   probability.
+#' - **CONTINUE**: The compliance window is reset by any mammogram (screening
+#'   or diagnostic). A weight update occurs when a screening mammogram is
+#'   observed late in the compliance window (`scrmammo == 1` and
+#'   `tslm_lag >= 11`). The numerator uses a discrete uniform distribution
+#'   over the three boundary months (`tslm_lag` = 11, 12, or 13), and the
+#'   denominator is the model-predicted probability.
 #'
-#' Weights within each arm are cumulative products initialised at 1.
-#' The final column `wp99` is the weight truncated at the arm-combined 99th
-#' percentile.
+#' Weights within each arm are cumulative products initialized at 1.
+#' The final column `wp99` is the weight truncated at the 99th percentile of
+#' `w` computed **separately within each arm**.
 #'
 #' @param long_data A data frame in long format (one row per
 #'   participant-arm-month), as produced by [expand_to_long()] and augmented
@@ -50,8 +49,8 @@
 #' @return `long_data` with two additional columns:
 #'
 #'   - `w`: Cumulative IPW weight at each participant-arm-month.
-#'   - `wp99`: IPW weight truncated at the 99th percentile of `w` across both
-#'     arms combined.
+#'   - `wp99`: IPW weight truncated at the 99th percentile of `w` within each
+#'     arm separately.
 #'
 #' @seealso [predict_survival_ipw()], [expand_to_long()]
 #'
@@ -106,7 +105,10 @@ compute_ipw_weights <- function(
         tslm_lag_col, grace_months
       )
     } else {
-      compute_w_continue_grp(grp, pred_prob_col, scrmammo_col, tslm_lag_col)
+      compute_w_continue_grp(
+        grp, pred_prob_col, scrmammo_col, anymammo_col,
+        tslm_lag_col
+      )
     }
     grp
   })
@@ -116,8 +118,14 @@ compute_ipw_weights <- function(
   out$.row_idx <- NULL
   rownames(out) <- NULL
 
-  p99 <- stats::quantile(out$w, 0.99, na.rm = TRUE)
-  out$wp99 <- pmin(out$w, p99)
+  # Truncate at the 99th percentile computed separately within each arm
+  stop_rows <- out[[arm_col]] == "STOPBASE"
+  cont_rows <- !stop_rows
+  p99_stop <- stats::quantile(out$w[stop_rows], 0.99, na.rm = TRUE)
+  p99_cont <- stats::quantile(out$w[cont_rows], 0.99, na.rm = TRUE)
+  out$wp99 <- out$w
+  out$wp99[stop_rows] <- pmin(out$w[stop_rows], p99_stop)
+  out$wp99[cont_rows] <- pmin(out$w[cont_rows], p99_cont)
   out
 }
 
@@ -158,7 +166,8 @@ compute_w_stopbase_grp <- function(
 
 #' @noRd
 compute_w_continue_grp <- function(
-    grp, pred_prob_col, scrmammo_col, tslm_lag_col) {
+    grp, pred_prob_col, scrmammo_col, anymammo_col,
+    tslm_lag_col) {
   n <- nrow(grp)
   w_vec <- numeric(n)
   running_w <- 1.0
@@ -166,12 +175,16 @@ compute_w_continue_grp <- function(
   for (j in seq_len(n)) {
     tslm_lag <- grp[[tslm_lag_col]][j]
     scrmammo <- grp[[scrmammo_col]][j]
+    anymammo_val <- grp[[anymammo_col]][j]
     p_pred <- grp[[pred_prob_col]][j]
 
-    # Flag: screening mammogram observed late in the compliance window
+    # Flag: screening mammogram observed late in the compliance window.
+    # tslm_lag measures months since the last any-mammogram (screening or
+    # diagnostic), so any mammogram resets the compliance window implicitly.
     flag <- (
       !is.na(tslm_lag) &&
         !is.na(scrmammo) &&
+        !is.na(anymammo_val) &&
         scrmammo == 1L &&
         tslm_lag >= 11L
     )

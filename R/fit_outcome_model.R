@@ -2,7 +2,7 @@
 #'
 #' Fits an inverse-probability-weighted pooled logistic regression to estimate
 #' the odds ratio (as a hazard ratio approximation) for the STOPBASE arm
-#' relative to the CONTINUE arm, with time modelled via restricted cubic
+#' relative to the CONTINUE arm, with time modeled via restricted cubic
 #' splines.
 #'
 #' @details
@@ -17,6 +17,13 @@
 #' [stats::glm()]. The returned odds ratio corresponds to the `STOPBASE`
 #' coefficient, which approximates the hazard ratio when the event is rare.
 #'
+#' Because the dataset contains repeated person-month observations per
+#' participant, standard [stats::glm()] confidence intervals understate
+#' uncertainty. When `cluster_id_col` is provided and the `sandwich` package
+#' is installed, cluster-robust (HC) variance estimates are used to form the
+#' confidence interval, matching the variance estimation in the SAS
+#' `PROC SURVEYLOGISTIC` implementation.
+#'
 #' @param long_data A data frame in long format (one row per
 #'   participant-arm-month), as produced by [expand_to_long()].
 #' @param covariate_cols Character vector of column names to include as
@@ -28,8 +35,10 @@
 #' @param arm_col Name of the trial arm column. Default: `"arm"`.
 #' @param month_col Name of the 0-indexed month-from-entry column.
 #'   Default: `"month2"`.
-#' @param id_col Name of the participant identifier column (reserved for
-#'   future use with robust standard errors). Default: `"id"`.
+#' @param id_col Name of the participant identifier column. Default: `"id"`.
+#' @param cluster_id_col Name of the column to use for clustering standard
+#'   errors. When non-`NULL` and the `sandwich` package is available,
+#'   cluster-robust confidence intervals are returned. Defaults to `id_col`.
 #' @param max_month Maximum month included in the model. Rows beyond this
 #'   month are excluded. Default: `95L`.
 #' @param rcs_knots Numeric vector of length 3: `c(left_boundary,
@@ -41,7 +50,8 @@
 #'   - `model`: The fitted [stats::glm] object.
 #'   - `or`: Odds ratio for the STOPBASE arm (exp of the STOPBASE coefficient).
 #'   - `or_ci`: Named numeric vector of length 2 giving the 95% confidence
-#'     interval for the odds ratio.
+#'     interval for the odds ratio (cluster-robust if `sandwich` is available
+#'     and `cluster_id_col` is set, otherwise Wald).
 #'
 #' @seealso [compute_ipw_weights()], [predict_survival_ipw()],
 #'   [expand_to_long()]
@@ -70,6 +80,7 @@ fit_outcome_hr <- function(
     arm_col = "arm",
     month_col = "month2",
     id_col = "id",
+    cluster_id_col = id_col,
     max_month = 95L,
     rcs_knots = c(6, 48, 72)) {
   fit_data <- build_model_data( # nolint: object_usage_linter
@@ -94,8 +105,25 @@ fit_outcome_hr <- function(
   fit <- do.call(stats::glm, glm_args)
 
   or <- exp(stats::coef(fit)[["STOPBASE"]])
-  ci_raw <- suppressMessages(stats::confint(fit, parm = "STOPBASE"))
-  or_ci <- exp(ci_raw)
+
+  # Use cluster-robust CI when sandwich is available and cluster_id_col is set
+  or_ci <- compute_or_ci(fit, fit_data, cluster_id_col)
 
   list(model = fit, or = or, or_ci = or_ci)
+}
+
+#' @noRd
+compute_or_ci <- function(fit, fit_data, cluster_id_col) {
+  if (!is.null(cluster_id_col) &&
+        requireNamespace("sandwich", quietly = TRUE)) {
+    cluster_var <- fit_data[[cluster_id_col]]
+    vcov_robust <- sandwich::vcovCL(fit, cluster = cluster_var)
+    se_robust <- sqrt(vcov_robust["STOPBASE", "STOPBASE"])
+    beta <- stats::coef(fit)[["STOPBASE"]]
+    ci_raw <- beta + c(-1, 1) * stats::qnorm(0.975) * se_robust
+    names(ci_raw) <- c("2.5 %", "97.5 %")
+    return(exp(ci_raw))
+  }
+  ci_raw <- suppressMessages(stats::confint(fit, parm = "STOPBASE"))
+  exp(ci_raw)
 }

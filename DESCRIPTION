@@ -1,6 +1,6 @@
 Package: ettbc
 Title: Emulating a Target Trial for Breast Cancer Screening
-Version: 0.0.0.9015
+Version: 0.0.0.9016
 Authors@R: c(
     person(
       given = "Douglas Ezra",
@@ -34,6 +34,7 @@ Suggests:
     altdoc,
     knitr,
     rmarkdown,
+    sandwich,
     snapr,
     spelling,
     testthat (>= 3.0.0),

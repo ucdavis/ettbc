@@ -11,6 +11,7 @@ predict_survival_ipw(
   outcome_col = "dead_t1",
   arm_col = "arm",
   month_col = "month2",
+  id_col = "id",
   max_month = 95L,
   rcs_knots = c(6, 48, 72)
 )
@@ -37,7 +38,12 @@ Default: \code{"arm"}.}
 \item{month_col}{Name of the time variable column (0-indexed month relative
 to trial entry). Default: \code{"month2"}.}
 
-\item{max_month}{Maximum month for survival prediction. Default: \code{95}.}
+\item{id_col}{Name of the participant identifier column, used to
+deduplicate baseline rows during standardization. Default: \code{"id"}.}
+
+\item{max_month}{Maximum month for survival prediction. Rows with month
+beyond this value are excluded from both model fitting and prediction.
+Default: \code{95}.}
 
 \item{rcs_knots}{Numeric vector of length 3 specifying the boundary and
 interior knots for the restricted cubic spline: \code{c(left_boundary, interior_knot, right_boundary)}. Default: \code{c(6, 48, 72)}.}
@@ -55,7 +61,7 @@ arm.
 }
 \description{
 Fits an inverse-probability-weighted pooled logistic regression with
-time modelled using restricted cubic splines and arm-by-time interaction
+time modeled using restricted cubic splines and arm-by-time interaction
 terms, then uses g-computation to generate marginal survival curves for
 each trial arm.
 }
