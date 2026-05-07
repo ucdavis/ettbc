@@ -12,7 +12,6 @@ compute_ipw_weights(
   month2_col = "month2",
   bc_month_col = "monthBC",
   scrmammo_col = "scrmammo",
-  anymammo_col = "anymammo",
   tslm_lag_col = "tslm_lag",
   grace_months = 11L
 )
@@ -38,10 +37,8 @@ cancer was diagnosed (\code{NA} if no diagnosis). Default: \code{"monthBC"}.}
 \item{scrmammo_col}{Name of the binary screening-mammogram indicator column.
 Default: \code{"scrmammo"}.}
 
-\item{anymammo_col}{Name of the binary any-mammogram indicator column.
-Default: \code{"anymammo"}.}
-
-\item{tslm_lag_col}{Name of the lagged time-since-last-mammogram column.
+\item{tslm_lag_col}{Name of the lagged time-since-last-mammogram column
+(months since the last any mammogram, screening or diagnostic).
 Default: \code{"tslm_lag"}.}
 
 \item{grace_months}{Number of months from trial entry during which weights

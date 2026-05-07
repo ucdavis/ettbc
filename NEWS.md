@@ -1,5 +1,17 @@
 # ettbc (development version)
 
+* Applied third-round review feedback to analysis helpers:
+  - `bootstrap_ci()`: `set.seed()` now saves and restores the caller's RNG
+    state on exit so that seeding is confined to this function call.
+    `col_quantile()` now passes `names = FALSE` to `stats::quantile()` so
+    `apply()` always returns a plain numeric vector instead of a named 1×N
+    matrix.
+  - `compute_ipw_weights()`: removed the `anymammo_col` parameter (and
+    corresponding `compute_w_continue_grp()` argument) since `tslm_lag`
+    already captures compliance-window resets from any mammogram. Updated
+    documentation for `tslm_lag_col` to clarify it measures months since the
+    last *any* mammogram.
+
 * Applied second-round review feedback to analysis helpers:
   - `fit_outcome_hr()`: fixed doc formula variable names (`month3`/`ns1`/`ns2`);
     clarified that the STOPBASE main-effect OR is the baseline-time ratio from a

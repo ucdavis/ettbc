@@ -97,7 +97,26 @@ bootstrap_ci <- function(
 
   if (nrow(long_data) == 0L) return(empty_result)
 
-  if (!is.null(seed)) set.seed(seed)
+  if (!is.null(seed)) {
+    # Seed locally: save and restore the RNG state on exit so the caller's
+    # random-number stream is not affected.
+    has_seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+    old_seed <- if (has_seed) {
+      get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+    } else {
+      NULL
+    }
+    on.exit({
+      if (is.null(old_seed)) {
+        if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
+          rm(".Random.seed", envir = .GlobalEnv)
+        }
+      } else {
+        assign(".Random.seed", old_seed, envir = .GlobalEnv) # nolint: object_name_linter
+      }
+    }, add = TRUE)
+    set.seed(seed)
+  }
 
   ids <- unique(long_data[[id_col]])
   n_ids <- length(ids)
@@ -174,7 +193,7 @@ bootstrap_ci <- function(
   }
 
   col_quantile <- function(mat, prob) {
-    apply(mat, 2L, stats::quantile, prob, na.rm = TRUE)
+    apply(mat, 2L, stats::quantile, prob, na.rm = TRUE, names = FALSE)
   }
 
   data.frame(

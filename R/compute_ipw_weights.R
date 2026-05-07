@@ -39,9 +39,8 @@
 #'   cancer was diagnosed (`NA` if no diagnosis). Default: `"monthBC"`.
 #' @param scrmammo_col Name of the binary screening-mammogram indicator column.
 #'   Default: `"scrmammo"`.
-#' @param anymammo_col Name of the binary any-mammogram indicator column.
-#'   Default: `"anymammo"`.
-#' @param tslm_lag_col Name of the lagged time-since-last-mammogram column.
+#' @param tslm_lag_col Name of the lagged time-since-last-mammogram column
+#'   (months since the last any mammogram, screening or diagnostic).
 #'   Default: `"tslm_lag"`.
 #' @param grace_months Number of months from trial entry during which weights
 #'   are held at 1 for the STOPBASE arm. Default: `11L`.
@@ -80,7 +79,6 @@ compute_ipw_weights <- function(
     month2_col = "month2",
     bc_month_col = "monthBC",
     scrmammo_col = "scrmammo",
-    anymammo_col = "anymammo",
     tslm_lag_col = "tslm_lag",
     grace_months = 11L) {
   if (nrow(long_data) == 0L) {
@@ -106,7 +104,7 @@ compute_ipw_weights <- function(
       )
     } else {
       compute_w_continue_grp(
-        grp, pred_prob_col, scrmammo_col, anymammo_col,
+        grp, pred_prob_col, scrmammo_col,
         tslm_lag_col
       )
     }
@@ -171,7 +169,7 @@ compute_w_stopbase_grp <- function(
 
 #' @noRd
 compute_w_continue_grp <- function(
-    grp, pred_prob_col, scrmammo_col, anymammo_col,
+    grp, pred_prob_col, scrmammo_col,
     tslm_lag_col) {
   n <- nrow(grp)
   w_vec <- numeric(n)
@@ -180,7 +178,6 @@ compute_w_continue_grp <- function(
   for (j in seq_len(n)) {
     tslm_lag <- grp[[tslm_lag_col]][j]
     scrmammo <- grp[[scrmammo_col]][j]
-    anymammo_val <- grp[[anymammo_col]][j]
     p_pred <- grp[[pred_prob_col]][j]
 
     # Flag: screening mammogram observed late in the compliance window.
@@ -189,7 +186,6 @@ compute_w_continue_grp <- function(
     flag <- (
       !is.na(tslm_lag) &&
         !is.na(scrmammo) &&
-        !is.na(anymammo_val) &&
         scrmammo == 1L &&
         tslm_lag >= 11L
     )
