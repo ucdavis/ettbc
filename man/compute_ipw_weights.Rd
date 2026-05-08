@@ -68,11 +68,13 @@ diagnosis has occurred). If the time since last mammogram is 10 or fewer
 months (\code{tslm_lag <= 10}), the effective screening probability is set to
 0 (no screening expected that soon).
 \item \strong{CONTINUE}: The compliance window is reset by any mammogram (screening
-or diagnostic). A weight update occurs when a screening mammogram is
-observed late in the compliance window (\code{scrmammo == 1} and
-\code{tslm_lag >= 11}). The numerator uses a discrete uniform distribution
-over the three boundary months (\code{tslm_lag} = 11, 12, or 13), and the
-denominator is the model-predicted probability.
+or diagnostic), as measured by \code{tslm_lag}. A weight update occurs at
+every month within the compliance window (\code{tslm_lag} = 11, 12, or 13).
+The numerator uses the conditional probability of the observed action
+under a discrete uniform distribution over months 11–13: 1/3 at month 11,
+1/2 at month 12 (given no earlier screening), and 1 at month 13. The
+denominator is the model-predicted probability. Weights stop updating
+after a breast-cancer diagnosis.
 }
 
 Weights within each arm are cumulative products initialized at 1.

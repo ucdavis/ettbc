@@ -1,5 +1,23 @@
 # ettbc (development version)
 
+* Applied fifth-round review feedback to analysis helpers:
+  - `compute_ipw_weights()`: corrected CONTINUE-arm weight logic —
+    (a) the weight now updates at every month in the compliance window
+    (`tslm_lag` 11–13), not only when `scrmammo == 1`;
+    (b) the numerator now uses conditional probabilities under the discrete
+    uniform distribution (1/3 at month 11, 1/2 at month 12, 1 at month 13),
+    matching the SAS `cann17b` logic instead of cumulative probabilities;
+    (c) weight updates stop after a breast-cancer diagnosis (`bc_month_col`
+    and `month2_col` are now passed to the internal `compute_w_continue_grp()`
+    helper).
+  - `fit_outcome_hr()`: added single-arm guard using `check_both_arms()` on
+    both the raw input and the filtered model data, consistent with the
+    `predict_survival_*` helpers.
+  - `predict_survival_unadjusted()`, `predict_survival_baseline_adjusted()`,
+    `predict_survival_ipw()`: `check_both_arms()` is now also called on the
+    filtered `fit_data` (after `max_month` and `NA` outcome filtering) to
+    catch cases where filtering removes all rows for one arm.
+
 * Applied fourth-round review feedback to analysis helpers:
   - `false_positives()`: updated `@return` documentation to clarify that
     arm-period combinations with no histological evaluations are omitted from

@@ -85,6 +85,7 @@ predict_survival_unadjusted <- function(
     ,
     drop = FALSE
   ]
+  check_both_arms(fit_data, arm_col)
   formula_obj <- build_model_formula()
   fit <- stats::glm(
     formula_obj,
@@ -163,6 +164,7 @@ predict_survival_baseline_adjusted <- function( # nolint: object_length_linter
     ,
     drop = FALSE
   ]
+  check_both_arms(fit_data, arm_col)
   formula_obj <- build_model_formula(covariate_cols)
   fit <- stats::glm(
     formula_obj,
@@ -246,6 +248,7 @@ predict_survival_ipw <- function(
     ,
     drop = FALSE
   ]
+  check_both_arms(fit_data, arm_col)
   formula_obj <- build_model_formula(covariate_cols)
   glm_args <- list(
     formula = formula_obj,

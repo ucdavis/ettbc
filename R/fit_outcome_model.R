@@ -92,6 +92,7 @@ fit_outcome_hr <- function(
     cluster_id_col = id_col,
     max_month = 95L,
     rcs_knots = c(6, 48, 72)) {
+  check_both_arms(long_data, arm_col) # nolint: object_usage_linter
   fit_data <- build_model_data( # nolint: object_usage_linter
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
@@ -100,6 +101,7 @@ fit_outcome_hr <- function(
     ,
     drop = FALSE
   ]
+  check_both_arms(fit_data, arm_col) # nolint: object_usage_linter
 
   formula_obj <- build_model_formula(covariate_cols) # nolint: object_usage_linter
 

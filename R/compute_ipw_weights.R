@@ -16,11 +16,13 @@
 #'   0 (no screening expected that soon).
 #'
 #' - **CONTINUE**: The compliance window is reset by any mammogram (screening
-#'   or diagnostic). A weight update occurs when a screening mammogram is
-#'   observed late in the compliance window (`scrmammo == 1` and
-#'   `tslm_lag >= 11`). The numerator uses a discrete uniform distribution
-#'   over the three boundary months (`tslm_lag` = 11, 12, or 13), and the
-#'   denominator is the model-predicted probability.
+#'   or diagnostic), as measured by `tslm_lag`. A weight update occurs at
+#'   every month within the compliance window (`tslm_lag` = 11, 12, or 13).
+#'   The numerator uses the conditional probability of the observed action
+#'   under a discrete uniform distribution over months 11–13: 1/3 at month 11,
+#'   1/2 at month 12 (given no earlier screening), and 1 at month 13. The
+#'   denominator is the model-predicted probability. Weights stop updating
+#'   after a breast-cancer diagnosis.
 #'
 #' Weights within each arm are cumulative products initialized at 1.
 #' The final column `wp99` is the weight truncated at the 99th percentile of
@@ -105,7 +107,7 @@ compute_ipw_weights <- function(
     } else {
       compute_w_continue_grp(
         grp, pred_prob_col, scrmammo_col,
-        tslm_lag_col
+        tslm_lag_col, bc_month_col, month2_col
       )
     }
     grp
@@ -170,32 +172,52 @@ compute_w_stopbase_grp <- function(
 #' @noRd
 compute_w_continue_grp <- function(
     grp, pred_prob_col, scrmammo_col,
-    tslm_lag_col) {
+    tslm_lag_col, bc_month_col, month2_col) {
   n <- nrow(grp)
   w_vec <- numeric(n)
   running_w <- 1.0
+  month_bc <- grp[[bc_month_col]][1L]
 
   for (j in seq_len(n)) {
+    month2 <- grp[[month2_col]][j]
     tslm_lag <- grp[[tslm_lag_col]][j]
     scrmammo <- grp[[scrmammo_col]][j]
     p_pred <- grp[[pred_prob_col]][j]
 
-    # Flag: screening mammogram observed late in the compliance window.
+    # After BC diagnosis, stop updating the weight
+    has_bc <- !is.na(month_bc) && month2 >= month_bc
+
+    # Update during the compliance window (tslm_lag 11-13).
     # tslm_lag measures months since the last any-mammogram (screening or
     # diagnostic), so any mammogram resets the compliance window implicitly.
-    flag <- (
-      !is.na(tslm_lag) &&
-        !is.na(scrmammo) &&
-        scrmammo == 1L &&
-        tslm_lag >= 11L
+    in_window <- (
+      !has_bc &&
+        !is.na(tslm_lag) &&
+        tslm_lag >= 11L &&
+        tslm_lag <= 13L
     )
 
-    if (flag) {
-      # Numerator: discrete uniform over months 11, 12, 13 of the window
-      tslm_val <- min(tslm_lag, 13L)
-      num <- (tslm_val - 10L) / 3.0
-      den <- max(if (is.na(p_pred)) 1e-6 else p_pred, 1e-6)
-      running_w <- running_w * num / den
+    if (in_window) {
+      tslm_val <- tslm_lag
+      # Conditional probability of screening at exactly tslm_val under a
+      # discrete uniform distribution over {11, 12, 13}:
+      # P(screen at 11 | eligible) = 1/3
+      # P(screen at 12 | not at 11) = 1/2
+      # P(screen at 13 | not at 11, 12) = 1
+      num_screen <- 1.0 / (14L - tslm_val)
+      p_pred_safe <- if (is.na(p_pred)) 0.5 else p_pred
+
+      if (!is.na(scrmammo) && scrmammo == 1L) {
+        # Screened: multiply by P(screen at this month | uniform) / P_model
+        den <- max(p_pred_safe, 1e-6)
+        running_w <- running_w * num_screen / den
+      } else {
+        # Not yet screened in this month: multiply by
+        # P(no screen at this month | uniform) / P_model(no screen)
+        num <- 1.0 - num_screen
+        den <- max(1.0 - p_pred_safe, 1e-6)
+        running_w <- running_w * num / den
+      }
     }
     w_vec[j] <- running_w
   }
