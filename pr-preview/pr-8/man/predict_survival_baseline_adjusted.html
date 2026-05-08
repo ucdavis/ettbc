@@ -536,7 +536,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code id="long_data">long_data</code>
 </td>
 <td>
-A data frame in long format (one row per participant-arm-month), as produced by <code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code>. Must contain columns specified by <code>outcome_col</code>, <code>arm_col</code>, and <code>month_col</code>.
+A data frame in long format (one row per participant-arm-month), as produced by <code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code>. Must contain columns specified by <code>outcome_col</code>, <code>arm_col</code>, and <code>month_col</code>. Both arms (<code>“STOPBASE”</code> and <code>“CONTINUE”</code>) must be present; a non-empty subset with only one arm will raise an error.
 </td>
 </tr>
 <tr>
