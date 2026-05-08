@@ -185,10 +185,10 @@ bootstrap_ci <- function(
   if (n_failed > 0L) {
     fail_rate <- n_failed / n_boot
     if (fail_rate > fail_threshold) {
-      cli::cli_warn(
-        "{n_failed} of {n_boot} bootstrap iterations failed \\
-        ({round(fail_rate * 100)}%)."
-      )
+      cli::cli_warn(paste0(
+        "{n_failed} of {n_boot} bootstrap iterations failed ",
+        "({round(fail_rate * 100)}%)."
+      ))
     }
   }
 

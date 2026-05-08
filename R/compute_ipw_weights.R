@@ -99,6 +99,14 @@ compute_ipw_weights <- function(
     if (nrow(grp) == 0L) return(grp)
     grp <- grp[order(grp[[month2_col]]), , drop = FALSE]
     arm <- grp[[arm_col]][1L]
+    if (!arm %in% c("STOPBASE", "CONTINUE")) {
+      cli::cli_abort(
+        c(
+          "Unexpected arm value {.val {arm}} in {.arg long_data}.",
+          "i" = "Valid arm values are {.val STOPBASE} and {.val CONTINUE}."
+        )
+      )
+    }
     grp$w <- if (arm == "STOPBASE") {
       compute_w_stopbase_grp(
         grp, pred_prob_col, month2_col, bc_month_col,
@@ -205,7 +213,9 @@ compute_w_continue_grp <- function(
       # P(screen at 12 | not at 11) = 1/2
       # P(screen at 13 | not at 11, 12) = 1
       num_screen <- 1.0 / (14L - tslm_val)
-      p_pred_safe <- if (is.na(p_pred)) 0.5 else p_pred
+      # Treat NA predicted probability as 0 (no predicted screening),
+      # consistent with the STOPBASE arm helper.
+      p_pred_safe <- if (is.na(p_pred)) 0.0 else p_pred
 
       if (!is.na(scrmammo) && scrmammo == 1L) {
         # Screened: multiply by P(screen at this month | uniform) / P_model

@@ -1,5 +1,18 @@
 # ettbc (development version)
 
+* Applied sixth-round review feedback to analysis helpers:
+  - `check_both_arms()` (`predict_survival.R`): now rejects `NA` arm values
+    and any arm value other than `"STOPBASE"` or `"CONTINUE"`, raising a clear
+    error rather than silently misclassifying unexpected inputs.
+  - `compute_ipw_weights()`: arm dispatch now explicitly checks
+    `arm %in% c("STOPBASE", "CONTINUE")` and aborts on unexpected/invalid arm
+    values instead of falling through to the CONTINUE branch.
+  - `compute_w_continue_grp()`: `NA` predicted probability in the compliance
+    window is now treated as `0` (no predicted screening), consistent with the
+    STOPBASE arm helper, instead of the arbitrary `0.5` fallback.
+  - `bootstrap_ci()`: fixed extraneous backslash in the failure-rate warning
+    message.
+
 * Applied fifth-round review feedback to analysis helpers:
   - `compute_ipw_weights()`: corrected CONTINUE-arm weight logic —
     (a) the weight now updates at every month in the compliance window

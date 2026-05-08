@@ -277,6 +277,28 @@ build_model_formula <- function(covariate_cols = NULL) {
 #' @noRd
 check_both_arms <- function(long_data, arm_col) {
   arms <- unique(long_data[[arm_col]])
+  # Reject NA arm values
+  if (any(is.na(arms))) {
+    cli::cli_abort(
+      c(
+        "{.arg long_data} contains {.code NA} in {.arg arm_col}.",
+        "i" = "All rows must have a valid arm value."
+      )
+    )
+  }
+  # Reject unexpected arm values
+  unexpected <- setdiff(arms, c("STOPBASE", "CONTINUE"))
+  if (length(unexpected) > 0L) {
+    cli::cli_abort(
+      c(
+        paste0(
+          "{.arg long_data} contains unexpected arm value(s): ",
+          "{.val {unexpected}}."
+        ),
+        "i" = "Valid arm values are {.val STOPBASE} and {.val CONTINUE}."
+      )
+    )
+  }
   missing <- setdiff(c("STOPBASE", "CONTINUE"), arms)
   if (length(missing) > 0L) {
     cli::cli_abort(
