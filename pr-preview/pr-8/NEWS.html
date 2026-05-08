@@ -497,6 +497,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="ettbc-development-version" class="level1">
 <h1>ettbc (development version)</h1>
 <ul>
+<li><p>Applied sixth-round review feedback to analysis helpers:</p>
+<ul>
+<li><code>check_both_arms()</code> (<code>predict_survival.R</code>): now rejects <code>NA</code> arm values and any arm value other than <code>"STOPBASE"</code> or <code>"CONTINUE"</code>, raising a clear error rather than silently misclassifying unexpected inputs.</li>
+<li><code>compute_ipw_weights()</code>: arm dispatch now explicitly checks <code>arm %in% c("STOPBASE", "CONTINUE")</code> and aborts on unexpected/invalid arm values instead of falling through to the CONTINUE branch.</li>
+<li><code>compute_w_continue_grp()</code>: <code>NA</code> predicted probability in the compliance window is now treated as <code>0</code> (no predicted screening), consistent with the STOPBASE arm helper, instead of the arbitrary <code>0.5</code> fallback.</li>
+<li><code>bootstrap_ci()</code>: fixed extraneous backslash in the failure-rate warning message.</li>
+</ul></li>
 <li><p>Applied fifth-round review feedback to analysis helpers:</p>
 <ul>
 <li><code>compute_ipw_weights()</code>: corrected CONTINUE-arm weight logic —
