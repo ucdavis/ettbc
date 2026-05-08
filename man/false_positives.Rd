@@ -49,7 +49,9 @@ positive. Also used for deduplication: repeat evaluations within this
 many months of a prior one are dropped. Default: \code{6L}.}
 }
 \value{
-A data frame with one row per arm-period combination, containing:
+A data frame with one row per arm-period combination \emph{that is
+observed in the data} (arm-period pairs with no histological evaluations
+are omitted), containing:
 \itemize{
 \item \code{arm}: Trial arm (\code{"STOPBASE"} or \code{"CONTINUE"}).
 \item \code{period}: Screening period (\code{"first_round"} or

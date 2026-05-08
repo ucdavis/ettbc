@@ -20,7 +20,9 @@
 #'
 #' @param long_data A data frame in long format (one row per
 #'   participant-arm-month), as produced by [expand_to_long()]. Must contain
-#'   columns specified by `outcome_col`, `arm_col`, and `month_col`.
+#'   columns specified by `outcome_col`, `arm_col`, and `month_col`. Both
+#'   arms (`"STOPBASE"` and `"CONTINUE"`) must be present; a non-empty subset
+#'   with only one arm will raise an error.
 #' @param outcome_col Name of the binary outcome column (0/1, `NA` for
 #'   censored). Default: `"dead_t1"`.
 #' @param arm_col Name of the trial arm column (`"STOPBASE"` / `"CONTINUE"`).
@@ -74,6 +76,7 @@ predict_survival_unadjusted <- function(
       s_stopbase = numeric(0)
     ))
   }
+  check_both_arms(long_data, arm_col)
   fit_data <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
@@ -151,6 +154,7 @@ predict_survival_baseline_adjusted <- function( # nolint: object_length_linter
       s_stopbase = numeric(0)
     ))
   }
+  check_both_arms(long_data, arm_col)
   fit_data <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
@@ -233,6 +237,7 @@ predict_survival_ipw <- function(
       s_stopbase = numeric(0)
     ))
   }
+  check_both_arms(long_data, arm_col)
   fit_data <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
@@ -264,6 +269,24 @@ build_model_formula <- function(covariate_cols = NULL) {
   )
   all_terms <- c(base_terms, covariate_cols)
   stats::as.formula(paste("dead_t1 ~", paste(all_terms, collapse = " + ")))
+}
+
+#' @noRd
+check_both_arms <- function(long_data, arm_col) {
+  arms <- unique(long_data[[arm_col]])
+  missing <- setdiff(c("STOPBASE", "CONTINUE"), arms)
+  if (length(missing) > 0L) {
+    cli::cli_abort(
+      c(
+        "Both arms must be present in {.arg long_data}.",
+        "x" = "Missing arm(s): {.val {missing}}.",
+        "i" = paste(
+          "The pooled logistic regression requires arm-by-time",
+          "interaction terms for both arms."
+        )
+      )
+    )
+  }
 }
 
 #' @noRd

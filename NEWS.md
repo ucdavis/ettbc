@@ -1,5 +1,17 @@
 # ettbc (development version)
 
+* Applied fourth-round review feedback to analysis helpers:
+  - `false_positives()`: updated `@return` documentation to clarify that
+    arm-period combinations with no histological evaluations are omitted from
+    the result.
+  - `predict_survival_unadjusted()`, `predict_survival_baseline_adjusted()`,
+    and `predict_survival_ipw()`: added an explicit guard that errors with a
+    clear message when only one trial arm is present in `long_data`, since the
+    pooled logistic regression is rank-deficient without both arms.
+  - `NEWS.md`: corrected stale reference to `anymammo_col` in first-round
+    entry; the CONTINUE arm helper uses `tslm_lag` for compliance-window reset
+    detection (not a separate `anymammo_col` parameter).
+
 * Applied third-round review feedback to analysis helpers:
   - `bootstrap_ci()`: `set.seed()` now saves and restores the caller's RNG
     state on exit so that seeding is confined to this function call.
@@ -36,9 +48,10 @@
     `id_col` parameter and fixed hardcoded `"id"` column in baseline
     deduplication.
   - `compute_ipw_weights()` now computes separate 99th-percentile truncation
-    thresholds for each arm (STOPBASE and CONTINUE), and the CONTINUE arm
-    helper now tracks compliance-window resets from any mammogram via
-    `anymammo_col`.
+    thresholds for each arm (STOPBASE and CONTINUE). The CONTINUE arm
+    helper uses `tslm_lag` to detect compliance-window resets from any
+    mammogram (screening or diagnostic), since `tslm_lag` measures months
+    since the last any-mammogram.
   - `false_positives()` now filters histological evaluations to within each
     arm's observed follow-up, uses the 0-indexed `month2` for
     first-round/beyond-first-round classification, and deduplicates repeat

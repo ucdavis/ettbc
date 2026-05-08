@@ -47,7 +47,9 @@
 #'   positive. Also used for deduplication: repeat evaluations within this
 #'   many months of a prior one are dropped. Default: `6L`.
 #'
-#' @return A data frame with one row per arm-period combination, containing:
+#' @return A data frame with one row per arm-period combination *that is
+#'   observed in the data* (arm-period pairs with no histological evaluations
+#'   are omitted), containing:
 #'
 #'   - `arm`: Trial arm (`"STOPBASE"` or `"CONTINUE"`).
 #'   - `period`: Screening period (`"first_round"` or

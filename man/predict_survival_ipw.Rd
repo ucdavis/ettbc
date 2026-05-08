@@ -19,7 +19,9 @@ predict_survival_ipw(
 \arguments{
 \item{long_data}{A data frame in long format (one row per
 participant-arm-month), as produced by \code{\link[=expand_to_long]{expand_to_long()}}. Must contain
-columns specified by \code{outcome_col}, \code{arm_col}, and \code{month_col}.}
+columns specified by \code{outcome_col}, \code{arm_col}, and \code{month_col}. Both
+arms (\code{"STOPBASE"} and \code{"CONTINUE"}) must be present; a non-empty subset
+with only one arm will raise an error.}
 
 \item{weight_col}{Name of the column containing IPW weights (e.g., as
 produced by \code{\link[=compute_ipw_weights]{compute_ipw_weights()}}). Set to \code{NULL} for unweighted
