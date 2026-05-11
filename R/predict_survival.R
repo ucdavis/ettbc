@@ -344,12 +344,13 @@ standardize_survival <- function(fit, fit_data, max_month, rcs_knots, id_col) {
   n_indiv <- nrow(baseline_data)
 
   if (n_indiv == 0L) {
-    n_months <- max_month + 1L
-    return(data.frame(
-      month = 0L:max_month,
-      s_continue = rep(1.0, n_months),
-      s_stopbase = rep(1.0, n_months)
-    ))
+    cli::cli_abort(
+      c(
+        "No baseline rows (month == 0) found in {.arg fit_data}.",
+        "i" = "Standardization requires at least one row per participant \\
+               at baseline (month == 0)."
+      )
+    )
   }
 
   months <- 0L:max_month

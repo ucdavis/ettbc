@@ -88,6 +88,18 @@ false_positives <- function(
   )
   if (nrow(hist_data) == 0L) return(empty_result)
 
+  # Validate arm values up front
+  arms <- unique(long_data[[arm_col]])
+  bad_arms <- arms[is.na(arms) | !arms %in% c("STOPBASE", "CONTINUE")]
+  if (length(bad_arms) > 0L) {
+    cli::cli_abort(
+      c(
+        "Invalid arm value(s) in {.arg long_data}: {.val {bad_arms}}.",
+        "i" = "Valid arm values are {.val STOPBASE} and {.val CONTINUE}."
+      )
+    )
+  }
+
   # Maximum observed month2 per participant-arm (censoring boundary)
   grp_key <- paste(long_data[[id_col]], long_data[[arm_col]], sep = "\x1f")
   max_m2 <- tapply(long_data[[month2_col]], grp_key, max, na.rm = TRUE)

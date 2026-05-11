@@ -99,7 +99,7 @@ compute_ipw_weights <- function(
     if (nrow(grp) == 0L) return(grp)
     grp <- grp[order(grp[[month2_col]]), , drop = FALSE]
     arm <- grp[[arm_col]][1L]
-    if (!arm %in% c("STOPBASE", "CONTINUE")) {
+    if (is.na(arm) || !arm %in% c("STOPBASE", "CONTINUE")) {
       cli::cli_abort(
         c(
           "Unexpected arm value {.val {arm}} in {.arg long_data}.",
