@@ -189,7 +189,7 @@
     "href": "vignettes/articles/quarto_article.html",
     "title": "Advanced Quarto Article",
     "section": "",
-    "text": "Douglas Ezra Morrison\n\n2026-05-08\nCode\nlibrary(ettbc)"
+    "text": "Douglas Ezra Morrison\n\n2026-05-11\nCode\nlibrary(ettbc)"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#overview",
@@ -729,7 +729,7 @@
     "href": "vignettes/articles/using-ettbc.html",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "",
-    "text": "Douglas Ezra Morrison\n\n2026-05-08",
+    "text": "Douglas Ezra Morrison\n\n2026-05-11",
     "crumbs": [
       "Documentation",
       "Articles",
