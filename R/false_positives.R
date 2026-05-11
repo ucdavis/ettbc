@@ -90,7 +90,7 @@ false_positives <- function(
 
   # Validate arm values up front
   arms <- unique(long_data[[arm_col]])
-  bad_arms <- arms[is.na(arms) | !arms %in% c("STOPBASE", "CONTINUE")]
+  bad_arms <- arms[is.na(arms) | (!is.na(arms) & !arms %in% c("STOPBASE", "CONTINUE"))]
   if (length(bad_arms) > 0L) {
     cli::cli_abort(
       c(
