@@ -132,6 +132,7 @@ bootstrap_ci <- function(
     covariate_cols = covariate_cols,
     outcome_col = outcome_col,
     arm_col = arm_col,
+    id_col = id_col,
     month_col = month_col,
     max_month = max_month,
     rcs_knots = rcs_knots
@@ -168,6 +169,7 @@ bootstrap_ci <- function(
           covariate_cols = covariate_cols,
           outcome_col = outcome_col,
           arm_col = arm_col,
+          id_col = id_col,
           month_col = month_col,
           max_month = max_month,
           rcs_knots = rcs_knots

@@ -347,8 +347,7 @@ standardize_survival <- function(fit, fit_data, max_month, rcs_knots, id_col) {
     cli::cli_abort(
       c(
         "No baseline rows (month == 0) found in {.arg fit_data}.",
-        "i" = "Standardization requires at least one row per participant \\
-               at baseline (month == 0)."
+        "i" = "Standardization requires at least one row per participant at baseline (month == 0)."
       )
     )
   }
