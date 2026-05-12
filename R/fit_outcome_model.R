@@ -146,7 +146,7 @@ compute_or_ci <- function(fit, fit_data, cluster_id_col) {
       cli::cli_abort(
         c(
           "{.arg cluster_id_col} ({.val {cluster_id_col}}) not found.",
-          "i" = "Ensure the column exists in {.arg fit_data}."
+          "i" = "Ensure the column exists in {.arg long_data}."
         )
       )
     }
