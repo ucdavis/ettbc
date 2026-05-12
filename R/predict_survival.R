@@ -351,10 +351,11 @@ check_both_arms <- function(long_data, arm_col) {
 #' `ns1`, `ns2`, ..., consistent with the model formula in [fit_outcome_hr()].
 #'
 #' @param x Numeric vector of time values.
-#' @param rcs_knots Numeric vector of length >= 3: first and last elements are
+#' @param rcs_knots Numeric vector with at least 3 elements: first and last are
 #'   boundary knots; all intermediate elements are interior knots.
-#' @return A matrix with one column per spline degree of freedom (`ns1`,
-#'   `ns2`, ...).
+#' @return A matrix with automatically named columns (`ns1`, `ns2`, ...) for
+#'   each spline degree of freedom; the number of columns equals
+#'   `length(rcs_knots) - 2`.
 #'
 #' @details
 #' The `n_knots >= 3` guard ensures that the `seq(2L, n_knots - 1L)` call
