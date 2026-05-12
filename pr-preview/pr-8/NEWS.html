@@ -497,54 +497,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="ettbc-development-version" class="level1">
 <h1>ettbc (development version)</h1>
 <ul>
-<li><p>Applied sixth-round review feedback to analysis helpers:</p>
-<ul>
-<li><code>check_both_arms()</code> (<code>predict_survival.R</code>): now rejects <code>NA</code> arm values and any arm value other than <code>"STOPBASE"</code> or <code>"CONTINUE"</code>, raising a clear error rather than silently misclassifying unexpected inputs.</li>
-<li><code>compute_ipw_weights()</code>: arm dispatch now explicitly checks <code>arm %in% c("STOPBASE", "CONTINUE")</code> and aborts on unexpected/invalid arm values instead of falling through to the CONTINUE branch.</li>
-<li><code>compute_w_continue_grp()</code>: <code>NA</code> predicted probability in the compliance window is now treated as <code>0</code> (no predicted screening), consistent with the STOPBASE arm helper, instead of the arbitrary <code>0.5</code> fallback.</li>
-<li><code>bootstrap_ci()</code>: fixed extraneous backslash in the failure-rate warning message.</li>
-</ul></li>
-<li><p>Applied fifth-round review feedback to analysis helpers:</p>
-<ul>
-<li><code>compute_ipw_weights()</code>: corrected CONTINUE-arm weight logic —
-<ol type="a">
-<li>the weight now updates at every month in the compliance window (<code>tslm_lag</code> 11–13), not only when <code>scrmammo == 1</code>;</li>
-<li>the numerator now uses conditional probabilities under the discrete uniform distribution (1/3 at month 11, 1/2 at month 12, 1 at month 13), matching the SAS <code>cann17b</code> logic instead of cumulative probabilities;</li>
-<li>weight updates stop after a breast-cancer diagnosis (<code>bc_month_col</code> and <code>month2_col</code> are now passed to the internal <code>compute_w_continue_grp()</code> helper).</li>
-</ol></li>
-<li><code>fit_outcome_hr()</code>: added single-arm guard using <code>check_both_arms()</code> on both the raw input and the filtered model data, consistent with the <code>predict_survival_*</code> helpers.</li>
-<li><code>predict_survival_unadjusted()</code>, <code>predict_survival_baseline_adjusted()</code>, <code>predict_survival_ipw()</code>: <code>check_both_arms()</code> is now also called on the filtered <code>fit_data</code> (after <code>max_month</code> and <code>NA</code> outcome filtering) to catch cases where filtering removes all rows for one arm.</li>
-</ul></li>
-<li><p>Applied fourth-round review feedback to analysis helpers:</p>
-<ul>
-<li><code>false_positives()</code>: updated <code>@return</code> documentation to clarify that arm-period combinations with no histological evaluations are omitted from the result.</li>
-<li><code>predict_survival_unadjusted()</code>, <code>predict_survival_baseline_adjusted()</code>, and <code>predict_survival_ipw()</code>: added an explicit guard that errors with a clear message when only one trial arm is present in <code>long_data</code>, since the pooled logistic regression is rank-deficient without both arms.</li>
-<li><code>NEWS.md</code>: corrected stale reference to <code>anymammo_col</code> in first-round entry; the CONTINUE arm helper uses <code>tslm_lag</code> for compliance-window reset detection (not a separate <code>anymammo_col</code> parameter).</li>
-</ul></li>
-<li><p>Applied third-round review feedback to analysis helpers:</p>
-<ul>
-<li><code>bootstrap_ci()</code>: <code>set.seed()</code> now saves and restores the caller’s RNG state on exit so that seeding is confined to this function call. <code>col_quantile()</code> now passes <code>names = FALSE</code> to <code>stats::quantile()</code> so <code>apply()</code> always returns a plain numeric vector instead of a named 1×N matrix.</li>
-<li><code>compute_ipw_weights()</code>: removed the <code>anymammo_col</code> parameter (and corresponding <code>compute_w_continue_grp()</code> argument) since <code>tslm_lag</code> already captures compliance-window resets from any mammogram. Updated documentation for <code>tslm_lag_col</code> to clarify it measures months since the last <em>any</em> mammogram.</li>
-</ul></li>
-<li><p>Applied second-round review feedback to analysis helpers:</p>
-<ul>
-<li><code>fit_outcome_hr()</code>: fixed doc formula variable names (<code>month3</code>/<code>ns1</code>/<code>ns2</code>); clarified that the STOPBASE main-effect OR is the baseline-time ratio from a model with arm-by-time interactions; confidence intervals now use Wald formula in both the sandwich and fallback branches (consistent named numeric vector output).</li>
-<li><code>compute_ipw_weights()</code>: arm-specific p99 truncation no longer errors when only one arm is present in the input.</li>
-<li><code>extract_mammograms_impl()</code>: empty-result <code>id</code> column now preserves the type of <code>claims[[id_col]]</code> instead of defaulting to <code>integer(0)</code>.</li>
-<li><code>bootstrap_ci()</code>: failed iterations are now counted; a <code>cli::cli_warn()</code> is issued when the failure rate exceeds <code>fail_threshold</code> (new argument, default 10%). <code>cli</code> added to <code>Imports</code>.</li>
-</ul></li>
-<li><p>Added tests for <code>predict_survival_baseline_adjusted()</code> and <code>predict_survival_ipw()</code> (output structure, empty-data handling, and weight-handling).</p></li>
-<li><p>Applied review feedback to analysis helpers:</p>
-<ul>
-<li><code>predict_survival_unadjusted()</code>, <code>predict_survival_baseline_adjusted()</code>, and <code>predict_survival_ipw()</code> now apply <code>max_month</code> filtering <strong>before</strong> model fitting, matching the SAS <code>cann15/16/21</code> implementation. Added <code>id_col</code> parameter and fixed hardcoded <code>"id"</code> column in baseline deduplication.</li>
-<li><code>compute_ipw_weights()</code> now computes separate 99th-percentile truncation thresholds for each arm (STOPBASE and CONTINUE). The CONTINUE arm helper uses <code>tslm_lag</code> to detect compliance-window resets from any mammogram (screening or diagnostic), since <code>tslm_lag</code> measures months since the last any-mammogram.</li>
-<li><code>false_positives()</code> now filters histological evaluations to within each arm’s observed follow-up, uses the 0-indexed <code>month2</code> for first-round/beyond-first-round classification, and deduplicates repeat evaluations within <code>window_months</code> months per participant-arm. An empty result is now returned safely when no events match the cohort.</li>
-<li><code>fit_outcome_hr()</code> now uses cluster-robust (sandwich) confidence intervals when the <code>sandwich</code> package is installed (new <code>cluster_id_col</code> argument), matching the SAS <code>PROC SURVEYLOGISTIC</code> cluster-variance approach.</li>
-<li><code>bootstrap_ci()</code> now returns an NA-filled result for empty input instead of erroring.</li>
-</ul></li>
-<li><p>Added <code>sandwich</code> to <code>Suggests</code>.</p></li>
-<li><p>Added tests for <code>false_positives()</code>, <code>extract_mammograms()</code>, and <code>bootstrap_ci()</code> seed reproducibility and empty-input handling.</p></li>
-<li><p>Fixed British spellings in documentation and <code>NEWS.md</code> (<code>stabilised</code> → <code>stabilized</code>); added technical terms to spell-check wordlist.</p></li>
+<li><p>Added <code>predict_survival_unadjusted()</code>, <code>predict_survival_baseline_adjusted()</code>, and <code>predict_survival_ipw()</code>: fit pooled logistic regression models with restricted cubic spline time terms and arm-by-time interactions, then apply g-computation to produce marginal survival curves for each trial arm. All three functions now apply the <code>max_month</code> filter before model fitting, require both arms to be present (before and after filtering), and validate <code>weight_col</code> when supplied (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
+<li><p>Added <code>compute_ipw_weights()</code>: computes stabilized cumulative IPW weights for each participant-arm-month, truncated at the 99th percentile computed separately within each arm. CONTINUE-arm weight logic matches the SAS <code>cann17b</code> implementation: updates occur at every month in the <code>tslm_lag</code> 11–13 compliance window (not only when <code>scrmammo == 1</code>), using conditional uniform probabilities (1/3, 1/2, 1 at months 11, 12, 13 respectively), and stop after a breast-cancer diagnosis (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
+<li><p>Added <code>fit_outcome_hr()</code>: fits an IPW-weighted pooled logistic regression and returns the odds ratio (hazard ratio approximation) for the STOPBASE arm with a 95% Wald CI. Uses cluster-robust variance via <code>sandwich::vcovCL()</code> when <code>sandwich</code> is available (new <code>cluster_id_col</code> argument). Validates both <code>weight_col</code> and <code>cluster_id_col</code> before fitting. Added <code>sandwich</code> to <code>Suggests</code> (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
+<li><p>Added <code>bootstrap_ci()</code>: nonparametric bootstrap for 95% percentile confidence intervals on the IPW-estimated survival difference. Failed iterations are counted; a warning is issued when the failure rate exceeds <code>fail_threshold</code> (default 10%). The caller’s RNG state is saved and restored on exit. Validates that <code>n_boot</code> is a positive integer (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
+<li><p>Added <code>false_positives()</code>: computes false positive rates for histological evaluations, stratified by trial arm and screening round. Filters evaluations to within each arm’s observed follow-up and deduplicates repeat evaluations within <code>window_months</code> per participant-arm (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
+<li><p>Added <code>extract_screening_mammograms()</code>, <code>extract_any_mammograms()</code>, and <code>extract_diagnostic_mammograms()</code>: template functions for extracting mammogram events from Medicare claims data by HCPCS code (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
+<li><p>Added <code>splines</code> to <code>Imports</code> in <code>DESCRIPTION</code>.</p></li>
 <li><p>Added <code>predict_survival_unadjusted()</code>, <code>predict_survival_baseline_adjusted()</code>, and <code>predict_survival_ipw()</code>: fit pooled logistic regression models with restricted cubic spline time terms and arm-by-time interactions, then apply g-computation to produce marginal survival curves for each trial arm (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
 <li><p>Added <code>compute_ipw_weights()</code>: computes stabilized cumulative IPW weights for each participant-arm-month, with separate weight models for the STOPBASE and CONTINUE arms, truncated at the 99th percentile (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
 <li><p>Added <code>fit_outcome_hr()</code>: fits an IPW-weighted pooled logistic regression and returns the odds ratio (hazard ratio approximation) for the STOPBASE arm with 95% confidence interval (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
