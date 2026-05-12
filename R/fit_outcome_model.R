@@ -115,7 +115,7 @@ fit_outcome_hr <- function(
       cli::cli_abort(
         c(
           "{.arg weight_col} ({.val {weight_col}}) not found in data.",
-          "i" = "This column must exist in {.arg long_data}."
+          "i" = "Ensure the column exists in {.arg long_data}."
         )
       )
     }
@@ -146,7 +146,7 @@ compute_or_ci <- function(fit, fit_data, cluster_id_col) {
       cli::cli_abort(
         c(
           "{.arg cluster_id_col} ({.val {cluster_id_col}}) not found.",
-          "i" = "This column must exist in {.arg long_data}."
+          "i" = "Ensure the column exists in {.arg fit_data}."
         )
       )
     }

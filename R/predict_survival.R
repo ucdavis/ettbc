@@ -260,7 +260,7 @@ predict_survival_ipw <- function(
       cli::cli_abort(
         c(
           "{.arg weight_col} ({.val {weight_col}}) not found in data.",
-          "i" = "This column must exist in {.arg long_data}."
+          "i" = "Ensure the column exists in {.arg long_data}."
         )
       )
     }
