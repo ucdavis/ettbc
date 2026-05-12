@@ -133,6 +133,15 @@ false_positives <- function(
 
   if (nrow(hist_arm) == 0L) return(empty_result)
 
+  # Validate hist_month2_col has no NA values (required for deduplication)
+  na_months <- is.na(hist_arm[[hist_month2_col]])
+  if (any(na_months)) {
+    cli::cli_abort(c(
+      "{.arg hist_month2_col} ({.val {hist_month2_col}}) has NAs.",
+      "i" = "{sum(na_months)} NA(s) found; all months must be non-missing."
+    ))
+  }
+
   # Deduplicate: per id-arm, drop evaluations within window_months of a prior
   hist_arm <- hist_arm[order(
     hist_arm[[id_col]], hist_arm[[arm_col]],

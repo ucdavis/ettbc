@@ -347,6 +347,14 @@ build_model_data <- function(
 
 #' @noRd
 standardize_survival <- function(fit, fit_data, max_month, rcs_knots, id_col) {
+  if (!id_col %in% names(fit_data)) {
+    cli::cli_abort(
+      c(
+        "{.arg id_col} ({.val {id_col}}) not found in {.arg fit_data}.",
+        "i" = "Ensure the participant identifier column exists in the data."
+      )
+    )
+  }
   # One row per individual at baseline (deduplicate on id_col)
   is_baseline <- fit_data$month3 == 0L
   baseline_data <- fit_data[is_baseline, , drop = FALSE]

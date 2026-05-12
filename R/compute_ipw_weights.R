@@ -88,6 +88,25 @@ compute_ipw_weights <- function(
     return(long_data)
   }
 
+  # Validate pred_prob_col
+  if (!pred_prob_col %in% names(long_data)) {
+    cli::cli_abort(c(
+      "Column {.arg pred_prob_col} ({.val {pred_prob_col}}) not found.",
+      "i" = "Check column names in {.arg long_data}."
+    ))
+  }
+  preds <- long_data[[pred_prob_col]]
+  if (!is.numeric(preds)) {
+    cli::cli_abort(
+      "{.arg pred_prob_col} ({.val {pred_prob_col}}) must be numeric."
+    )
+  }
+  if (any(!is.na(preds) & (preds < 0 | preds > 1))) {
+    cli::cli_abort(
+      "{.arg pred_prob_col} ({.val {pred_prob_col}}) must be in [0, 1]."
+    )
+  }
+
   # Preserve original row order
   long_data$.row_idx <- seq_len(nrow(long_data))
 
