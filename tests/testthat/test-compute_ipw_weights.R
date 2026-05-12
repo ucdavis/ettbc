@@ -63,8 +63,8 @@ test_that("compute_ipw_weights CONTINUE arm updates in compliance window", {
   expect_equal(result$w[1L], 1.0)
 
   # month 1: tslm_lag = 11, scrmammo = 0
-  # conditional uniform prob of not screening: 1 - 1/(14-11) = 2/3
-  # model prob of not screening: 1 - 0.3 = 0.7
+  # prob of screening at month 11 under discrete uniform over {11,12,13}: 1/3
+  # prob of not screening: 2/3; model prob of not screening: 0.7
   expect_equal(result$w[2L], (2.0 / 3.0) / 0.7, tolerance = 1e-7)
 
   # month 2: tslm_lag = 5, outside window -> weight unchanged
