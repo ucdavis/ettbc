@@ -342,23 +342,16 @@ check_both_arms <- function(long_data, arm_col) {
   }
 }
 
-#' Compute Natural Spline Basis
-#'
-#' Both natural cubic splines and restricted cubic splines (RCS) span the same
-#' function space: piecewise cubic polynomials with linearity constraints
-#' beyond the boundary knots. They are equivalent in terms of model fit and
-#' statistical properties, differing only in the choice of basis representation.
-#' The `rcs_knots` name is kept for consistency with the SAS `%RCSPLINE` macro
-#' that this code translates, and with the public API of the calling functions.
-#'
-#' @param x Numeric vector of time values.
-#' @param rcs_knots Numeric vector of length >= 3: first and last elements are
-#'   boundary knots; all intermediate elements are interior knots.
-#' @return A matrix of natural spline basis columns (one column per degree of
-#'   freedom). Column names follow the convention `ns1`, `ns2`, …, consistent
-#'   with the model formula documented in [fit_outcome_hr()].
-#'
 #' @noRd
+# Compute natural spline basis columns from rcs_knots.
+# Natural cubic splines and restricted cubic splines (RCS) span the same
+# function space (piecewise cubic, linear beyond boundaries), matching the
+# SAS %RCSPLINE macro. The rcs_knots parameter name is kept for consistency
+# with the public API and the SAS source. Columns are named ns1, ns2, ...,
+# consistent with the model formula documented in fit_outcome_hr().
+# Arguments:
+#   x         -- numeric vector of time values
+#   rcs_knots -- length >= 3: first/last are boundary knots, rest are interior
 compute_ns_basis <- function(x, rcs_knots) {
   n_knots <- length(rcs_knots)
   if (n_knots < 3L) {
