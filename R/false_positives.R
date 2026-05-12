@@ -87,6 +87,7 @@ false_positives <- function(
     stringsAsFactors = FALSE
   )
   if (nrow(hist_data) == 0L) return(empty_result)
+  if (nrow(long_data) == 0L) return(empty_result)
 
   # Validate arm values up front
   arms <- unique(long_data[[arm_col]])

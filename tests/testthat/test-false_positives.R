@@ -22,6 +22,24 @@ test_that("false_positives returns correct structure on simple data", {
   expect_true(all(result$n_positive <= result$n_hist))
 })
 
+test_that("false_positives returns empty result when long_data is empty", {
+  long_data <- data.frame(
+    id = integer(0),
+    arm = character(0),
+    month2 = integer(0),
+    monthBC = integer(0),
+    stringsAsFactors = FALSE
+  )
+  hist_data <- data.frame(id = 1L, month2 = 5L)
+  result <- false_positives(
+    long_data, hist_data,
+    bc_month_col = "monthBC",
+    hist_month2_col = "month2"
+  )
+  expect_equal(nrow(result), 0L)
+  expect_named(result, c("arm", "period", "n_hist", "n_positive", "fpr"))
+})
+
 test_that("false_positives returns empty result when hist_data is empty", {
   cloned <- clone_censor(cohort, screening_mammograms, diagnostic_mammograms)
   long_data <- expand_to_long(cloned)
