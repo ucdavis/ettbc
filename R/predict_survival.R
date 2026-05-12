@@ -342,8 +342,7 @@ check_both_arms <- function(long_data, arm_col) {
   }
 }
 
-#' @noRd
-#' Compute natural spline basis columns from a knots specification.
+#' Compute Natural Spline Basis
 #'
 #' Both natural cubic splines and restricted cubic splines (RCS) span the same
 #' function space: piecewise cubic polynomials with linearity constraints
@@ -356,7 +355,10 @@ check_both_arms <- function(long_data, arm_col) {
 #' @param rcs_knots Numeric vector of length >= 3: first and last elements are
 #'   boundary knots; all intermediate elements are interior knots.
 #' @return A matrix of natural spline basis columns (one column per degree of
-#'   freedom).
+#'   freedom). Column names follow the convention `ns1`, `ns2`, …, consistent
+#'   with the model formula documented in [fit_outcome_hr()].
+#'
+#' @noRd
 compute_ns_basis <- function(x, rcs_knots) {
   n_knots <- length(rcs_knots)
   if (n_knots < 3L) {
