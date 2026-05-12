@@ -34,9 +34,11 @@
 #' @param max_month Maximum month for survival prediction. Rows with month
 #'   beyond this value are excluded from both model fitting and prediction.
 #'   Default: `95`.
-#' @param rcs_knots Numeric vector of length 3 specifying the boundary and
-#'   interior knots for the restricted cubic spline: `c(left_boundary,
-#'   interior_knot, right_boundary)`. Default: `c(6, 48, 72)`.
+#' @param rcs_knots Numeric vector with at least 3 elements specifying the
+#'   knots for the restricted cubic spline: the first element is the left
+#'   boundary knot, the last element is the right boundary knot, and any
+#'   middle elements are interior knots. Must have at least one interior knot.
+#'   Default: `c(6, 48, 72)` (one interior knot at month 48).
 #'
 #' @return A data frame with one row per month (0 through `max_month`),
 #'   containing:

@@ -42,8 +42,11 @@ Default: \code{"month2"}.}
 
 \item{max_month}{Maximum month for survival prediction. Default: \code{95L}.}
 
-\item{rcs_knots}{Numeric vector of length 3 specifying the restricted cubic
-spline knots. Default: \code{c(6, 48, 72)}.}
+\item{rcs_knots}{Numeric vector with at least 3 elements specifying the
+knots for the restricted cubic spline: the first element is the left
+boundary knot, the last element is the right boundary knot, and any
+middle elements are interior knots. Must have at least one interior knot.
+Default: \code{c(6, 48, 72)} (one interior knot at month 48).}
 
 \item{n_boot}{Number of bootstrap iterations. Default: \code{500L}.}
 

@@ -49,9 +49,11 @@
 #'   cluster-robust confidence intervals are returned. Defaults to `id_col`.
 #' @param max_month Maximum month included in the model. Rows beyond this
 #'   month are excluded. Default: `95L`.
-#' @param rcs_knots Numeric vector of length 3: `c(left_boundary,
-#'   interior_knot, right_boundary)` for the restricted cubic spline on time.
-#'   Default: `c(6, 48, 72)`.
+#' @param rcs_knots Numeric vector with at least 3 elements specifying the
+#'   knots for the restricted cubic spline on time: the first element is the
+#'   left boundary knot, the last element is the right boundary knot, and any
+#'   middle elements are interior knots. Must have at least one interior knot.
+#'   Default: `c(6, 48, 72)` (one interior knot at month 48).
 #'
 #' @return A named list with three elements:
 #'

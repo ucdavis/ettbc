@@ -29,8 +29,11 @@
 #' @param month_col Name of the 0-indexed month-from-entry column.
 #'   Default: `"month2"`.
 #' @param max_month Maximum month for survival prediction. Default: `95L`.
-#' @param rcs_knots Numeric vector of length 3 specifying the restricted cubic
-#'   spline knots. Default: `c(6, 48, 72)`.
+#' @param rcs_knots Numeric vector with at least 3 elements specifying the
+#'   knots for the restricted cubic spline: the first element is the left
+#'   boundary knot, the last element is the right boundary knot, and any
+#'   middle elements are interior knots. Must have at least one interior knot.
+#'   Default: `c(6, 48, 72)` (one interior knot at month 48).
 #' @param n_boot Number of bootstrap iterations. Default: `500L`.
 #' @param seed Integer seed for reproducibility. `NULL` means no seed is set.
 #'   Default: `NULL`.

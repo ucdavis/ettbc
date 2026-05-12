@@ -37,8 +37,11 @@ deduplicate baseline rows during standardization. Default: \code{"id"}.}
 beyond this value are excluded from both model fitting and prediction.
 Default: \code{95}.}
 
-\item{rcs_knots}{Numeric vector of length 3 specifying the boundary and
-interior knots for the restricted cubic spline: \code{c(left_boundary, interior_knot, right_boundary)}. Default: \code{c(6, 48, 72)}.}
+\item{rcs_knots}{Numeric vector with at least 3 elements specifying the
+knots for the restricted cubic spline: the first element is the left
+boundary knot, the last element is the right boundary knot, and any
+middle elements are interior knots. Must have at least one interior knot.
+Default: \code{c(6, 48, 72)} (one interior knot at month 48).}
 }
 \value{
 A data frame with one row per month (0 through \code{max_month}),

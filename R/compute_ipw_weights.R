@@ -107,8 +107,8 @@ compute_ipw_weights <- function(
     )
   }
 
-  # Preserve original row order
-  long_data$.row_idx <- seq_len(nrow(long_data))
+  # Preserve original row order using a collision-resistant temp column name
+  long_data[["..ettbc_row_idx.."]] <- seq_len(nrow(long_data))
 
   grp_key <- paste(long_data[[id_col]], long_data[[arm_col]], sep = "\x1f")
   d_list <- split(long_data, grp_key)
@@ -140,8 +140,8 @@ compute_ipw_weights <- function(
   })
 
   out <- do.call(rbind, d_list)
-  out <- out[order(out$.row_idx), , drop = FALSE]
-  out$.row_idx <- NULL
+  out <- out[order(out[["..ettbc_row_idx.."]]), , drop = FALSE]
+  out[["..ettbc_row_idx.."]] <- NULL
   rownames(out) <- NULL
 
   # Truncate at the 99th percentile computed separately within each arm.
