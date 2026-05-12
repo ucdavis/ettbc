@@ -111,7 +111,21 @@ fit_outcome_hr <- function(
     family = stats::binomial(link = "logit")
   )
   if (!is.null(weight_col)) {
-    glm_args$weights <- fit_data[[weight_col]]
+    if (!weight_col %in% names(fit_data)) {
+      cli::cli_abort(
+        c(
+          "{.arg weight_col} ({.val {weight_col}}) not found in data.",
+          "i" = "This column must exist in {.arg long_data}."
+        )
+      )
+    }
+    w <- fit_data[[weight_col]]
+    if (!is.numeric(w)) {
+      cli::cli_abort(
+        "{.arg weight_col} ({.val {weight_col}}) must be numeric."
+      )
+    }
+    glm_args$weights <- w
   }
   fit <- do.call(stats::glm, glm_args)
 
@@ -128,7 +142,20 @@ compute_or_ci <- function(fit, fit_data, cluster_id_col) {
   beta <- stats::coef(fit)[["STOPBASE"]]
   if (!is.null(cluster_id_col) &&
       requireNamespace("sandwich", quietly = TRUE)) { # nolint: indentation_linter
+    if (!cluster_id_col %in% names(fit_data)) {
+      cli::cli_abort(
+        c(
+          "{.arg cluster_id_col} ({.val {cluster_id_col}}) not found.",
+          "i" = "This column must exist in {.arg long_data}."
+        )
+      )
+    }
     cluster_var <- fit_data[[cluster_id_col]]
+    if (anyNA(cluster_var)) {
+      cli::cli_abort(
+        "Column {.val {cluster_id_col}} must not contain {.code NA} values."
+      )
+    }
     vcov_robust <- sandwich::vcovCL(fit, cluster = cluster_var)
     se <- sqrt(vcov_robust["STOPBASE", "STOPBASE"])
   } else {
