@@ -77,22 +77,26 @@ predict_survival_unadjusted <- function(
     ))
   }
   check_both_arms(long_data, arm_col)
-  fit_data <- build_model_data(
+  md <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
+  fit_data <- md$data
+  ns_col_names <- md$ns_col_names
   fit_data <- fit_data[
     !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
     ,
     drop = FALSE
   ]
   check_both_arms(fit_data, arm_col)
-  formula_obj <- build_model_formula()
+  formula_obj <- build_model_formula(ns_col_names)
   fit <- stats::glm(
     formula_obj,
     data = fit_data,
     family = stats::binomial(link = "logit")
   )
-  standardize_survival(fit, fit_data, max_month, rcs_knots, id_col)
+  standardize_survival(
+    fit, fit_data, max_month, rcs_knots, id_col, ns_col_names
+  )
 }
 
 #' Predict Baseline-Adjusted Survival Curves
@@ -156,22 +160,26 @@ predict_survival_baseline_adjusted <- function( # nolint: object_length_linter
     ))
   }
   check_both_arms(long_data, arm_col)
-  fit_data <- build_model_data(
+  md <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
+  fit_data <- md$data
+  ns_col_names <- md$ns_col_names
   fit_data <- fit_data[
     !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
     ,
     drop = FALSE
   ]
   check_both_arms(fit_data, arm_col)
-  formula_obj <- build_model_formula(covariate_cols)
+  formula_obj <- build_model_formula(ns_col_names, covariate_cols)
   fit <- stats::glm(
     formula_obj,
     data = fit_data,
     family = stats::binomial(link = "logit")
   )
-  standardize_survival(fit, fit_data, max_month, rcs_knots, id_col)
+  standardize_survival(
+    fit, fit_data, max_month, rcs_knots, id_col, ns_col_names
+  )
 }
 
 #' Predict IPW-Weighted Survival Curves
@@ -240,16 +248,18 @@ predict_survival_ipw <- function(
     ))
   }
   check_both_arms(long_data, arm_col)
-  fit_data <- build_model_data(
+  md <- build_model_data(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
+  fit_data <- md$data
+  ns_col_names <- md$ns_col_names
   fit_data <- fit_data[
     !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
     ,
     drop = FALSE
   ]
   check_both_arms(fit_data, arm_col)
-  formula_obj <- build_model_formula(covariate_cols)
+  formula_obj <- build_model_formula(ns_col_names, covariate_cols)
   glm_args <- list(
     formula = formula_obj,
     data = fit_data,
@@ -273,16 +283,20 @@ predict_survival_ipw <- function(
     glm_args$weights <- w
   }
   fit <- do.call(stats::glm, glm_args)
-  standardize_survival(fit, fit_data, max_month, rcs_knots, id_col)
+  standardize_survival(
+    fit, fit_data, max_month, rcs_knots, id_col, ns_col_names
+  )
 }
 
 # Internal helpers --------------------------------------------------------
 
 #' @noRd
-build_model_formula <- function(covariate_cols = NULL) {
+build_model_formula <- function(ns_col_names, covariate_cols = NULL) {
+  ns_interaction_terms <- paste0("STOPBASE:", ns_col_names)
   base_terms <- c(
-    "STOPBASE", "STOPBASE:month3", "STOPBASE:ns1", "STOPBASE:ns2",
-    "month3", "ns1", "ns2"
+    "STOPBASE", "STOPBASE:month3",
+    ns_interaction_terms,
+    "month3", ns_col_names
   )
   all_terms <- c(base_terms, covariate_cols)
   stats::as.formula(paste("dead_t1 ~", paste(all_terms, collapse = " + ")))
@@ -329,24 +343,31 @@ check_both_arms <- function(long_data, arm_col) {
 }
 
 #' @noRd
+compute_ns_basis <- function(x, rcs_knots) {
+  n_knots <- length(rcs_knots)
+  interior_knots <- rcs_knots[seq(2L, n_knots - 1L)]
+  boundary_knots <- c(rcs_knots[1L], rcs_knots[n_knots])
+  splines::ns(x, knots = interior_knots, Boundary.knots = boundary_knots)
+}
+
+#' @noRd
 build_model_data <- function(
     long_data, outcome_col, arm_col, month_col, rcs_knots) {
   d <- long_data
   d$STOPBASE <- as.integer(d[[arm_col]] == "STOPBASE")
   d$month3 <- d[[month_col]]
   d$dead_t1 <- d[[outcome_col]]
-  ns_basis <- splines::ns(
-    d$month3,
-    knots = rcs_knots[2L],
-    Boundary.knots = c(rcs_knots[1L], rcs_knots[3L])
-  )
-  d$ns1 <- ns_basis[, 1L]
-  d$ns2 <- ns_basis[, 2L]
-  d
+  ns_basis <- compute_ns_basis(d$month3, rcs_knots)
+  ns_col_names <- paste0("ns", seq_len(ncol(ns_basis)))
+  for (j in seq_len(ncol(ns_basis))) {
+    d[[ns_col_names[j]]] <- ns_basis[, j]
+  }
+  list(data = d, ns_col_names = ns_col_names)
 }
 
 #' @noRd
-standardize_survival <- function(fit, fit_data, max_month, rcs_knots, id_col) {
+standardize_survival <- function(
+    fit, fit_data, max_month, rcs_knots, id_col, ns_col_names) {
   if (!id_col %in% names(fit_data)) {
     cli::cli_abort(
       c(
@@ -390,17 +411,13 @@ standardize_survival <- function(fit, fit_data, max_month, rcs_knots, id_col) {
 
   for (ti in seq_len(n_months)) {
     t <- months[ti]
-    ns_t <- splines::ns(
-      t,
-      knots = rcs_knots[2L],
-      Boundary.knots = c(rcs_knots[1L], rcs_knots[3L])
-    )
+    ns_t <- compute_ns_basis(t, rcs_knots)
     pred_cont$month3 <- t
-    pred_cont$ns1 <- ns_t[1L, 1L]
-    pred_cont$ns2 <- ns_t[1L, 2L]
     pred_stop$month3 <- t
-    pred_stop$ns1 <- ns_t[1L, 1L]
-    pred_stop$ns2 <- ns_t[1L, 2L]
+    for (j in seq_along(ns_col_names)) {
+      pred_cont[[ns_col_names[j]]] <- ns_t[1L, j]
+      pred_stop[[ns_col_names[j]]] <- ns_t[1L, j]
+    }
 
     p_x1 <- stats::predict(fit, newdata = pred_cont, type = "response")
     p_x2 <- stats::predict(fit, newdata = pred_stop, type = "response")

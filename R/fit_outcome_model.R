@@ -93,9 +93,11 @@ fit_outcome_hr <- function(
     max_month = 95L,
     rcs_knots = c(6, 48, 72)) {
   check_both_arms(long_data, arm_col) # nolint: object_usage_linter
-  fit_data <- build_model_data( # nolint: object_usage_linter
+  md <- build_model_data( # nolint: object_usage_linter
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
+  fit_data <- md$data
+  ns_col_names <- md$ns_col_names
   fit_data <- fit_data[
     !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
     ,
@@ -103,7 +105,7 @@ fit_outcome_hr <- function(
   ]
   check_both_arms(fit_data, arm_col) # nolint: object_usage_linter
 
-  formula_obj <- build_model_formula(covariate_cols) # nolint: object_usage_linter
+  formula_obj <- build_model_formula(ns_col_names, covariate_cols) # nolint: object_usage_linter
 
   glm_args <- list(
     formula = formula_obj,
