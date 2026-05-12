@@ -82,6 +82,13 @@ bootstrap_ci <- function(
     fail_threshold = 0.1) {
   n_months <- max_month + 1L
 
+  n_boot <- as.integer(n_boot)
+  if (is.na(n_boot) || n_boot < 1L) {
+    cli::cli_abort(
+      "{.arg n_boot} must be a single positive integer."
+    )
+  }
+
   empty_result <- data.frame(
     month = 0L:max_month,
     diff = rep(NA_real_, n_months),
