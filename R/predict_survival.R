@@ -343,6 +343,13 @@ check_both_arms <- function(long_data, arm_col) {
 }
 
 #' @noRd
+#' Compute natural spline basis columns from a knots specification.
+#'
+#' @param x Numeric vector of time values.
+#' @param rcs_knots Numeric vector: first and last elements are boundary knots;
+#'   all intermediate elements are interior knots.
+#' @return A matrix of natural spline basis columns (one column per degree of
+#'   freedom).
 compute_ns_basis <- function(x, rcs_knots) {
   n_knots <- length(rcs_knots)
   interior_knots <- rcs_knots[seq(2L, n_knots - 1L)]
