@@ -598,7 +598,7 @@ Maximum month for survival prediction. Default: <code>95L</code>.
 <code id="rcs_knots">rcs_knots</code>
 </td>
 <td>
-Numeric vector of length 3 specifying the restricted cubic spline knots. Default: <code>c(6, 48, 72)</code>.
+Numeric vector with at least 3 elements specifying the knots for the restricted cubic spline: the first element is the left boundary knot, the last element is the right boundary knot, and any middle elements are interior knots. Must have at least one interior knot. Default: <code>c(6, 48, 72)</code> (one interior knot at month 48).
 </td>
 </tr>
 <tr>
