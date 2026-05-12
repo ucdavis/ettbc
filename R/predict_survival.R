@@ -356,6 +356,11 @@ check_both_arms <- function(long_data, arm_col) {
 #' @return A matrix with one column per spline degree of freedom (`ns1`,
 #'   `ns2`, ...).
 #'
+#' @details
+#' The `n_knots >= 3` guard ensures that the `seq(2L, n_knots - 1L)` call
+#' always produces a non-empty, non-descending integer sequence, so all
+#' intermediate elements are correctly identified as interior knots.
+#'
 #' @noRd
 compute_ns_basis <- function(x, rcs_knots) {
   n_knots <- length(rcs_knots)
@@ -367,8 +372,6 @@ compute_ns_basis <- function(x, rcs_knots) {
       )
     )
   }
-  # Safe: guard above ensures n_knots >= 3, so seq(2L, n_knots - 1L) always
-  # yields a non-empty, non-descending integer sequence.
   interior_knots <- rcs_knots[seq(2L, n_knots - 1L)]
   boundary_knots <- c(rcs_knots[1L], rcs_knots[n_knots])
   splines::ns(x, knots = interior_knots, Boundary.knots = boundary_knots)
