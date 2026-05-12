@@ -352,6 +352,7 @@ check_both_arms <- function(long_data, arm_col) {
 # Arguments:
 #   x         -- numeric vector of time values
 #   rcs_knots -- length >= 3: first/last are boundary knots, rest are interior
+# Returns: matrix with one column per spline degree of freedom (ns1, ns2, ...)
 compute_ns_basis <- function(x, rcs_knots) {
   n_knots <- length(rcs_knots)
   if (n_knots < 3L) {
