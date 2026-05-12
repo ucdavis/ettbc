@@ -87,7 +87,6 @@ long_data <- expand_to_long(cloned)
 long_data$p_scrmammo <- 0.3
 long_data$monthBC <- NA_integer_
 long_data$scrmammo <- 0L
-long_data$anymammo <- 0L
 long_data$tslm_lag <- 5L
 result <- compute_ipw_weights(long_data, pred_prob_col = "p_scrmammo")
 head(result[, c("id", "arm", "month2", "w", "wp99")])
