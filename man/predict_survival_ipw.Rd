@@ -28,7 +28,9 @@ produced by \code{\link[=compute_ipw_weights]{compute_ipw_weights()}}). Set to \
 estimation. Default: \code{"wp99"}.}
 
 \item{covariate_cols}{Character vector of column names to include as
-additional adjustment terms in the model. Set to \code{NULL} for no additional
+additional adjustment terms in the model. These covariates are used during
+g-computation standardization over baseline rows (month = 0), so they
+must be measured at or before baseline. Set to \code{NULL} for no additional
 adjustment. Default: \code{NULL}.}
 
 \item{outcome_col}{Name of the binary outcome column (0/1, \code{NA} for

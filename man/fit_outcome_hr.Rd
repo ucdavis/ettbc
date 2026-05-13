@@ -70,12 +70,13 @@ splines.
 \details{
 The model formula is:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + STOPBASE:ns2
-          + month3 + ns1 + ns2 [+ covariate_cols]
+\if{html}{\out{<div class="sourceCode">}}\preformatted{dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + ... + STOPBASE:nsK
+          + month3 + ns1 + ... + nsK [+ covariate_cols]
 }\if{html}{\out{</div>}}
 
-where \code{month3} is the 0-indexed follow-up month, and \code{ns1}/\code{ns2} are the
-two columns of the natural spline basis for time (from \code{\link[splines:ns]{splines::ns()}}).
+where \code{month3} is the 0-indexed follow-up month, and \code{ns1}, ..., \code{nsK} are
+the \code{K = length(rcs_knots) - 1} columns of the natural spline basis for
+time (from \code{\link[splines:ns]{splines::ns()}}).
 
 Participant-level IPW weights from \code{weight_col} are passed to
 \code{\link[stats:glm]{stats::glm()}}. The returned odds ratio is the exponentiated \code{STOPBASE}
