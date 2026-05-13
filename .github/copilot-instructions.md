@@ -100,6 +100,8 @@ covr::package_coverage()
 
 These commands must be run in this order and all must pass without errors before pushing changes or requesting code review. This ensures that CI/CD workflows will pass and prevents wasting reviewer time on fixable issues.
 
+**POLICY: After completing all code changes, call the `parallel_validation` tool and iterate — applying any feedback raised by the code review or CodeQL scan — until `parallel_validation` reports no new issues. Only then consider the task done.** Note: `parallel_validation` is a Copilot coding agent tool (invokable from within a cloud agent session); it is not a shell command or script in this repository.
+
 **IMPORTANT**: For changes affecting documentation or vignettes, you MUST build and visually inspect the documentation site output (located in `docs/`) to verify that everything renders as expected. **DO NOT REQUEST REVIEW** until you have personally verified the deployed documentation looks correct in a browser.
 
 ### Example Validation Workflow
