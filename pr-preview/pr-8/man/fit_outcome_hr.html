@@ -616,11 +616,11 @@ Numeric vector with at least 3 elements specifying the knots for the restricted 
 </tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>The model formula is:</p>
 <div class="sourceCode">
-<pre>dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + STOPBASE:ns2
-          + month3 + ns1 + ns2 [+ covariate_cols]
+<pre>dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + ... + STOPBASE:nsK
+          + month3 + ns1 + ... + nsK [+ covariate_cols]
 </pre>
 </div>
-<p>where <code>month3</code> is the 0-indexed follow-up month, and <code>ns1</code>/<code>ns2</code> are the two columns of the natural spline basis for time (from <code><a href="https://rdrr.io/r/splines/ns.html">splines::ns()</a></code>).</p>
+<p>where <code>month3</code> is the 0-indexed follow-up month, and <code>ns1</code>, …, <code>nsK</code> are the <code>K = length(rcs_knots) - 1</code> columns of the natural spline basis for time (from <code><a href="https://rdrr.io/r/splines/ns.html">splines::ns()</a></code>).</p>
 <p>Participant-level IPW weights from <code>weight_col</code> are passed to <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code>. The returned odds ratio is the exponentiated <code>STOPBASE</code> main-effect coefficient. Because the formula includes arm-by-time interaction terms, this coefficient represents the instantaneous log-odds ratio at baseline (month = 0), not an unconditional overall ratio; it is retained as a hazard ratio approximation consistent with the SAS <code>cann20</code> macro output.</p>
 <p>Because the dataset contains repeated person-month observations per participant, standard <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code> confidence intervals understate uncertainty. When <code>cluster_id_col</code> is provided and the <code>sandwich</code> package is installed, cluster-robust (HC) variance estimates are used to form the confidence interval, matching the variance estimation in the SAS <code style="white-space: pre;">PROC SURVEYLOGISTIC</code> implementation. A Wald confidence interval is used in both branches for consistent output type.</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>

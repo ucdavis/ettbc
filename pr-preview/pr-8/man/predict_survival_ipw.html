@@ -553,7 +553,7 @@ Name of the column containing IPW weights (e.g., as produced by <code><a href="h
 <code id="covariate_cols">covariate_cols</code>
 </td>
 <td>
-Character vector of column names to include as additional adjustment terms in the model. Set to <code>NULL</code> for no additional adjustment. Default: <code>NULL</code>.
+Character vector of column names to include as additional adjustment terms in the model. These covariates are used during g-computation standardization over baseline rows (month = 0), so they must be measured at or before baseline. Set to <code>NULL</code> for no additional adjustment. Default: <code>NULL</code>.
 </td>
 </tr>
 <tr>
