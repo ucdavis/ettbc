@@ -9,12 +9,13 @@
 #' The model formula is:
 #'
 #' ```
-#' dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + STOPBASE:ns2
-#'           + month3 + ns1 + ns2 [+ covariate_cols]
+#' dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + ... + STOPBASE:nsK
+#'           + month3 + ns1 + ... + nsK [+ covariate_cols]
 #' ```
 #'
-#' where `month3` is the 0-indexed follow-up month, and `ns1`/`ns2` are the
-#' two columns of the natural spline basis for time (from [splines::ns()]).
+#' where `month3` is the 0-indexed follow-up month, and `ns1`, ..., `nsK` are
+#' the `K = length(rcs_knots) - 1` columns of the natural spline basis for
+#' time (from [splines::ns()]).
 #'
 #' Participant-level IPW weights from `weight_col` are passed to
 #' [stats::glm()]. The returned odds ratio is the exponentiated `STOPBASE`

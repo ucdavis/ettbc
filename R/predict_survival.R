@@ -202,7 +202,9 @@ predict_survival_baseline_adjusted <- function( # nolint: object_length_linter
 #'   produced by [compute_ipw_weights()]). Set to `NULL` for unweighted
 #'   estimation. Default: `"wp99"`.
 #' @param covariate_cols Character vector of column names to include as
-#'   additional adjustment terms in the model. Set to `NULL` for no additional
+#'   additional adjustment terms in the model. These covariates are used during
+#'   g-computation standardization over baseline rows (month = 0), so they
+#'   must be measured at or before baseline. Set to `NULL` for no additional
 #'   adjustment. Default: `NULL`.
 #'
 #' @return A data frame with one row per month (0 through `max_month`),
@@ -357,7 +359,7 @@ check_both_arms <- function(long_data, arm_col) {
 #'   boundary knots; all intermediate elements are interior knots.
 #' @return A matrix with automatically named columns (`ns1`, `ns2`, ...) for
 #'   each spline degree of freedom; the number of columns equals
-#'   `length(rcs_knots) - 2`.
+#'   `length(rcs_knots) - 1` (i.e., `length(interior_knots) + 1`).
 #'
 #' @details
 #' The `n_knots >= 3` guard ensures that the `seq(2L, n_knots - 1L)` call

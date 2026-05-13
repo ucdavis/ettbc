@@ -32,7 +32,7 @@
 * Added `extract_screening_mammograms()`, `extract_any_mammograms()`, and
   `extract_diagnostic_mammograms()`: template functions for extracting mammogram
   events from Medicare claims data by HCPCS code (#1).
-* Added `splines` to `Imports` in `DESCRIPTION`.
+* Added `splines` and `cli` to `Imports` in `DESCRIPTION`.
 
 * Added `clone_censor()`: implements the clone-censor step of the target trial
   emulation methodology. Creates two clones per participant (STOPBASE and
