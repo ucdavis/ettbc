@@ -379,7 +379,9 @@ compute_ns_basis <- function(x, rcs_knots) {
   }
   interior_knots <- rcs_knots[seq(2L, n_knots - 1L)]
   boundary_knots <- c(rcs_knots[1L], rcs_knots[n_knots])
-  splines::ns(x, knots = interior_knots, Boundary.knots = boundary_knots)
+  basis <- splines::ns(x, knots = interior_knots, Boundary.knots = boundary_knots)
+  colnames(basis) <- paste0("ns", seq_len(ncol(basis)))
+  basis
 }
 
 #' @noRd
@@ -390,7 +392,7 @@ build_model_data <- function(
   d$month3 <- d[[month_col]]
   d$dead_t1 <- d[[outcome_col]]
   ns_basis <- compute_ns_basis(d$month3, rcs_knots)
-  ns_col_names <- paste0("ns", seq_len(ncol(ns_basis)))
+  ns_col_names <- colnames(ns_basis)
   for (j in seq_len(ncol(ns_basis))) {
     d[[ns_col_names[j]]] <- ns_basis[, j]
   }

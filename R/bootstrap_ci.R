@@ -153,18 +153,20 @@ bootstrap_ci <- function(
   boot_s_stop <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
   n_failed <- 0L
 
+  # Pre-split long_data by id_col once to avoid repeated merge() in the loop
+  long_data_split <- split(long_data, long_data[[id_col]])
+
   for (b in seq_len(n_boot)) {
     boot_ids <- sample(ids, size = n_ids, replace = TRUE)
 
-    # Build bootstrap dataset, assigning new IDs to handle duplicates
-    boot_id_df <- data.frame(
-      .new_id = seq_along(boot_ids),
-      stringsAsFactors = FALSE
-    )
-    boot_id_df[[id_col]] <- boot_ids
-    boot_data <- merge(boot_id_df, long_data, by = id_col, all.x = TRUE)
-    boot_data[[id_col]] <- boot_data$.new_id
-    boot_data$.new_id <- NULL
+    # Build bootstrap dataset by concatenating sampled groups,
+    # assigning new integer IDs to handle duplicates
+    boot_groups <- lapply(seq_along(boot_ids), function(i) {
+      grp <- long_data_split[[as.character(boot_ids[i])]]
+      grp[[id_col]] <- i
+      grp
+    })
+    boot_data <- do.call(rbind, boot_groups)
     rownames(boot_data) <- NULL
 
     tryCatch(
