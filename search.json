@@ -4,7 +4,7 @@
     "href": "NEWS.html",
     "title": "ettbc (development version)",
     "section": "",
-    "text": "ettbc (development version)\n\nAdded clone_censor(): implements the clone-censor step of the target trial emulation methodology. Creates two clones per participant (STOPBASE and CONTINUE arms) and applies the corresponding censoring rules (#1).\nAdded expand_to_long(): converts cloned data to one row per participant-arm-month for use in discrete-time survival analysis (#1).\nAdded example synthetic datasets: cohort, screening_mammograms, and diagnostic_mammograms (#1).\nAdded vignette article “Using ettbc: Emulating a Target Trial for Breast Cancer Screening” (#1).\nUpdated DESCRIPTION title and description to reflect the package purpose.\n\n\n\nettbc 0.0.0.9000\n\nInitial development version",
+    "text": "ettbc (development version)\n\nAdded clone_censor(): implements the clone-censor step of the target trial emulation methodology. Creates two clones per participant (STOPBASE and CONTINUE arms) and applies the corresponding censoring rules (#1).\nAdded expand_to_long(): converts cloned data to one row per participant-arm-month for use in discrete-time survival analysis (#1).\nAdded example synthetic datasets: cohort, screening_mammograms, and diagnostic_mammograms (#1).\nAdded vignette article “Using ettbc: Emulating a Target Trial for Breast Cancer Screening” (#1).\nUpdated DESCRIPTION title and description to reflect the package purpose.\nMigrated the @claude, Claude review, and NEWS.md changelog-check GitHub Actions workflows to the reusable workflows in d-morrison/gha.\n\n\n\nettbc 0.0.0.9000\n\nInitial development version",
     "crumbs": [
       "Documentation",
       "News"
@@ -59,7 +59,7 @@
     "href": "CITATION.html",
     "title": "Citation",
     "section": "",
-    "text": "Citation\nTo cite package ‘ettbc’ in publications use:\n\nMorrison D (2026). ettbc: Emulating a Target Trial for Breast Cancer Screening. R package version 0.0.0.9014, https://github.com/ucdavis/ettbc.",
+    "text": "Citation\nTo cite package ‘ettbc’ in publications use:\n\nMorrison D (2026). ettbc: Emulating a Target Trial for Breast Cancer Screening. R package version 0.0.0.9015, https://github.com/ucdavis/ettbc.",
     "crumbs": [
       "Documentation",
       "Citation"
@@ -189,7 +189,7 @@
     "href": "vignettes/articles/quarto_article.html",
     "title": "Advanced Quarto Article",
     "section": "",
-    "text": "Douglas Ezra Morrison\n\n2026-05-04\nCode\nlibrary(ettbc)"
+    "text": "Douglas Ezra Morrison\n\n2026-06-18\nCode\nlibrary(ettbc)"
   },
   {
     "objectID": "vignettes/articles/quarto_article.html#overview",
@@ -489,7 +489,7 @@
     "href": "vignettes/articles/using-ettbc.html",
     "title": "Using ettbc: Emulating a Target Trial for Breast Cancer Screening",
     "section": "",
-    "text": "Douglas Ezra Morrison\n\n2026-05-04",
+    "text": "Douglas Ezra Morrison\n\n2026-06-18",
     "crumbs": [
       "Documentation",
       "Articles",
