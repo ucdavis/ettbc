@@ -1,0 +1,33 @@
+# Migrated to the reusable workflow in d-morrison/gha (claude-code-review.yml).
+# The reusable workflow carries the reviewer stash/restore, the inline-comment
+# tool allowlist, review-only enforcement, the collapse/cancel handling, and the
+# workflow_dispatch path claude.yml uses to re-dispatch a review after pushing
+# commits.
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull request number to review'
+        required: true
+        type: number
+
+jobs:
+  review:
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    uses: d-morrison/gha/.github/workflows/claude-code-review.yml@v1
+    # Pass secrets explicitly rather than `secrets: inherit` (cross-owner
+    # caller -> reusable workflow; see claude.yml for the rationale).
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+    with:
+      # Wires the workflow_dispatch input through so claude.yml can re-dispatch
+      # a review on Claude's commits; empty (and ignored) for pull_request runs.
+      pr-number: ${{ inputs.pr_number }}

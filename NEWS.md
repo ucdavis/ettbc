@@ -44,6 +44,8 @@
 * Added vignette article "Using ettbc: Emulating a Target Trial for Breast
   Cancer Screening" (#1).
 * Updated `DESCRIPTION` title and description to reflect the package purpose.
+* Migrated the `@claude`, Claude review, and `NEWS.md` changelog-check GitHub
+  Actions workflows to the reusable workflows in `d-morrison/gha`.
 
 # ettbc 0.0.0.9000
 
