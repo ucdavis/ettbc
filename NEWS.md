@@ -53,6 +53,11 @@
 * Updated `DESCRIPTION` title and description to reflect the package purpose.
 * Migrated the `@claude`, Claude review, and `NEWS.md` changelog-check GitHub
   Actions workflows to the reusable workflows in `d-morrison/gha`.
+* Internal refactor: decomposed the per-participant clone-censor logic in
+  `clone_censor()` into smaller helper functions, factored the cumulative
+  mortality computation in the "Using ettbc" vignette into a reusable helper,
+  and split the example-data generation script into focused simulation
+  functions. No user-facing behavior changes.
 
 # ettbc 0.0.0.9000
 

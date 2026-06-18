@@ -127,46 +127,27 @@ clone_censor <- function(
 
   for (i in seq_len(n)) {
     pid <- ids[i]
-    start <- starts[i]
-    admin_end <- admin_ends[i]
-    death <- deaths[i]
-    bc_death <- bc_deaths[i]
-    bc_month <- bc_months[i]
-
     scr <- scr_by_id[[as.character(pid)]]
     dx <- dx_by_id[[as.character(pid)]]
     if (is.null(scr)) scr <- integer(0)
     if (is.null(dx)) dx <- integer(0)
 
-    # ---- STOPBASE arm ----
-    ucen_stop <- build_ucen_stop(
-      bc_month, start, stop_grace_months, total_months
+    arm_rows <- clone_censor_participant(
+      base_row = data[i, , drop = FALSE],
+      start = starts[i],
+      admin_end = admin_ends[i],
+      death = deaths[i],
+      bc_death = bc_deaths[i],
+      bc_month = bc_months[i],
+      scr = scr,
+      dx = dx,
+      end_col = end_col,
+      stop_grace_months = stop_grace_months,
+      continue_grace_months = continue_grace_months,
+      total_months = total_months
     )
-    censor_stop <- find_stop_censor(scr, ucen_stop, start, total_months)
-    mend_stop <- min(
-      if (!is.na(death)) death else Inf,
-      admin_end,
-      if (!is.na(censor_stop)) censor_stop else Inf
-    )
-    stop_rows[[i]] <- make_arm_row(
-      data[i, , drop = FALSE], "STOPBASE", end_col,
-      mend_stop, start, death, bc_death, censor_stop
-    )
-
-    # ---- CONTINUE arm ----
-    ucen_cont <- build_ucen_cont(
-      bc_month, start, continue_grace_months, scr, dx, total_months
-    )
-    censor_cont <- find_cont_censor(ucen_cont, start, total_months)
-    mend_cont <- min(
-      if (!is.na(death)) death else Inf,
-      admin_end,
-      if (!is.na(censor_cont)) censor_cont else Inf
-    )
-    cont_rows[[i]] <- make_arm_row(
-      data[i, , drop = FALSE], "CONTINUE", end_col,
-      mend_cont, start, death, bc_death, censor_cont
-    )
+    stop_rows[[i]] <- arm_rows$stopbase
+    cont_rows[[i]] <- arm_rows$continue
   }
 
   out <- rbind(
@@ -178,6 +159,45 @@ clone_censor <- function(
 }
 
 # Internal helper functions for clone_censor() ---------------------
+
+# Clone a single participant into STOPBASE and CONTINUE arm rows,
+# applying each arm's censoring rule. Returns a list with elements
+# `stopbase` and `continue`, each a one-row data frame.
+clone_censor_participant <- function(
+    base_row, start, admin_end, death, bc_death, bc_month, scr, dx, end_col,
+    stop_grace_months, continue_grace_months, total_months) {
+  # ---- STOPBASE arm ----
+  ucen_stop <- build_ucen_stop(bc_month, start, stop_grace_months, total_months)
+  censor_stop <- find_stop_censor(scr, ucen_stop, start, total_months)
+  mend_stop <- compute_end_month(death, admin_end, censor_stop)
+  stopbase <- make_arm_row(
+    base_row, "STOPBASE", end_col,
+    mend_stop, start, death, bc_death, censor_stop
+  )
+
+  # ---- CONTINUE arm ----
+  ucen_cont <- build_ucen_cont(
+    bc_month, start, continue_grace_months, scr, dx, total_months
+  )
+  censor_cont <- find_cont_censor(ucen_cont, start, total_months)
+  mend_cont <- compute_end_month(death, admin_end, censor_cont)
+  continue <- make_arm_row(
+    base_row, "CONTINUE", end_col,
+    mend_cont, start, death, bc_death, censor_cont
+  )
+
+  list(stopbase = stopbase, continue = continue)
+}
+
+# Earliest month follow-up ends: the minimum of death, administrative
+# censoring, and protocol censoring (NA values are treated as +Inf).
+compute_end_month <- function(death, admin_end, censor) {
+  min(
+    if (!is.na(death)) death else Inf,
+    admin_end,
+    if (!is.na(censor)) censor else Inf
+  )
+}
 
 # Build STOPBASE uncensorable indicator vector
 build_ucen_stop <- function(bc_month, start, stop_grace_months, total_months) {

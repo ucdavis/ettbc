@@ -216,6 +216,36 @@ sum(long_data$dead_t1 == 1L, na.rm = TRUE)
 Before fitting weighted outcome models, it is useful to describe the data
 and examine crude survival by arm.
 
+We first define a small helper that summarises one arm's long dataset into a
+crude cumulative mortality curve. For each month since study entry it counts
+the deaths, then accumulates them and divides by the number of clones at risk
+at entry.
+
+```{r}
+crude_cumulative_mortality <- function(arm_long) {
+  months <- 0:max(arm_long$month2)
+
+  deaths <- vapply(
+    months,
+    function(t) sum(arm_long$dead_t1[arm_long$month2 == t] == 1L, na.rm = TRUE),
+    numeric(1)
+  )
+  n_risk <- vapply(
+    months,
+    function(t) sum(arm_long$month2 == t),
+    numeric(1)
+  )
+
+  data.frame(
+    month2 = months,
+    cum_mort = cumsum(deaths) / max(n_risk, 1L)
+  )
+}
+```
+
+With the computation factored out, plotting the two arms is a short loop over
+the helper.
+
 ```{r}
 #| label: fig-cumhaz
 #| fig-cap: >
@@ -223,7 +253,6 @@ and examine crude survival by arm.
 #|   Under the null, the two arms should be similar because clones are derived
 #|   from the same participants.
 
-# Compute monthly event rate per arm
 arms <- c("STOPBASE", "CONTINUE")
 cols <- c("#E05C4B", "#4B8FE0")
 
@@ -235,19 +264,8 @@ plot(NA,
 )
 
 for (j in seq_along(arms)) {
-  sub <- long_data[long_data$arm == arms[j], ]
-  # Month-by-month event counts
-  max_t <- max(sub$month2)
-  cum_mort <- numeric(max_t + 1L)
-  n_risk <- numeric(max_t + 1L)
-
-  for (t in 0:max_t) {
-    rows_t <- sub[sub$month2 == t, ]
-    n_risk[t + 1L] <- nrow(rows_t)
-    cum_mort[t + 1L] <- sum(rows_t$dead_t1 == 1L, na.rm = TRUE)
-  }
-  cum_mort <- cumsum(cum_mort) / max(n_risk, 1L)
-  lines(0:max_t, cum_mort, col = cols[j], lwd = 2)
+  curve <- crude_cumulative_mortality(long_data[long_data$arm == arms[j], ])
+  lines(curve$month2, curve$cum_mort, col = cols[j], lwd = 2)
 }
 
 legend("topleft",

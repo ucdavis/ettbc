@@ -148,23 +148,11 @@ bootstrap_ci <- function(
   }
   n_ids <- length(ids)
 
-  # Point estimate
-  long_data_w <- compute_ipw_weights( # nolint: object_usage_linter
-    long_data, pred_prob_col,
-    arm_col = arm_col, id_col = id_col, month2_col = month_col,
-    bc_month_col = bc_month_col, scrmammo_col = scrmammo_col,
-    tslm_lag_col = tslm_lag_col, grace_months = grace_months
-  )
-  point_est <- predict_survival_ipw( # nolint: object_usage_linter
-    long_data_w,
-    weight_col = "wp99",
-    covariate_cols = covariate_cols,
-    outcome_col = outcome_col,
-    arm_col = arm_col,
-    id_col = id_col,
-    month_col = month_col,
-    max_month = max_month,
-    rcs_knots = rcs_knots
+  # Point estimate (uses the original, unbootstrapped data)
+  point_est <- estimate_survival_curves(
+    long_data, pred_prob_col, covariate_cols, outcome_col, arm_col, id_col,
+    month_col, bc_month_col, scrmammo_col, tslm_lag_col, grace_months,
+    max_month, rcs_knots
   )
 
   boot_diffs <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
@@ -177,38 +165,14 @@ bootstrap_ci <- function(
 
   for (b in seq_len(n_boot)) {
     boot_ids <- sample(ids, size = n_ids, replace = TRUE)
-
-    # Build bootstrap dataset by concatenating sampled groups, assigning a
-    # fresh synthetic integer ID so duplicated draws get distinct IDs. Whole-
-    # column replacement via `[[<-` drops any original factor/character type
-    # (rather than coercing `i` into an existing factor's levels, which would
-    # yield `NA`), so downstream id handling is robust to the input id type.
-    boot_groups <- lapply(seq_along(boot_ids), function(i) {
-      grp <- long_data_split[[as.character(boot_ids[i])]]
-      grp[[id_col]] <- as.integer(i)
-      grp
-    })
-    boot_data <- do.call(rbind, boot_groups)
-    rownames(boot_data) <- NULL
+    boot_data <- build_bootstrap_sample(boot_ids, long_data_split, id_col)
 
     tryCatch(
       {
-        boot_data_w <- compute_ipw_weights( # nolint: object_usage_linter
-          boot_data, pred_prob_col,
-          arm_col = arm_col, id_col = id_col, month2_col = month_col,
-          bc_month_col = bc_month_col, scrmammo_col = scrmammo_col,
-          tslm_lag_col = tslm_lag_col, grace_months = grace_months
-        )
-        boot_surv <- predict_survival_ipw( # nolint: object_usage_linter
-          boot_data_w,
-          weight_col = "wp99",
-          covariate_cols = covariate_cols,
-          outcome_col = outcome_col,
-          arm_col = arm_col,
-          id_col = id_col,
-          month_col = month_col,
-          max_month = max_month,
-          rcs_knots = rcs_knots
+        boot_surv <- estimate_survival_curves(
+          boot_data, pred_prob_col, covariate_cols, outcome_col, arm_col,
+          id_col, month_col, bc_month_col, scrmammo_col, tslm_lag_col,
+          grace_months, max_month, rcs_knots
         )
         boot_diffs[b, ] <- boot_surv$s_continue - boot_surv$s_stopbase
         boot_s_cont[b, ] <- boot_surv$s_continue
@@ -246,4 +210,50 @@ bootstrap_ci <- function(
     s_stopbase_lo = col_quantile(boot_s_stop, 0.025),
     s_stopbase_hi = col_quantile(boot_s_stop, 0.975)
   )
+}
+
+# Internal helpers --------------------------------------------------------
+
+# Compute stabilized IPW weights and the IPW-adjusted marginal survival
+# curves for one dataset. Shared by the point estimate and each bootstrap
+# iteration so the two stay in lockstep.
+estimate_survival_curves <- function(
+    data, pred_prob_col, covariate_cols, outcome_col, arm_col, id_col,
+    month_col, bc_month_col, scrmammo_col, tslm_lag_col, grace_months,
+    max_month, rcs_knots) {
+  data_w <- compute_ipw_weights( # nolint: object_usage_linter
+    data, pred_prob_col,
+    arm_col = arm_col, id_col = id_col, month2_col = month_col,
+    bc_month_col = bc_month_col, scrmammo_col = scrmammo_col,
+    tslm_lag_col = tslm_lag_col, grace_months = grace_months
+  )
+  predict_survival_ipw( # nolint: object_usage_linter
+    data_w,
+    weight_col = "wp99",
+    covariate_cols = covariate_cols,
+    outcome_col = outcome_col,
+    arm_col = arm_col,
+    id_col = id_col,
+    month_col = month_col,
+    max_month = max_month,
+    rcs_knots = rcs_knots
+  )
+}
+
+# Assemble one bootstrap dataset from a vector of sampled participant IDs.
+# Concatenates the long-format rows for each sampled participant and assigns
+# a fresh synthetic integer ID so duplicated draws are treated as distinct
+# participants. Whole-column replacement via `[[<-` drops any original
+# factor/character type (rather than coercing `i` into an existing factor's
+# levels, which would yield `NA`), so downstream id handling is robust to the
+# input id type.
+build_bootstrap_sample <- function(boot_ids, long_data_split, id_col) {
+  boot_groups <- lapply(seq_along(boot_ids), function(i) {
+    grp <- long_data_split[[as.character(boot_ids[i])]]
+    grp[[id_col]] <- as.integer(i)
+    grp
+  })
+  boot_data <- do.call(rbind, boot_groups)
+  rownames(boot_data) <- NULL
+  boot_data
 }
