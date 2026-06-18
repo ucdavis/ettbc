@@ -42,13 +42,11 @@ simulate_cohort <- function(n, max_month) {
   bc_months <- rep(NA_integer_, n)
 
   for (i in bc_death_idx) {
+    # bc_death participants always die after entry (death_month >= start + 1L,
+    # enforced above), so the diagnosis month is drawn from before the death.
     dm <- death_months[i]
     sm <- start_months[i]
-    if (!is.na(dm) && dm > sm) {
-      bc_months[i] <- sample(sm:(dm - 1L), 1L)
-    } else {
-      bc_months[i] <- sm
-    }
+    bc_months[i] <- sample(sm:(dm - 1L), 1L)
   }
 
   # Additional non-fatal BC diagnoses (~3 %)
