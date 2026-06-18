@@ -134,7 +134,9 @@ simulate_screening_mammograms <- function(cohort, max_month) {
     )
 
     if (length(mammo_months) > 0L) {
-      data.frame(id = i, month = mammo_months, stringsAsFactors = FALSE)
+      data.frame(
+        id = cohort$id[i], month = mammo_months, stringsAsFactors = FALSE
+      )
     } else {
       NULL
     }
@@ -159,7 +161,7 @@ simulate_diagnostic_mammograms <- function(cohort, max_month) {
     em <- cohort$end_month[i]
     if (em > sm + 6L) {
       dx_month <- sample(seq.int(sm + 6L, pmin(em, max_month)), 1L)
-      data.frame(id = i, month = dx_month, stringsAsFactors = FALSE)
+      data.frame(id = cohort$id[i], month = dx_month, stringsAsFactors = FALSE)
     } else {
       NULL
     }

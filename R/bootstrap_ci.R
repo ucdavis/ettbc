@@ -150,9 +150,12 @@ bootstrap_ci <- function(
 
   # Point estimate (uses the original, unbootstrapped data)
   point_est <- estimate_survival_curves(
-    long_data, pred_prob_col, covariate_cols, outcome_col, arm_col, id_col,
-    month_col, bc_month_col, scrmammo_col, tslm_lag_col, grace_months,
-    max_month, rcs_knots
+    long_data,
+    pred_prob_col = pred_prob_col, covariate_cols = covariate_cols,
+    outcome_col = outcome_col, arm_col = arm_col, id_col = id_col,
+    month_col = month_col, bc_month_col = bc_month_col,
+    scrmammo_col = scrmammo_col, tslm_lag_col = tslm_lag_col,
+    grace_months = grace_months, max_month = max_month, rcs_knots = rcs_knots
   )
 
   boot_diffs <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
@@ -170,9 +173,13 @@ bootstrap_ci <- function(
     tryCatch(
       {
         boot_surv <- estimate_survival_curves(
-          boot_data, pred_prob_col, covariate_cols, outcome_col, arm_col,
-          id_col, month_col, bc_month_col, scrmammo_col, tslm_lag_col,
-          grace_months, max_month, rcs_knots
+          boot_data,
+          pred_prob_col = pred_prob_col, covariate_cols = covariate_cols,
+          outcome_col = outcome_col, arm_col = arm_col, id_col = id_col,
+          month_col = month_col, bc_month_col = bc_month_col,
+          scrmammo_col = scrmammo_col, tslm_lag_col = tslm_lag_col,
+          grace_months = grace_months, max_month = max_month,
+          rcs_knots = rcs_knots
         )
         boot_diffs[b, ] <- boot_surv$s_continue - boot_surv$s_stopbase
         boot_s_cont[b, ] <- boot_surv$s_continue

@@ -216,8 +216,8 @@ summarize_fpr <- function(hist_arm, arm_col, hist_month2_col, bc_month_col,
   )
 
   grp_key <- paste(hist_arm[[arm_col]], hist_arm$period, sep = "\x1f")
+  # split() never produces empty groups, so each group has at least one row.
   result_list <- lapply(split(hist_arm, grp_key), function(grp) {
-    if (nrow(grp) == 0L) return(NULL)
     n_hist <- nrow(grp)
     n_pos <- sum(grp$positive, na.rm = TRUE)
     data.frame(
@@ -229,10 +229,6 @@ summarize_fpr <- function(hist_arm, arm_col, hist_month2_col, bc_month_col,
       stringsAsFactors = FALSE
     )
   })
-
-  # Guard against empty list (all IDs outside cohort)
-  result_list <- Filter(Negate(is.null), result_list)
-  if (length(result_list) == 0L) return(empty_fp_result())
 
   result <- do.call(rbind, result_list)
   rownames(result) <- NULL
