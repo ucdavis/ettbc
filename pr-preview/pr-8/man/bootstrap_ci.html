@@ -518,6 +518,10 @@ ul.task-list li input[type="checkbox"] {
   outcome_col = "dead_t1",
   arm_col = "arm",
   month_col = "month2",
+  bc_month_col = "monthBC",
+  scrmammo_col = "scrmammo",
+  tslm_lag_col = "tslm_lag",
+  grace_months = 11L,
   max_month = 95L,
   rcs_knots = c(6, 48, 72),
   n_boot = 500L,
@@ -583,6 +587,38 @@ Name of the trial arm column. Default: <code>“arm”</code>.
 </td>
 <td>
 Name of the 0-indexed month-from-entry column. Default: <code>“month2”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="bc_month_col">bc_month_col</code>
+</td>
+<td>
+Name of the breast-cancer diagnosis month column, forwarded to <code>compute_ipw_weights()</code>. Default: <code>“monthBC”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="scrmammo_col">scrmammo_col</code>
+</td>
+<td>
+Name of the screening-mammogram indicator column, forwarded to <code>compute_ipw_weights()</code>. Default: <code>“scrmammo”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="tslm_lag_col">tslm_lag_col</code>
+</td>
+<td>
+Name of the lagged time-since-last-mammogram column, forwarded to <code>compute_ipw_weights()</code>. Default: <code>“tslm_lag”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="grace_months">grace_months</code>
+</td>
+<td>
+Length of the compliance grace period in months, forwarded to <code>compute_ipw_weights()</code>. Default: <code>11L</code>.
 </td>
 </tr>
 <tr>
