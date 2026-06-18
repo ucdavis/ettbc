@@ -100,6 +100,8 @@ covr::package_coverage()
 
 These commands must be run in this order and all must pass without errors before pushing changes or requesting code review. This ensures that CI/CD workflows will pass and prevents wasting reviewer time on fixable issues.
 
+**POLICY: After completing all code changes, iteratively request Copilot code reviews from within the cloud agent session — applying any feedback raised by the code review or CodeQL scan — until the reviews come back clean (no new issues). Only then consider the task done.**
+
 **IMPORTANT**: For changes affecting documentation or vignettes, you MUST build and visually inspect the documentation site output (located in `docs/`) to verify that everything renders as expected. **DO NOT REQUEST REVIEW** until you have personally verified the deployed documentation looks correct in a browser.
 
 ### Example Validation Workflow

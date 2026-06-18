@@ -1,6 +1,6 @@
 Package: ettbc
 Title: Emulating a Target Trial for Breast Cancer Screening
-Version: 0.0.0.9015
+Version: 0.0.0.9021
 Authors@R: c(
     person(
       given = "Douglas Ezra",
@@ -15,8 +15,10 @@ Description: Implements the clone-censor step of the target trial emulation
     breast cancer mortality, following the approach of García-Albéniz et al.
     (2020) <doi:10.7326/M18-1199>. Provides functions to clone participants
     into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules,
-    and expand the resulting dataset to a long format suitable for
-    inverse-probability-weighted survival analysis.
+    expand the resulting dataset to a long format suitable for
+    inverse-probability-weighted survival analysis, compute IPW weights,
+    estimate marginal survival curves via g-computation, and extract mammogram
+    events from Medicare claims data.
 License: MIT + file LICENSE
 URL: https://github.com/ucdavis/ettbc, https://ucdavis.github.io/ettbc/
 BugReports: https://github.com/ucdavis/ettbc/issues
@@ -26,11 +28,13 @@ Language: en-US
 Depends: 
     R (>= 4.1.0)
 Imports: 
+    cli,
     stats
 Suggests: 
     altdoc,
     knitr,
     rmarkdown,
+    sandwich,
     snapr,
     spelling,
     testthat (>= 3.0.0),
