@@ -76,7 +76,7 @@ The model formula is:
 
 where \code{month3} is the (linear) 0-indexed follow-up month, and \code{rcs1}, ...,
 \code{rcsK} are the \code{K = length(rcs_knots) - 2} nonlinear restricted-cubic-spline
-terms for time, following the SAS \code{\%RCSPLINE} parameterization. The linear
+terms for time, following the SAS \verb{\%RCSPLINE} parameterization. The linear
 term and the nonlinear spline terms form a full-rank basis (no aliased
 coefficients), and every spline term is zero at month 0, so the \code{STOPBASE}
 main-effect coefficient is the arm contrast at baseline (month 0).

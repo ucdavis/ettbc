@@ -67,7 +67,7 @@ The model is:
 }\if{html}{\out{</div>}}
 
 where \code{t} is the (linear) follow-up month and \code{t_rcs} is the nonlinear
-restricted-cubic-spline term(s) for time, following the SAS \code{\%RCSPLINE}
+restricted-cubic-spline term(s) for time, following the SAS \verb{\%RCSPLINE}
 parameterization with knots at the positions specified by \code{rcs_knots}. The
 linear term and the nonlinear spline term(s) together form a full-rank
 basis for the restricted cubic spline. Survival curves are obtained by the
