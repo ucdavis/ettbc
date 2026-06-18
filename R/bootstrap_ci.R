@@ -218,7 +218,7 @@ bootstrap_ci <- function(
   if (n_failed > 0L) {
     fail_rate <- n_failed / n_boot
     if (fail_rate > fail_threshold) {
-      pct <- round(fail_rate * 100)
+      pct <- round(fail_rate * 100) # nolint: object_usage_linter
       cli::cli_warn(
         "{n_failed} of {n_boot} bootstrap iterations failed ({pct}%)."
       )
