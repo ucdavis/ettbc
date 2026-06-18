@@ -159,11 +159,14 @@ bootstrap_ci <- function(
   for (b in seq_len(n_boot)) {
     boot_ids <- sample(ids, size = n_ids, replace = TRUE)
 
-    # Build bootstrap dataset by concatenating sampled groups,
-    # assigning new integer IDs to handle duplicates
+    # Build bootstrap dataset by concatenating sampled groups, assigning a
+    # fresh synthetic integer ID so duplicated draws get distinct IDs. Whole-
+    # column replacement via `[[<-` drops any original factor/character type
+    # (rather than coercing `i` into an existing factor's levels, which would
+    # yield `NA`), so downstream id handling is robust to the input id type.
     boot_groups <- lapply(seq_along(boot_ids), function(i) {
       grp <- long_data_split[[as.character(boot_ids[i])]]
-      grp[[id_col]] <- i
+      grp[[id_col]] <- as.integer(i)
       grp
     })
     boot_data <- do.call(rbind, boot_groups)

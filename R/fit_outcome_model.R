@@ -9,13 +9,16 @@
 #' The model formula is:
 #'
 #' ```
-#' dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:ns1 + ... + STOPBASE:nsK
-#'           + month3 + ns1 + ... + nsK [+ covariate_cols]
+#' dead_t1 ~ STOPBASE + STOPBASE:month3 + STOPBASE:rcs1 + ... + STOPBASE:rcsK
+#'           + month3 + rcs1 + ... + rcsK [+ covariate_cols]
 #' ```
 #'
-#' where `month3` is the 0-indexed follow-up month, and `ns1`, ..., `nsK` are
-#' the `K = length(rcs_knots) - 1` columns of the natural spline basis for
-#' time (from [splines::ns()]).
+#' where `month3` is the (linear) 0-indexed follow-up month, and `rcs1`, ...,
+#' `rcsK` are the `K = length(rcs_knots) - 2` nonlinear restricted-cubic-spline
+#' terms for time, following the SAS `%RCSPLINE` parameterization. The linear
+#' term and the nonlinear spline terms form a full-rank basis (no aliased
+#' coefficients), and every spline term is zero at month 0, so the `STOPBASE`
+#' main-effect coefficient is the arm contrast at baseline (month 0).
 #'
 #' Participant-level IPW weights from `weight_col` are passed to
 #' [stats::glm()]. The returned odds ratio is the exponentiated `STOPBASE`
@@ -100,7 +103,7 @@ fit_outcome_hr <- function(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
   fit_data <- md$data
-  ns_col_names <- md$ns_col_names
+  rcs_col_names <- md$rcs_col_names
   fit_data <- fit_data[
     !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
     ,
@@ -108,7 +111,7 @@ fit_outcome_hr <- function(
   ]
   check_both_arms(fit_data, arm_col) # nolint: object_usage_linter
 
-  formula_obj <- build_model_formula(ns_col_names, covariate_cols) # nolint: object_usage_linter
+  formula_obj <- build_model_formula(rcs_col_names, covariate_cols) # nolint: object_usage_linter
 
   glm_args <- list(
     formula = formula_obj,

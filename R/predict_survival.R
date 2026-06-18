@@ -14,9 +14,13 @@
 #' )
 #' ```
 #'
-#' where `t_rcs` is a restricted cubic spline basis with knots at positions
-#' specified by `rcs_knots`. Survival curves are obtained by the product-limit
-#' method applied to the predicted conditional hazard at each time point.
+#' where `t` is the (linear) follow-up month and `t_rcs` is the nonlinear
+#' restricted-cubic-spline term(s) for time, following the SAS `%RCSPLINE`
+#' parameterization with knots at the positions specified by `rcs_knots`. The
+#' linear term and the nonlinear spline term(s) together form a full-rank
+#' basis for the restricted cubic spline. Survival curves are obtained by the
+#' product-limit method applied to the predicted conditional hazard at each
+#' time point.
 #'
 #' @param long_data A data frame in long format (one row per
 #'   participant-arm-month), as produced by [expand_to_long()]. Must contain
@@ -83,21 +87,21 @@ predict_survival_unadjusted <- function(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
   fit_data <- md$data
-  ns_col_names <- md$ns_col_names
+  rcs_col_names <- md$rcs_col_names
   fit_data <- fit_data[
     !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
     ,
     drop = FALSE
   ]
   check_both_arms(fit_data, arm_col)
-  formula_obj <- build_model_formula(ns_col_names)
+  formula_obj <- build_model_formula(rcs_col_names)
   fit <- stats::glm(
     formula_obj,
     data = fit_data,
     family = stats::binomial(link = "logit")
   )
   standardize_survival(
-    fit, fit_data, max_month, rcs_knots, id_col, ns_col_names
+    fit, fit_data, max_month, rcs_knots, id_col, rcs_col_names
   )
 }
 
@@ -166,21 +170,21 @@ predict_survival_baseline_adjusted <- function( # nolint: object_length_linter
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
   fit_data <- md$data
-  ns_col_names <- md$ns_col_names
+  rcs_col_names <- md$rcs_col_names
   fit_data <- fit_data[
     !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
     ,
     drop = FALSE
   ]
   check_both_arms(fit_data, arm_col)
-  formula_obj <- build_model_formula(ns_col_names, covariate_cols)
+  formula_obj <- build_model_formula(rcs_col_names, covariate_cols)
   fit <- stats::glm(
     formula_obj,
     data = fit_data,
     family = stats::binomial(link = "logit")
   )
   standardize_survival(
-    fit, fit_data, max_month, rcs_knots, id_col, ns_col_names
+    fit, fit_data, max_month, rcs_knots, id_col, rcs_col_names
   )
 }
 
@@ -256,14 +260,14 @@ predict_survival_ipw <- function(
     long_data, outcome_col, arm_col, month_col, rcs_knots
   )
   fit_data <- md$data
-  ns_col_names <- md$ns_col_names
+  rcs_col_names <- md$rcs_col_names
   fit_data <- fit_data[
     !is.na(fit_data$dead_t1) & fit_data$month3 <= max_month,
     ,
     drop = FALSE
   ]
   check_both_arms(fit_data, arm_col)
-  formula_obj <- build_model_formula(ns_col_names, covariate_cols)
+  formula_obj <- build_model_formula(rcs_col_names, covariate_cols)
   glm_args <- list(
     formula = formula_obj,
     data = fit_data,
@@ -288,19 +292,19 @@ predict_survival_ipw <- function(
   }
   fit <- do.call(stats::glm, glm_args)
   standardize_survival(
-    fit, fit_data, max_month, rcs_knots, id_col, ns_col_names
+    fit, fit_data, max_month, rcs_knots, id_col, rcs_col_names
   )
 }
 
 # Internal helpers --------------------------------------------------------
 
 #' @noRd
-build_model_formula <- function(ns_col_names, covariate_cols = NULL) {
-  ns_interaction_terms <- paste0("STOPBASE:", ns_col_names)
+build_model_formula <- function(rcs_col_names, covariate_cols = NULL) {
+  rcs_interaction_terms <- paste0("STOPBASE:", rcs_col_names)
   base_terms <- c(
     "STOPBASE", "STOPBASE:month3",
-    ns_interaction_terms,
-    "month3", ns_col_names
+    rcs_interaction_terms,
+    "month3", rcs_col_names
   )
   all_terms <- c(base_terms, covariate_cols)
   stats::as.formula(paste("dead_t1 ~", paste(all_terms, collapse = " + ")))
@@ -346,28 +350,39 @@ check_both_arms <- function(long_data, arm_col) {
   }
 }
 
-#' Compute Natural Spline Basis
+#' Compute Restricted Cubic Spline (RCS) Basis
 #'
-#' Natural cubic splines and restricted cubic splines (RCS) span the same
-#' function space (piecewise cubic, linear beyond boundaries), matching the
-#' SAS `%RCSPLINE` macro. The `rcs_knots` parameter name is kept for
-#' consistency with the public API and the SAS source. Columns are named
-#' `ns1`, `ns2`, ..., consistent with the model formula in [fit_outcome_hr()].
+#' Computes the *nonlinear* restricted-cubic-spline basis terms for a numeric
+#' vector, following Harrell's truncated-power parameterization as implemented
+#' by the SAS `%RCSPLINE` macro. With `k` knots this returns `k - 2` nonlinear
+#' terms (named `rcs1`, `rcs2`, ...); the linear term is supplied separately by
+#' the `month3` column in the model formula. Together the linear term and these
+#' nonlinear terms form a full-rank basis for the restricted cubic spline (i.e.
+#' natural cubic spline) space, avoiding the rank deficiency that arises when a
+#' separate linear term is added to a basis (such as `splines::ns()`) that
+#' already spans the linear component.
+#'
+#' Each term is exactly zero for `x` at or below the first knot, so at month 0
+#' every spline term vanishes and the `STOPBASE` main effect in
+#' [fit_outcome_hr()] is the arm contrast at baseline (month 0).
 #'
 #' @param x Numeric vector of time values.
 #' @param rcs_knots Numeric vector with at least 3 elements: first and last are
 #'   boundary knots; all intermediate elements are interior knots.
-#' @return A matrix with automatically named columns (`ns1`, `ns2`, ...) for
-#'   each spline degree of freedom; the number of columns equals
-#'   `length(rcs_knots) - 1` (i.e., `length(interior_knots) + 1`).
+#' @return A matrix with `length(rcs_knots) - 2` columns named `rcs1`, `rcs2`,
+#'   ..., one per nonlinear restricted-cubic-spline degree of freedom.
+#'   Restricted cubic splines are constrained to be linear beyond the boundary
+#'   knots.
 #'
 #' @details
-#' The `n_knots >= 3` guard ensures that the `seq(2L, n_knots - 1L)` call
-#' always produces a non-empty, non-descending integer sequence, so all
-#' intermediate elements are correctly identified as interior knots.
+#' For knots `t[1] < ... < t[k]`, term `j` (for `j = 1, ..., k - 2`) is
+#' `((x - t[j])_+^3 - (x - t[k-1])_+^3 * (t[k] - t[j]) / (t[k] - t[k-1])`
+#' `+ (x - t[k])_+^3 * (t[k-1] - t[j]) / (t[k] - t[k-1])) / (t[k] - t[1])^2`,
+#' where `(u)_+ = max(u, 0)`. The `n_knots >= 3` guard ensures at least one
+#' nonlinear term is produced.
 #'
 #' @noRd
-compute_ns_basis <- function(x, rcs_knots) {
+compute_rcs_basis <- function(x, rcs_knots) {
   n_knots <- length(rcs_knots)
   if (n_knots < 3L) {
     cli::cli_abort(
@@ -377,10 +392,22 @@ compute_ns_basis <- function(x, rcs_knots) {
       )
     )
   }
-  interior_knots <- rcs_knots[seq(2L, n_knots - 1L)]
-  boundary_knots <- c(rcs_knots[1L], rcs_knots[n_knots])
-  basis <- splines::ns(x, knots = interior_knots, Boundary.knots = boundary_knots)
-  colnames(basis) <- paste0("ns", seq_len(ncol(basis)))
+  t_first <- rcs_knots[1L]
+  t_last <- rcs_knots[n_knots]
+  t_prev <- rcs_knots[n_knots - 1L]
+  denom <- t_last - t_prev
+  scale <- (t_last - t_first)^2
+  cube_pos <- function(u) pmax(u, 0)^3
+  n_terms <- n_knots - 2L
+  basis <- matrix(0, nrow = length(x), ncol = n_terms)
+  for (j in seq_len(n_terms)) {
+    t_j <- rcs_knots[j]
+    term <- cube_pos(x - t_j) -
+      cube_pos(x - t_prev) * (t_last - t_j) / denom +
+      cube_pos(x - t_last) * (t_prev - t_j) / denom
+    basis[, j] <- term / scale
+  }
+  colnames(basis) <- paste0("rcs", seq_len(n_terms))
   basis
 }
 
@@ -391,17 +418,17 @@ build_model_data <- function(
   d$STOPBASE <- as.integer(d[[arm_col]] == "STOPBASE")
   d$month3 <- d[[month_col]]
   d$dead_t1 <- d[[outcome_col]]
-  ns_basis <- compute_ns_basis(d$month3, rcs_knots)
-  ns_col_names <- colnames(ns_basis)
-  for (j in seq_len(ncol(ns_basis))) {
-    d[[ns_col_names[j]]] <- ns_basis[, j]
+  rcs_basis <- compute_rcs_basis(d$month3, rcs_knots)
+  rcs_col_names <- colnames(rcs_basis)
+  for (j in seq_len(ncol(rcs_basis))) {
+    d[[rcs_col_names[j]]] <- rcs_basis[, j]
   }
-  list(data = d, ns_col_names = ns_col_names)
+  list(data = d, rcs_col_names = rcs_col_names)
 }
 
 #' @noRd
 standardize_survival <- function(
-    fit, fit_data, max_month, rcs_knots, id_col, ns_col_names) {
+    fit, fit_data, max_month, rcs_knots, id_col, rcs_col_names) {
   if (!id_col %in% names(fit_data)) {
     cli::cli_abort(
       c(
@@ -445,12 +472,12 @@ standardize_survival <- function(
 
   for (ti in seq_len(n_months)) {
     t <- months[ti]
-    ns_t <- compute_ns_basis(t, rcs_knots)
+    rcs_t <- compute_rcs_basis(t, rcs_knots)
     pred_cont$month3 <- t
     pred_stop$month3 <- t
-    for (j in seq_along(ns_col_names)) {
-      pred_cont[[ns_col_names[j]]] <- ns_t[1L, j]
-      pred_stop[[ns_col_names[j]]] <- ns_t[1L, j]
+    for (j in seq_along(rcs_col_names)) {
+      pred_cont[[rcs_col_names[j]]] <- rcs_t[1L, j]
+      pred_stop[[rcs_col_names[j]]] <- rcs_t[1L, j]
     }
 
     p_x1 <- stats::predict(fit, newdata = pred_cont, type = "response")

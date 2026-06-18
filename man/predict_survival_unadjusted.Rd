@@ -66,9 +66,13 @@ The model is:
 )
 }\if{html}{\out{</div>}}
 
-where \code{t_rcs} is a restricted cubic spline basis with knots at positions
-specified by \code{rcs_knots}. Survival curves are obtained by the product-limit
-method applied to the predicted conditional hazard at each time point.
+where \code{t} is the (linear) follow-up month and \code{t_rcs} is the nonlinear
+restricted-cubic-spline term(s) for time, following the SAS \code{\%RCSPLINE}
+parameterization with knots at the positions specified by \code{rcs_knots}. The
+linear term and the nonlinear spline term(s) together form a full-rank
+basis for the restricted cubic spline. Survival curves are obtained by the
+product-limit method applied to the predicted conditional hazard at each
+time point.
 }
 \examples{
 cloned <- clone_censor(cohort, screening_mammograms, diagnostic_mammograms)

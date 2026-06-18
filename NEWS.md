@@ -3,8 +3,14 @@
 * Added `predict_survival_unadjusted()`, `predict_survival_baseline_adjusted()`,
   and `predict_survival_ipw()`: fit pooled logistic regression models with
   restricted cubic spline time terms and arm-by-time interactions, then apply
-  g-computation to produce marginal survival curves for each trial arm. All
-  three functions now apply the `max_month` filter before model fitting,
+  g-computation to produce marginal survival curves for each trial arm. Time is
+  modeled with a full-rank Harrell restricted-cubic-spline basis (a linear
+  `month3` term plus `length(rcs_knots) - 2` nonlinear terms) following the SAS
+  `%RCSPLINE` macro, rather than `splines::ns()`, which previously aliased with
+  the linear term and left the design rank-deficient. The marginal survival
+  curves are unchanged; the spline terms now vanish at month 0, so the
+  `fit_outcome_hr()` arm odds ratio is the well-defined contrast at baseline.
+  All three functions apply the `max_month` filter before model fitting,
   require both arms to be present (before and after filtering), and validate
   `weight_col` when supplied (#1).
 * Added `compute_ipw_weights()`: computes stabilized cumulative IPW weights for
@@ -32,7 +38,8 @@
 * Added `extract_screening_mammograms()`, `extract_any_mammograms()`, and
   `extract_diagnostic_mammograms()`: template functions for extracting mammogram
   events from Medicare claims data by HCPCS code (#1).
-* Added `splines` and `cli` to `Imports` in `DESCRIPTION`.
+* Added `cli` to `Imports` in `DESCRIPTION` (the restricted cubic spline basis
+  is computed directly, so `splines` is no longer a dependency).
 
 * Added `clone_censor()`: implements the clone-censor step of the target trial
   emulation methodology. Creates two clones per participant (STOPBASE and
