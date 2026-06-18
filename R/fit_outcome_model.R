@@ -98,6 +98,9 @@ fit_outcome_hr <- function(
     cluster_id_col = id_col,
     max_month = 95L,
     rcs_knots = c(6, 48, 72)) {
+  if (nrow(long_data) == 0L) {
+    cli::cli_abort("{.arg long_data} must contain at least one row.")
+  }
   check_both_arms(long_data, arm_col) # nolint: object_usage_linter
   md <- build_model_data( # nolint: object_usage_linter
     long_data, outcome_col, arm_col, month_col, rcs_knots

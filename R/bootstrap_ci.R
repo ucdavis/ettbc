@@ -28,6 +28,14 @@
 #' @param arm_col Name of the trial arm column. Default: `"arm"`.
 #' @param month_col Name of the 0-indexed month-from-entry column.
 #'   Default: `"month2"`.
+#' @param bc_month_col Name of the breast-cancer diagnosis month column,
+#'   forwarded to [compute_ipw_weights()]. Default: `"monthBC"`.
+#' @param scrmammo_col Name of the screening-mammogram indicator column,
+#'   forwarded to [compute_ipw_weights()]. Default: `"scrmammo"`.
+#' @param tslm_lag_col Name of the lagged time-since-last-mammogram column,
+#'   forwarded to [compute_ipw_weights()]. Default: `"tslm_lag"`.
+#' @param grace_months Length of the compliance grace period in months,
+#'   forwarded to [compute_ipw_weights()]. Default: `11L`.
 #' @param max_month Maximum month for survival prediction. Default: `95L`.
 #' @param rcs_knots Numeric vector with at least 3 elements specifying the
 #'   knots for the restricted cubic spline: the first element is the left
@@ -78,6 +86,10 @@ bootstrap_ci <- function(
     outcome_col = "dead_t1",
     arm_col = "arm",
     month_col = "month2",
+    bc_month_col = "monthBC",
+    scrmammo_col = "scrmammo",
+    tslm_lag_col = "tslm_lag",
+    grace_months = 11L,
     max_month = 95L,
     rcs_knots = c(6, 48, 72),
     n_boot = 500L,
@@ -134,7 +146,9 @@ bootstrap_ci <- function(
   # Point estimate
   long_data_w <- compute_ipw_weights( # nolint: object_usage_linter
     long_data, pred_prob_col,
-    arm_col = arm_col, id_col = id_col, month2_col = month_col
+    arm_col = arm_col, id_col = id_col, month2_col = month_col,
+    bc_month_col = bc_month_col, scrmammo_col = scrmammo_col,
+    tslm_lag_col = tslm_lag_col, grace_months = grace_months
   )
   point_est <- predict_survival_ipw( # nolint: object_usage_linter
     long_data_w,
@@ -176,7 +190,9 @@ bootstrap_ci <- function(
       {
         boot_data_w <- compute_ipw_weights( # nolint: object_usage_linter
           boot_data, pred_prob_col,
-          arm_col = arm_col, id_col = id_col, month2_col = month_col
+          arm_col = arm_col, id_col = id_col, month2_col = month_col,
+          bc_month_col = bc_month_col, scrmammo_col = scrmammo_col,
+          tslm_lag_col = tslm_lag_col, grace_months = grace_months
         )
         boot_surv <- predict_survival_ipw( # nolint: object_usage_linter
           boot_data_w,
@@ -202,10 +218,10 @@ bootstrap_ci <- function(
   if (n_failed > 0L) {
     fail_rate <- n_failed / n_boot
     if (fail_rate > fail_threshold) {
-      cli::cli_warn(paste0(
-        "{n_failed} of {n_boot} bootstrap iterations failed ",
-        "({round(fail_rate * 100)}%)."
-      ))
+      pct <- round(fail_rate * 100)
+      cli::cli_warn(
+        "{n_failed} of {n_boot} bootstrap iterations failed ({pct}%)."
+      )
     }
   }
 

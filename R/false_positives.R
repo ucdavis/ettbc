@@ -154,7 +154,7 @@ false_positives <- function(
     last_kept_month <- -Inf
     for (j in seq_len(nrow(grp))) {
       m <- grp[[hist_month2_col]][j]
-      if (m > last_kept_month + window_months || j == 1L) {
+      if (m > last_kept_month + window_months) {
         keep[j] <- TRUE
         last_kept_month <- m
       }

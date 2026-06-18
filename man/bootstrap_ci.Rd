@@ -12,6 +12,10 @@ bootstrap_ci(
   outcome_col = "dead_t1",
   arm_col = "arm",
   month_col = "month2",
+  bc_month_col = "monthBC",
+  scrmammo_col = "scrmammo",
+  tslm_lag_col = "tslm_lag",
+  grace_months = 11L,
   max_month = 95L,
   rcs_knots = c(6, 48, 72),
   n_boot = 500L,
@@ -39,6 +43,18 @@ Default: \code{NULL}.}
 
 \item{month_col}{Name of the 0-indexed month-from-entry column.
 Default: \code{"month2"}.}
+
+\item{bc_month_col}{Name of the breast-cancer diagnosis month column,
+forwarded to \code{\link[=compute_ipw_weights]{compute_ipw_weights()}}. Default: \code{"monthBC"}.}
+
+\item{scrmammo_col}{Name of the screening-mammogram indicator column,
+forwarded to \code{\link[=compute_ipw_weights]{compute_ipw_weights()}}. Default: \code{"scrmammo"}.}
+
+\item{tslm_lag_col}{Name of the lagged time-since-last-mammogram column,
+forwarded to \code{\link[=compute_ipw_weights]{compute_ipw_weights()}}. Default: \code{"tslm_lag"}.}
+
+\item{grace_months}{Length of the compliance grace period in months,
+forwarded to \code{\link[=compute_ipw_weights]{compute_ipw_weights()}}. Default: \code{11L}.}
 
 \item{max_month}{Maximum month for survival prediction. Default: \code{95L}.}
 

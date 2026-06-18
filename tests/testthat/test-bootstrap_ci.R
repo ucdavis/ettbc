@@ -4,7 +4,6 @@ test_that("bootstrap_ci returns correct structure", {
   long_data$p_scrmammo <- 0.3
   long_data$monthBC <- NA_integer_
   long_data$scrmammo <- 0L
-  long_data$anymammo <- 0L
   long_data$tslm_lag <- 5L
 
   result <- bootstrap_ci(
@@ -42,7 +41,6 @@ test_that("bootstrap_ci seed produces reproducible results", {
   long_data$p_scrmammo <- 0.3
   long_data$monthBC <- NA_integer_
   long_data$scrmammo <- 0L
-  long_data$anymammo <- 0L
   long_data$tslm_lag <- 5L
 
   r1 <- bootstrap_ci(
