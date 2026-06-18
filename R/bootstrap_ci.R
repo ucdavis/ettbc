@@ -141,6 +141,11 @@ bootstrap_ci <- function(
   }
 
   ids <- unique(long_data[[id_col]])
+  if (anyNA(ids)) {
+    cli::cli_abort(
+      "Column {.val {id_col}} must not contain {.code NA} values."
+    )
+  }
   n_ids <- length(ids)
 
   # Point estimate

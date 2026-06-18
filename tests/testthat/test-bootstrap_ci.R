@@ -54,3 +54,18 @@ test_that("bootstrap_ci seed produces reproducible results", {
   expect_equal(r1$diff_lo, r2$diff_lo)
   expect_equal(r1$diff_hi, r2$diff_hi)
 })
+
+test_that("bootstrap_ci errors on NA id values", {
+  cloned <- clone_censor(cohort, screening_mammograms, diagnostic_mammograms)
+  long_data <- expand_to_long(cloned)
+  long_data$p_scrmammo <- 0.3
+  long_data$monthBC <- NA_integer_
+  long_data$scrmammo <- 0L
+  long_data$tslm_lag <- 5L
+  long_data$id[1] <- NA
+
+  expect_error(
+    bootstrap_ci(long_data, pred_prob_col = "p_scrmammo", n_boot = 2L),
+    "must not contain"
+  )
+})
