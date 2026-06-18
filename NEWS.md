@@ -56,8 +56,10 @@
 * Internal refactor: decomposed the per-participant clone-censor logic in
   `clone_censor()` into smaller helper functions, factored the cumulative
   mortality computation in the "Using ettbc" vignette into a reusable helper,
-  and split the example-data generation script into focused simulation
-  functions. No user-facing behavior changes.
+  and split the example-data generation into focused simulation functions now
+  living in `R/`. Helper functions were reorganized to one function per file,
+  anonymous functions replaced with named helpers, and nested calls rewritten
+  as pipes. No user-facing behavior changes.
 
 # ettbc 0.0.0.9000
 
