@@ -595,7 +595,7 @@ Numeric vector with at least 3 elements specifying the knots for the restricted 
 )
 </pre>
 </div>
-<p>where <code>t</code> is the (linear) follow-up month and <code>t_rcs</code> is the nonlinear restricted-cubic-spline term(s) for time, following the SAS <code>%RCSPLINE</code> parameterization with knots at the positions specified by <code>rcs_knots</code>. The linear term and the nonlinear spline term(s) together form a full-rank basis for the restricted cubic spline. Survival curves are obtained by the product-limit method applied to the predicted conditional hazard at each time point.</p>
+<p>where <code>t</code> is the (linear) follow-up month and <code>t_rcs</code> is the nonlinear restricted-cubic-spline term(s) for time, following the SAS <code style="white-space: pre;">%RCSPLINE</code> parameterization with knots at the positions specified by <code>rcs_knots</code>. The linear term and the nonlinear spline term(s) together form a full-rank basis for the restricted cubic spline. Survival curves are obtained by the product-limit method applied to the predicted conditional hazard at each time point.</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A data frame with one row per month (0 through <code>max_month</code>), containing:</p>
 <ul>
