@@ -23,7 +23,9 @@ summarize_fpr <- function(hist_arm, arm_col, hist_month2_col, bc_month_col,
     split(grp_key) |>
     lapply(fpr_group_row, arm_col = arm_col)
 
-  result <- do.call(rbind, result_list)
+  # Seed with the typed empty frame so an empty group list still yields a
+  # properly-typed (zero-row) result rather than NULL.
+  result <- do.call(rbind, c(list(empty_fp_result()), result_list))
   rownames(result) <- NULL
   result
 }
