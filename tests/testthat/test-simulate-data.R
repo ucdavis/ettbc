@@ -19,7 +19,7 @@ test_that("generators reproduce the committed example datasets", {
   expect_identical(gen_dx, diagnostic_mammograms)
 })
 
-test_that("simulate_participant_screening does not error when max_month caps the range below n_mammo", {
+test_that("simulate_participant_screening tolerates a short month pool", {
   # pmin(em, max_month) = sm + 3 gives a length-1 range; before the fix,
   # sample(..., size = 2) on a length-1 vector caused an error.
   sm <- 15L
@@ -29,7 +29,9 @@ test_that("simulate_participant_screening does not error when max_month caps the
   expect_no_error(
     replicate(
       100L,
-      simulate_participant_screening(sm, em, adherer = FALSE, max_month = max_month)
+      simulate_participant_screening(
+        sm, em, adherer = FALSE, max_month = max_month
+      )
     )
   )
 })
