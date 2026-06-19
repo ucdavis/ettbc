@@ -31,3 +31,4 @@ _quarto/*
 *.docx
 *.knit.md
 .positai
+run_checks.sh
