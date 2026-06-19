@@ -5,13 +5,13 @@ estimate_survival_curves <- function(
     data, pred_prob_col, covariate_cols, outcome_col, arm_col, id_col,
     month_col, bc_month_col, scrmammo_col, tslm_lag_col, grace_months,
     max_month, rcs_knots) {
-  data_w <- compute_ipw_weights( # nolint: object_usage_linter
+  data_w <- compute_ipw_weights(
     data, pred_prob_col,
     arm_col = arm_col, id_col = id_col, month2_col = month_col,
     bc_month_col = bc_month_col, scrmammo_col = scrmammo_col,
     tslm_lag_col = tslm_lag_col, grace_months = grace_months
   )
-  predict_survival_ipw( # nolint: object_usage_linter
+  predict_survival_ipw(
     data_w,
     weight_col = "wp99",
     covariate_cols = covariate_cols,
