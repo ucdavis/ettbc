@@ -20,9 +20,8 @@ simulate_participant_screening <- function(sm, em, adherer, max_month) {
     # Non-adherers: zero, one, or two post-entry mammograms
     n_mammo <- sample(0L:2L, 1L)
     if (n_mammo > 0L && em > sm + 3L) {
-      extra <- sort(
-        sample(seq.int(sm + 3L, pmin(em, max_month)), size = n_mammo)
-      )
+      month_pool <- seq.int(sm + 3L, pmin(em, max_month))
+      extra <- sort(sample(month_pool, size = min(n_mammo, length(month_pool))))
       mammo_months <- c(mammo_months, extra)
     }
   }
