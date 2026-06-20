@@ -127,46 +127,27 @@ clone_censor <- function(
 
   for (i in seq_len(n)) {
     pid <- ids[i]
-    start <- starts[i]
-    admin_end <- admin_ends[i]
-    death <- deaths[i]
-    bc_death <- bc_deaths[i]
-    bc_month <- bc_months[i]
-
     scr <- scr_by_id[[as.character(pid)]]
     dx <- dx_by_id[[as.character(pid)]]
     if (is.null(scr)) scr <- integer(0)
     if (is.null(dx)) dx <- integer(0)
 
-    # ---- STOPBASE arm ----
-    ucen_stop <- build_ucen_stop(
-      bc_month, start, stop_grace_months, total_months
+    arm_rows <- clone_censor_participant(
+      base_row = data[i, , drop = FALSE],
+      start = starts[i],
+      admin_end = admin_ends[i],
+      death = deaths[i],
+      bc_death = bc_deaths[i],
+      bc_month = bc_months[i],
+      scr = scr,
+      dx = dx,
+      end_col = end_col,
+      stop_grace_months = stop_grace_months,
+      continue_grace_months = continue_grace_months,
+      total_months = total_months
     )
-    censor_stop <- find_stop_censor(scr, ucen_stop, start, total_months)
-    mend_stop <- min(
-      if (!is.na(death)) death else Inf,
-      admin_end,
-      if (!is.na(censor_stop)) censor_stop else Inf
-    )
-    stop_rows[[i]] <- make_arm_row(
-      data[i, , drop = FALSE], "STOPBASE", end_col,
-      mend_stop, start, death, bc_death, censor_stop
-    )
-
-    # ---- CONTINUE arm ----
-    ucen_cont <- build_ucen_cont(
-      bc_month, start, continue_grace_months, scr, dx, total_months
-    )
-    censor_cont <- find_cont_censor(ucen_cont, start, total_months)
-    mend_cont <- min(
-      if (!is.na(death)) death else Inf,
-      admin_end,
-      if (!is.na(censor_cont)) censor_cont else Inf
-    )
-    cont_rows[[i]] <- make_arm_row(
-      data[i, , drop = FALSE], "CONTINUE", end_col,
-      mend_cont, start, death, bc_death, censor_cont
-    )
+    stop_rows[[i]] <- arm_rows$stopbase
+    cont_rows[[i]] <- arm_rows$continue
   }
 
   out <- rbind(
@@ -175,77 +156,4 @@ clone_censor <- function(
   )
   rownames(out) <- NULL
   out
-}
-
-# Internal helper functions for clone_censor() ---------------------
-
-# Build STOPBASE uncensorable indicator vector
-build_ucen_stop <- function(bc_month, start, stop_grace_months, total_months) {
-  ucen <- logical(total_months)
-  if (!is.na(bc_month) && bc_month >= 1L && bc_month <= total_months) {
-    ucen[seq.int(bc_month, total_months)] <- TRUE
-  }
-  grace <- min(start + stop_grace_months, total_months)
-  ucen[seq.int(start, grace)] <- TRUE
-  ucen
-}
-
-# Find first screening mammogram that triggers censoring in STOPBASE arm
-find_stop_censor <- function(scr, ucen_stop, start, total_months) {
-  scr_post <- scr[scr > start & scr <= total_months]
-  if (length(scr_post) == 0L) return(NA_integer_)
-  candidates <- scr_post[!ucen_stop[scr_post]]
-  if (length(candidates) == 0L) return(NA_integer_)
-  min(candidates)
-}
-
-# Build CONTINUE uncensorable indicator vector
-build_ucen_cont <- function(
-    bc_month, start, continue_grace_months, scr, dx, total_months) {
-  ucen <- logical(total_months)
-  if (!is.na(bc_month) && bc_month >= 1L && bc_month <= total_months) {
-    ucen[seq.int(bc_month, total_months)] <- TRUE
-  }
-  grace <- min(start + continue_grace_months - 1L, total_months)
-  ucen[seq.int(start, grace)] <- TRUE
-  for (m in dx) {
-    if (m >= 1L && m <= total_months) {
-      ucen[seq.int(m, min(m + continue_grace_months, total_months))] <- TRUE
-    }
-  }
-  for (m in scr) {
-    if (m >= 1L && m <= total_months) {
-      ucen[seq.int(m, min(m + continue_grace_months, total_months))] <- TRUE
-    }
-  }
-  ucen
-}
-
-# Find first non-compliant month in CONTINUE arm
-find_cont_censor <- function(ucen_cont, start, total_months) {
-  for (m in seq.int(start, total_months)) {
-    if (!ucen_cont[m]) return(m)
-  }
-  NA_integer_
-}
-
-# Compute derived columns for a single arm row
-make_arm_row <- function(base_row, arm_name, end_col, mend, start, death,
-                         bc_death, censor) {
-  base_row$arm <- arm_name
-  base_row[[end_col]] <- mend
-  # Only record censor_month when protocol censoring actually truncated
-  # follow-up; NA when death or administrative censoring occurred first.
-  base_row$censor_month <- if (!is.na(censor) && censor == mend) {
-    censor
-  } else {
-    NA_integer_
-  }
-  base_row$fup <- mend - start + 1L
-  died <- as.integer(!is.na(death) && death == mend)
-  base_row$died <- died
-  base_row$bc_died <- as.integer(
-    died == 1L && !is.na(bc_death) && bc_death == 1L
-  )
-  base_row
 }

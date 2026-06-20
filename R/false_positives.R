@@ -78,16 +78,8 @@ false_positives <- function(
     hist_month2_col = "month2",
     first_round_months = 9L,
     window_months = 6L) {
-  empty_result <- data.frame(
-    arm = character(0),
-    period = character(0),
-    n_hist = integer(0),
-    n_positive = integer(0),
-    fpr = numeric(0),
-    stringsAsFactors = FALSE
-  )
-  if (nrow(hist_data) == 0L) return(empty_result)
-  if (nrow(long_data) == 0L) return(empty_result)
+  if (nrow(hist_data) == 0L) return(empty_fp_result())
+  if (nrow(long_data) == 0L) return(empty_fp_result())
 
   # Validate arm values up front
   arms <- unique(long_data[[arm_col]])
@@ -131,7 +123,7 @@ false_positives <- function(
   hist_arm$.grp <- NULL
   hist_arm$.max_month2 <- NULL
 
-  if (nrow(hist_arm) == 0L) return(empty_result)
+  if (nrow(hist_arm) == 0L) return(empty_fp_result())
 
   # Validate hist_month2_col has no NA values (required for deduplication)
   na_months <- is.na(hist_arm[[hist_month2_col]])
@@ -143,69 +135,16 @@ false_positives <- function(
   }
 
   # Deduplicate: per id-arm, drop evaluations within window_months of a prior
-  hist_arm <- hist_arm[order(
-    hist_arm[[id_col]], hist_arm[[arm_col]],
-    hist_arm[[hist_month2_col]]
-  ), , drop = FALSE]
-  grp_key2 <- paste(hist_arm[[id_col]], hist_arm[[arm_col]], sep = "\x1f")
-  hist_arm_list <- split(hist_arm, grp_key2)
-  hist_arm_list <- lapply(hist_arm_list, function(grp) {
-    keep <- logical(nrow(grp))
-    last_kept_month <- -Inf
-    for (j in seq_len(nrow(grp))) {
-      m <- grp[[hist_month2_col]][j]
-      if (m > last_kept_month + window_months) {
-        keep[j] <- TRUE
-        last_kept_month <- m
-      }
-    }
-    grp[keep, , drop = FALSE]
-  })
-  hist_arm <- do.call(rbind, hist_arm_list)
-  rownames(hist_arm) <- NULL
+  hist_arm <- deduplicate_evaluations(
+    hist_arm, id_col, arm_col, hist_month2_col, window_months
+  )
 
-  if (nrow(hist_arm) == 0L) return(empty_result)
+  if (nrow(hist_arm) == 0L) return(empty_fp_result())
 
-  # Attach BC diagnosis month
+  # Attach BC diagnosis month, then aggregate false positive rates
   hist_arm <- merge(hist_arm, bc_only, by = c(id_col, arm_col))
-
-  h_m2 <- hist_arm[[hist_month2_col]]
-  bc_m2 <- hist_arm[[bc_month_col]]
-
-  # True positive: BC diagnosis within window_months of the evaluation
-  hist_arm$positive <- (
-    !is.na(bc_m2) & bc_m2 >= h_m2 & bc_m2 <= h_m2 + window_months
+  summarize_fpr(
+    hist_arm, arm_col, hist_month2_col, bc_month_col,
+    first_round_months, window_months
   )
-
-  # Period based on 0-indexed follow-up month (month2 scale)
-  hist_arm$period <- ifelse(
-    h_m2 <= first_round_months,
-    "first_round",
-    "beyond_first_round"
-  )
-
-  grp_key3 <- paste(hist_arm[[arm_col]], hist_arm$period, sep = "\x1f")
-  grp_list <- split(hist_arm, grp_key3)
-
-  result_list <- lapply(grp_list, function(grp) {
-    if (nrow(grp) == 0L) return(NULL)
-    n_hist <- nrow(grp)
-    n_pos <- sum(grp$positive, na.rm = TRUE)
-    data.frame(
-      arm = grp[[arm_col]][1L],
-      period = grp$period[1L],
-      n_hist = n_hist,
-      n_positive = n_pos,
-      fpr = 1.0 - n_pos / n_hist,
-      stringsAsFactors = FALSE
-    )
-  })
-
-  # Guard against empty list (all IDs outside cohort)
-  result_list <- Filter(Negate(is.null), result_list)
-  if (length(result_list) == 0L) return(empty_result)
-
-  result <- do.call(rbind, result_list)
-  rownames(result) <- NULL
-  result
 }
