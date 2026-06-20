@@ -12,7 +12,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="Douglas Ezra Morrison">
-  <meta name="dcterms.date" content="2026-06-18">
+  <meta name="dcterms.date" content="2026-06-20">
   <title>ettbc – Using ettbc: Emulating a Target Trial for Breast Cancer Screening</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -229,7 +229,7 @@ Douglas Ezra Morrison
 </div>
 </div>
 
-  <p class="date">2026-06-18</p>
+  <p class="date">2026-06-20</p>
 </section>
 <section id="background" class="slide level2 scrollable" data-number="1">
 <h2><span class="header-section-number">1</span> Background</h2>
@@ -445,39 +445,53 @@ Figure&nbsp;2: Follow-up time by arm and censoring type.
 <section id="step-3-descriptive-analysis" class="slide level2" data-number="5">
 <h2><span class="header-section-number">5</span> Step 3: Descriptive Analysis</h2>
 <p>Before fitting weighted outcome models, it is useful to describe the data and examine crude survival by arm.</p>
+<p>We first define a small helper that summarises one arm’s long dataset into a crude cumulative mortality curve. For each month since study entry it counts the deaths, then accumulates them and divides by the number of clones at risk at entry.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="co"># Compute monthly event rate per arm</span></span>
-<span id="cb11-2"><a></a>arms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"STOPBASE"</span>, <span class="st">"CONTINUE"</span>)</span>
-<span id="cb11-3"><a></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#E05C4B"</span>, <span class="st">"#4B8FE0"</span>)</span>
-<span id="cb11-4"><a></a></span>
-<span id="cb11-5"><a></a><span class="fu">plot</span>(<span class="cn">NA</span>,</span>
-<span id="cb11-6"><a></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">70</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>),</span>
-<span id="cb11-7"><a></a>  <span class="at">xlab =</span> <span class="st">"Months since study entry"</span>,</span>
-<span id="cb11-8"><a></a>  <span class="at">ylab =</span> <span class="st">"Cumulative mortality (crude)"</span>,</span>
-<span id="cb11-9"><a></a>  <span class="at">main =</span> <span class="st">"Crude cumulative mortality by arm"</span></span>
-<span id="cb11-10"><a></a>)</span>
-<span id="cb11-11"><a></a></span>
-<span id="cb11-12"><a></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_along</span>(arms)) {</span>
-<span id="cb11-13"><a></a>  sub <span class="ot">&lt;-</span> long_data[long_data<span class="sc">$</span>arm <span class="sc">==</span> arms[j], ]</span>
-<span id="cb11-14"><a></a>  <span class="co"># Month-by-month event counts</span></span>
-<span id="cb11-15"><a></a>  max_t <span class="ot">&lt;-</span> <span class="fu">max</span>(sub<span class="sc">$</span>month2)</span>
-<span id="cb11-16"><a></a>  cum_mort <span class="ot">&lt;-</span> <span class="fu">numeric</span>(max_t <span class="sc">+</span> <span class="dv">1</span>L)</span>
-<span id="cb11-17"><a></a>  n_risk <span class="ot">&lt;-</span> <span class="fu">numeric</span>(max_t <span class="sc">+</span> <span class="dv">1</span>L)</span>
-<span id="cb11-18"><a></a></span>
-<span id="cb11-19"><a></a>  <span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>max_t) {</span>
-<span id="cb11-20"><a></a>    rows_t <span class="ot">&lt;-</span> sub[sub<span class="sc">$</span>month2 <span class="sc">==</span> t, ]</span>
-<span id="cb11-21"><a></a>    n_risk[t <span class="sc">+</span> <span class="dv">1</span>L] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(rows_t)</span>
-<span id="cb11-22"><a></a>    cum_mort[t <span class="sc">+</span> <span class="dv">1</span>L] <span class="ot">&lt;-</span> <span class="fu">sum</span>(rows_t<span class="sc">$</span>dead_t1 <span class="sc">==</span> <span class="dv">1</span>L, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-23"><a></a>  }</span>
-<span id="cb11-24"><a></a>  cum_mort <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(cum_mort) <span class="sc">/</span> <span class="fu">max</span>(n_risk, <span class="dv">1</span>L)</span>
-<span id="cb11-25"><a></a>  <span class="fu">lines</span>(<span class="dv">0</span><span class="sc">:</span>max_t, cum_mort, <span class="at">col =</span> cols[j], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb11-26"><a></a>}</span>
-<span id="cb11-27"><a></a></span>
-<span id="cb11-28"><a></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
-<span id="cb11-29"><a></a>  <span class="at">legend =</span> arms, <span class="at">col =</span> cols, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span></span>
-<span id="cb11-30"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a>crude_cumulative_mortality <span class="ot">&lt;-</span> <span class="cf">function</span>(arm_long) {</span>
+<span id="cb11-2"><a></a>  months <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="fu">max</span>(arm_long<span class="sc">$</span>month2)</span>
+<span id="cb11-3"><a></a></span>
+<span id="cb11-4"><a></a>  deaths <span class="ot">&lt;-</span> <span class="fu">vapply</span>(</span>
+<span id="cb11-5"><a></a>    months,</span>
+<span id="cb11-6"><a></a>    <span class="cf">function</span>(t) <span class="fu">sum</span>(arm_long<span class="sc">$</span>dead_t1[arm_long<span class="sc">$</span>month2 <span class="sc">==</span> t] <span class="sc">==</span> <span class="dv">1</span>L, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-7"><a></a>    <span class="fu">numeric</span>(<span class="dv">1</span>)</span>
+<span id="cb11-8"><a></a>  )</span>
+<span id="cb11-9"><a></a>  n_risk <span class="ot">&lt;-</span> <span class="fu">vapply</span>(</span>
+<span id="cb11-10"><a></a>    months,</span>
+<span id="cb11-11"><a></a>    <span class="cf">function</span>(t) <span class="fu">sum</span>(arm_long<span class="sc">$</span>month2 <span class="sc">==</span> t),</span>
+<span id="cb11-12"><a></a>    <span class="fu">numeric</span>(<span class="dv">1</span>)</span>
+<span id="cb11-13"><a></a>  )</span>
+<span id="cb11-14"><a></a></span>
+<span id="cb11-15"><a></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb11-16"><a></a>    <span class="at">month2 =</span> months,</span>
+<span id="cb11-17"><a></a>    <span class="at">cum_mort =</span> <span class="fu">cumsum</span>(deaths) <span class="sc">/</span> <span class="fu">max</span>(n_risk, <span class="dv">1</span>L)</span>
+<span id="cb11-18"><a></a>  )</span>
+<span id="cb11-19"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>With the computation factored out, plotting the two arms is a short loop over the helper.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>arms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"STOPBASE"</span>, <span class="st">"CONTINUE"</span>)</span>
+<span id="cb12-2"><a></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#E05C4B"</span>, <span class="st">"#4B8FE0"</span>)</span>
+<span id="cb12-3"><a></a></span>
+<span id="cb12-4"><a></a><span class="fu">plot</span>(<span class="cn">NA</span>,</span>
+<span id="cb12-5"><a></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">70</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>),</span>
+<span id="cb12-6"><a></a>  <span class="at">xlab =</span> <span class="st">"Months since study entry"</span>,</span>
+<span id="cb12-7"><a></a>  <span class="at">ylab =</span> <span class="st">"Cumulative mortality (crude)"</span>,</span>
+<span id="cb12-8"><a></a>  <span class="at">main =</span> <span class="st">"Crude cumulative mortality by arm"</span></span>
+<span id="cb12-9"><a></a>)</span>
+<span id="cb12-10"><a></a></span>
+<span id="cb12-11"><a></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_along</span>(arms)) {</span>
+<span id="cb12-12"><a></a>  curve <span class="ot">&lt;-</span> <span class="fu">crude_cumulative_mortality</span>(long_data[long_data<span class="sc">$</span>arm <span class="sc">==</span> arms[j], ])</span>
+<span id="cb12-13"><a></a>  <span class="fu">lines</span>(curve<span class="sc">$</span>month2, curve<span class="sc">$</span>cum_mort, <span class="at">col =</span> cols[j], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb12-14"><a></a>}</span>
+<span id="cb12-15"><a></a></span>
+<span id="cb12-16"><a></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
+<span id="cb12-17"><a></a>  <span class="at">legend =</span> arms, <span class="at">col =</span> cols, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span></span>
+<span id="cb12-18"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 
 </div>

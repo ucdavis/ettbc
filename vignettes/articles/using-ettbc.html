@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Douglas Ezra Morrison">
-<meta name="dcterms.date" content="2026-06-18">
+<meta name="dcterms.date" content="2026-06-20">
 <title>Using ettbc: Emulating a Target Trial for Breast Cancer Screening – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
@@ -548,7 +548,7 @@ div.csl-indent {
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../vignettes/articles/using-ettbc.html">Articles</a></li><li class="breadcrumb-item"><a href="../../vignettes/articles/using-ettbc.html">Using ettbc: Emulating a Target Trial for Breast Cancer Screening</a></li></ol></nav><h1 class="title display-7">Using ettbc: Emulating a Target Trial for Breast Cancer Screening</h1></header><header id="title-block-header">
 <p class="author">Douglas Ezra Morrison</p>
 
-<p class="date">2026-06-18</p>
+<p class="date">2026-06-20</p>
 </header><section id="background" class="level2" data-number="1"><h2 data-number="1" class="anchored" data-anchor-id="background">
 <span class="header-section-number">1</span> Background</h2>
 <p>This article demonstrates how to use the <a href="https://github.com/ucdavis/ettbc">ettbc</a> package to emulate a target trial for breast cancer screening using the <strong>clone-censor-reweight</strong> methodology. The methods are based on the study by <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#ref-garcia-albeniz2020" role="doc-biblioref">2020</a>)</span>, who estimated the effect of continuing annual screening mammography on breast cancer mortality in Medicare beneficiaries aged 70–84 years.</p>
@@ -770,9 +770,32 @@ Figure&nbsp;2: Follow-up time by arm and censoring type.
 </section></section><section id="step-3-descriptive-analysis" class="level2" data-number="5"><h2 data-number="5" class="anchored" data-anchor-id="step-3-descriptive-analysis">
 <span class="header-section-number">5</span> Step 3: Descriptive Analysis</h2>
 <p>Before fitting weighted outcome models, it is useful to describe the data and examine crude survival by arm.</p>
+<p>We first define a small helper that summarises one arm’s long dataset into a crude cumulative mortality curve. For each month since study entry it counts the deaths, then accumulates them and divides by the number of clones at risk at entry.</p>
 <div class="cell">
-<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Compute monthly event rate per arm</span></span>
-<span><span class="va">arms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"STOPBASE"</span>, <span class="st">"CONTINUE"</span><span class="op">)</span></span>
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crude_cumulative_mortality</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arm_long</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">months</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">arm_long</span><span class="op">$</span><span class="va">month2</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">deaths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span></span>
+<span>    <span class="va">months</span>,</span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">arm_long</span><span class="op">$</span><span class="va">dead_t1</span><span class="op">[</span><span class="va">arm_long</span><span class="op">$</span><span class="va">month2</span> <span class="op">==</span> <span class="va">t</span><span class="op">]</span> <span class="op">==</span> <span class="fl">1L</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="va">n_risk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span></span>
+<span>    <span class="va">months</span>,</span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">arm_long</span><span class="op">$</span><span class="va">month2</span> <span class="op">==</span> <span class="va">t</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>    month2 <span class="op">=</span> <span class="va">months</span>,</span>
+<span>    cum_mort <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">deaths</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">n_risk</span>, <span class="fl">1L</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>With the computation factored out, plotting the two arms is a short loop over the helper.</p>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">arms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"STOPBASE"</span>, <span class="st">"CONTINUE"</span><span class="op">)</span></span>
 <span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#E05C4B"</span>, <span class="st">"#4B8FE0"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>,</span>
@@ -783,19 +806,8 @@ Figure&nbsp;2: Follow-up time by arm and censoring type.
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">arms</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">sub</span> <span class="op">&lt;-</span> <span class="va">long_data</span><span class="op">[</span><span class="va">long_data</span><span class="op">$</span><span class="va">arm</span> <span class="op">==</span> <span class="va">arms</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, <span class="op">]</span></span>
-<span>  <span class="co"># Month-by-month event counts</span></span>
-<span>  <span class="va">max_t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">sub</span><span class="op">$</span><span class="va">month2</span><span class="op">)</span></span>
-<span>  <span class="va">cum_mort</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">max_t</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">)</span></span>
-<span>  <span class="va">n_risk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">max_t</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">t</span> <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="va">max_t</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">rows_t</span> <span class="op">&lt;-</span> <span class="va">sub</span><span class="op">[</span><span class="va">sub</span><span class="op">$</span><span class="va">month2</span> <span class="op">==</span> <span class="va">t</span>, <span class="op">]</span></span>
-<span>    <span class="va">n_risk</span><span class="op">[</span><span class="va">t</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">rows_t</span><span class="op">)</span></span>
-<span>    <span class="va">cum_mort</span><span class="op">[</span><span class="va">t</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">rows_t</span><span class="op">$</span><span class="va">dead_t1</span> <span class="op">==</span> <span class="fl">1L</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  <span class="va">cum_mort</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">cum_mort</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">n_risk</span>, <span class="fl">1L</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="va">max_t</span>, <span class="va">cum_mort</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="va">curve</span> <span class="op">&lt;-</span> <span class="fu">crude_cumulative_mortality</span><span class="op">(</span><span class="va">long_data</span><span class="op">[</span><span class="va">long_data</span><span class="op">$</span><span class="va">arm</span> <span class="op">==</span> <span class="va">arms</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, <span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">curve</span><span class="op">$</span><span class="va">month2</span>, <span class="va">curve</span><span class="op">$</span><span class="va">cum_mort</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>,</span>

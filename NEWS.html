@@ -510,6 +510,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Added vignette article “Using ettbc: Emulating a Target Trial for Breast Cancer Screening” (<a href="https://github.com/ucdavis/ettbc/issues/1">#1</a>).</p></li>
 <li><p>Updated <code>DESCRIPTION</code> title and description to reflect the package purpose.</p></li>
 <li><p>Migrated the <code>@claude</code>, Claude review, and <code>NEWS.md</code> changelog-check GitHub Actions workflows to the reusable workflows in <code>d-morrison/gha</code>.</p></li>
+<li><p>Internal refactor: decomposed the per-participant clone-censor logic in <code>clone_censor()</code> into smaller helper functions, factored the cumulative mortality computation in the “Using ettbc” vignette into a reusable helper, and split the example-data generation into focused simulation functions now living in <code>R/</code>. Helper functions were reorganized to one function per file, anonymous functions replaced with named helpers, and nested calls rewritten as pipes. No user-facing behavior changes.</p></li>
 </ul>
 </section>
 <section id="ettbc-0.0.0.9000" class="level1">
