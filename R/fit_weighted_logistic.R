@@ -50,5 +50,18 @@ fit_weighted_logistic <- function(data, formula, weight_col = NULL) {
     }
     glm_args$weights <- w
   }
-  do.call(stats::glm, glm_args)
+  # Non-integer IPW weights make a binomial GLM's weights * y product
+  # non-integer, so stats::glm() emits "non-integer #successes in a binomial
+  # glm!". The fit is valid; we discard the model-based standard errors anyway
+  # (bootstrap_ci() gets its intervals from the bootstrap), so muffle only this
+  # expected message and let any other warning (non-convergence, separation)
+  # surface.
+  withCallingHandlers(
+    do.call(stats::glm, glm_args),
+    warning = function(w) {
+      if (grepl("non-integer #successes", conditionMessage(w), fixed = TRUE)) {
+        invokeRestart("muffleWarning")
+      }
+    }
+  )
 }
