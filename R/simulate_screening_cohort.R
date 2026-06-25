@@ -30,6 +30,10 @@
 #'   `108L` (January 2000 through December 2008).
 #' @param seed Optional integer seed for reproducibility. `NULL` (the default)
 #'   leaves the random-number stream untouched.
+#' @param negative_control Logical; when `TRUE`, the simulated cohort gains an
+#'   `nc_death` indicator marking deaths attributed to a negative-control cause
+#'   (cancer of the corpus uteri), for the falsification analysis in
+#'   [negative_control_analysis()]. Default: `FALSE`.
 #'
 #' @return A named list of three linked data frames:
 #'
@@ -60,7 +64,8 @@
 #'   sim$cohort, sim$screening_mammograms, sim$diagnostic_mammograms
 #' )
 #' nrow(cloned)
-simulate_screening_cohort <- function(n = 100L, max_month = 108L, seed = NULL) {
+simulate_screening_cohort <- function(
+    n = 100L, max_month = 108L, seed = NULL, negative_control = FALSE) {
   n <- as.integer(n)
   if (length(n) != 1L || is.na(n) || n < 1L) {
     cli::cli_abort("{.arg n} must be a single positive integer.")
@@ -71,15 +76,17 @@ simulate_screening_cohort <- function(n = 100L, max_month = 108L, seed = NULL) {
   }
 
   if (is.null(seed)) {
-    return(simulate_screening_tables(n, max_month))
+    return(simulate_screening_tables(n, max_month, negative_control))
   }
-  withr::with_seed(seed, simulate_screening_tables(n, max_month))
+  withr::with_seed(
+    seed, simulate_screening_tables(n, max_month, negative_control)
+  )
 }
 
 # Build the three linked synthetic tables from one shared RNG stream.
 #' @noRd
-simulate_screening_tables <- function(n, max_month) {
-  cohort <- simulate_cohort(n, max_month)
+simulate_screening_tables <- function(n, max_month, negative_control = FALSE) {
+  cohort <- simulate_cohort(n, max_month, negative_control = negative_control)
   screening_mammograms <- simulate_screening_mammograms(cohort, max_month)
   diagnostic_mammograms <- simulate_diagnostic_mammograms(cohort, max_month)
   list(
