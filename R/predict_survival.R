@@ -350,67 +350,6 @@ check_both_arms <- function(long_data, arm_col) {
   }
 }
 
-#' Compute Restricted Cubic Spline (RCS) Basis
-#'
-#' Computes the *nonlinear* restricted-cubic-spline basis terms for a numeric
-#' vector, following Harrell's truncated-power parameterization as implemented
-#' by the SAS `%RCSPLINE` macro. With `k` knots this returns `k - 2` nonlinear
-#' terms (named `rcs1`, `rcs2`, ...); the linear term is supplied separately by
-#' the `month3` column in the model formula. Together the linear term and these
-#' nonlinear terms form a full-rank basis for the restricted cubic spline (i.e.
-#' natural cubic spline) space, avoiding the rank deficiency that arises when a
-#' separate linear term is added to a basis (such as `splines::ns()`) that
-#' already spans the linear component.
-#'
-#' Each term is exactly zero for `x` at or below the first knot, so at month 0
-#' every spline term vanishes and the `STOPBASE` main effect in
-#' [fit_outcome_hr()] is the arm contrast at baseline (month 0).
-#'
-#' @param x Numeric vector of time values.
-#' @param rcs_knots Numeric vector with at least 3 elements: first and last are
-#'   boundary knots; all intermediate elements are interior knots.
-#' @return A matrix with `length(rcs_knots) - 2` columns named `rcs1`, `rcs2`,
-#'   ..., one per nonlinear restricted-cubic-spline degree of freedom.
-#'   Restricted cubic splines are constrained to be linear beyond the boundary
-#'   knots.
-#'
-#' @details
-#' For knots `t[1] < ... < t[k]`, term `j` (for `j = 1, ..., k - 2`) is
-#' `((x - t[j])_+^3 - (x - t[k-1])_+^3 * (t[k] - t[j]) / (t[k] - t[k-1])`
-#' `+ (x - t[k])_+^3 * (t[k-1] - t[j]) / (t[k] - t[k-1])) / (t[k] - t[1])^2`,
-#' where `(u)_+ = max(u, 0)`. The `n_knots >= 3` guard ensures at least one
-#' nonlinear term is produced.
-#'
-#' @noRd
-compute_rcs_basis <- function(x, rcs_knots) {
-  n_knots <- length(rcs_knots)
-  if (n_knots < 3L) {
-    cli::cli_abort(
-      c(
-        "{.arg rcs_knots} must have at least 3 elements.",
-        "i" = "Provide {.code c(left_boundary, interior_knot, right_boundary)}."
-      )
-    )
-  }
-  t_first <- rcs_knots[1L]
-  t_last <- rcs_knots[n_knots]
-  t_prev <- rcs_knots[n_knots - 1L]
-  denom <- t_last - t_prev
-  scale <- (t_last - t_first)^2
-  cube_pos <- function(u) pmax(u, 0)^3
-  n_terms <- n_knots - 2L
-  basis <- matrix(0, nrow = length(x), ncol = n_terms)
-  for (j in seq_len(n_terms)) {
-    t_j <- rcs_knots[j]
-    term <- cube_pos(x - t_j) -
-      cube_pos(x - t_prev) * (t_last - t_j) / denom +
-      cube_pos(x - t_last) * (t_prev - t_j) / denom
-    basis[, j] <- term / scale
-  }
-  colnames(basis) <- paste0("rcs", seq_len(n_terms))
-  basis
-}
-
 #' @noRd
 build_model_data <- function(
     long_data, outcome_col, arm_col, month_col, rcs_knots) {

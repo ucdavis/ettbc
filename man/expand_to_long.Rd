@@ -12,7 +12,8 @@ expand_to_long(
   end_col = "end_month",
   died_col = "died",
   bc_died_col = "bc_died",
-  bc_month_col = "bc_month"
+  bc_month_col = "bc_month",
+  nc_died_col = NULL
 )
 }
 \arguments{
@@ -36,6 +37,11 @@ Default: \code{"bc_died"}.}
 
 \item{bc_month_col}{Name of the breast cancer diagnosis month column.
 Default: \code{"bc_month"}.}
+
+\item{nc_died_col}{Name of an optional negative-control death indicator
+column (e.g., death from cancer of the corpus uteri). When supplied, an
+\code{nc_dead_t1} cause-specific outcome column is added to the output. \code{NULL}
+(the default) omits it.}
 }
 \value{
 A data frame with one row per participant-arm-month, containing:
@@ -47,6 +53,8 @@ A data frame with one row per participant-arm-month, containing:
 \item \code{dead_t1}: Death in the next interval: 1 / 0 / \code{NA}
 \item \code{bc_dead_t1}: Breast cancer death in the next interval
 \item \code{bc_long}: Breast cancer diagnosis at this month (0/1)
+\item \code{nc_dead_t1}: Negative-control death in the next interval (appended only
+when \code{nc_died_col} is supplied)
 }
 }
 \description{
@@ -84,7 +92,12 @@ If a participant died in the same month they entered the study
 
 The breast-cancer-specific outcome \code{bc_dead_t1} mirrors \code{dead_t1} but is
 set to \code{0} at the event row when the death was not attributed to breast
-cancer (\code{bc_died == 0}).
+cancer (\code{bc_died == 0}). When \code{nc_died_col} is supplied, a negative-control
+cause-specific outcome \code{nc_dead_t1} is built the same way from that column.
+The negative-control outcome (death from cancer of the corpus uteri in
+García-Albéniz et al.) supports the falsification analysis in
+\code{\link[=negative_control_analysis]{negative_control_analysis()}}: continued screening mammography should have
+no effect on a death unrelated to the breast.
 }
 \examples{
 cloned <- clone_censor(
@@ -102,5 +115,7 @@ Women Older Than 70 Years: A Prospective Observational Study.
 \emph{Ann Intern Med.} 2020;172(6):381–389. \doi{10.7326/M18-1199}
 }
 \seealso{
-\code{\link[=clone_censor]{clone_censor()}} for the preceding step.
+\code{\link[=clone_censor]{clone_censor()}} for the preceding step and
+\code{\link[=negative_control_analysis]{negative_control_analysis()}} for the falsification analysis that consumes
+\code{nc_dead_t1}.
 }

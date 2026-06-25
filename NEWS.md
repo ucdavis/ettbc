@@ -3,6 +3,54 @@
 * `bootstrap_ci()` now seeds its resampling with `withr::with_seed()` instead
   of a hand-rolled `.Random.seed` save/restore, and its bootstrap loop was
   factored into a helper. Behavior and results are unchanged (#12).
+* Added `standardized_rate_difference()`, the treatment-pattern secondary
+  analyses from García-Albéniz et al. (SAS `cann26`/`cann27`/`cann28`:
+  surgery, chemotherapy, and radiotherapy receipt among screen-detected
+  cancers). It computes a direct-standardized difference in a binary outcome
+  rate between the CONTINUE and STOPBASE arms, standardized to the pooled
+  sample over user-specified strata (age, comorbidity) and restricted to the
+  common-support strata, with a bootstrap percentile confidence interval and
+  RNG-state restoration, matching the SAS `PROC STDRATE`
+  (`method = direct`, `effect = diff`) approach (#12).
+* Added `deterministic_bias_analysis()` and `probabilistic_bias_analysis()`,
+  the unmeasured-confounding sensitivity analyses from García-Albéniz et al.
+  (supplementary analysis). For a single dichotomous, time-fixed confounder
+  with a given prevalence in each arm and an additive outcome effect, the
+  deterministic version adjusts an observed arm risk difference by
+  `(prev_continue - prev_stopbase) * confounder_effect` (vectorized over a
+  grid of assumptions); the probabilistic version draws the bias parameters
+  from uniform priors and the observed risk difference from its sampling
+  distribution to return a Monte Carlo simulation interval. The caller's RNG
+  state is restored on exit (#12).
+* Exported `compute_rcs_basis()`, the Harrell restricted-cubic-spline basis
+  (SAS `%RCSPLINE` parameterization) used internally by the outcome and
+  propensity models, so other packages can reuse the same parameterization
+  instead of writing it again. Behavior is unchanged; the function moved to
+  its own file and gained a public man page, examples, and tests (#12).
+* Added `negative_control_analysis()` and negative-control outcome support, the
+  falsification check from García-Albéniz et al. (death from cancer of the
+  corpus uteri). `expand_to_long()` gains an optional `nc_died_col` argument
+  that builds a cause-specific `nc_dead_t1` outcome the same way as
+  `bc_dead_t1` (the shared logic is factored into one helper);
+  `simulate_screening_cohort(negative_control = TRUE)` adds an `nc_death`
+  indicator to the simulated cohort. `negative_control_analysis()` runs
+  `fit_outcome_hr()` on the negative-control outcome and reports
+  `null_consistent`, whether the arm effect's confidence interval covers the
+  null. Continued screening should have no effect on a death unrelated to the
+  breast; a clearly non-null result would flag residual bias. The default
+  behavior of `expand_to_long()` and `simulate_screening_cohort()` is unchanged
+  (#12).
+* Added `simulate_screening_cohort()`: an exported generator that simulates a
+  synthetic cohort of arbitrary size and returns the three linked data frames
+  (`cohort`, `screening_mammograms`, `diagnostic_mammograms`) the pipeline
+  needs. It wraps the internal generators behind a single seeded random-number
+  stream, so `simulate_screening_cohort(100, 108, seed = 2020)` reproduces the
+  shipped example datasets exactly; the seed is applied with
+  `withr::with_seed()`, so the caller's RNG stream is left untouched. The
+  "Using ettbc" article uses it to
+  demonstrate the full `clone_censor()` -> `compute_ipw_weights()` ->
+  `fit_outcome_hr()` -> `predict_survival_ipw()` -> `bootstrap_ci()` pipeline
+  end to end on a larger simulated cohort (#12).
 * Added `augment_long_covariates()`: builds the time-varying screening
   covariates the weight and propensity steps need from the long-format data and
   the mammogram events, porting the SAS `cann17b` augmentation. It adds

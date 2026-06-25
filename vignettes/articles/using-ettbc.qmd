@@ -275,13 +275,170 @@ legend("topleft",
 
 ::: {.callout-note}
 The crude curves above do not account for the informative censoring introduced
-by the clone-censor step. In a complete analysis, **inverse probability
-weights** (IPW) would be applied to correct for the different censoring
-mechanisms in each arm. See @garcia-albeniz2020 for the full
-weighted analysis.
+by the clone-censor step. The rest of this article applies **inverse
+probability weights** (IPW) to correct for the different censoring mechanisms
+in each arm, then fits the weighted outcome model and bootstraps a confidence
+interval. See @garcia-albeniz2020 for the full analysis on the real cohort.
 :::
 
+## A Larger Simulated Cohort
+
+The 100-participant dataset above is convenient for showing the data
+structure, but it is too small to fit a stable weighted outcome model: with so
+few deaths the screening-propensity model separates and the resulting weights
+are erratic. For the weighted analysis we simulate a larger cohort with
+`simulate_screening_cohort()`, which returns the same three linked tables.
+
+The simulation builds in **no** screening effect on mortality, so the honest
+expectation is a null result: the two arms should look alike, and the weighted
+contrast should sit near no difference. What the rest of the article
+demonstrates is that the machinery runs end to end and recovers that null, not
+a substantive estimate; a real reproduction needs the Medicare cohort and the
+paper's full covariate set.
+
+```{r}
+sim <- simulate_screening_cohort(n = 1000, max_month = 108, seed = 7)
+
+cloned_l <- clone_censor(
+  sim$cohort, sim$screening_mammograms, sim$diagnostic_mammograms
+)
+long_l <- expand_to_long(cloned_l)
+long_l <- augment_long_covariates(
+  long_l, sim$screening_mammograms, sim$diagnostic_mammograms
+)
+
+nrow(long_l) # person-arm-months
+```
+
+## Step 4: Inverse Probability Weights
+
+`fit_screening_propensity()` fits the pooled logistic model for the
+probability of a screening mammogram at each eligible month (the SAS `cann17b`
+denominator), and `compute_ipw_weights()` turns those probabilities into
+stabilized per-arm weights, truncated at the 99th percentile within each arm.
+
+```{r}
+propensity <- fit_screening_propensity(long_l)
+weighted <- compute_ipw_weights(propensity$data, pred_prob_col = "p_scrmammo")
+
+# Stabilized, truncated weights are centered near 1 in both arms
+round(t(sapply(split(weighted$wp99, weighted$arm), summary)), 2)
+```
+
+## Step 5: Weighted Outcome Model
+
+`fit_outcome_hr()` fits the IP-weighted pooled logistic outcome model, with
+follow-up time entered through a restricted cubic spline and an arm-by-time
+interaction. The reported odds ratio approximates the hazard ratio for the
+STOPBASE arm relative to CONTINUE.
+
+```{r}
+hr <- fit_outcome_hr(
+  weighted,
+  weight_col = "wp99",
+  outcome_col = "dead_t1"
+)
+
+round(c(OR = hr$or, hr$or_ci), 3)
+```
+
+As expected under a simulation with no built-in effect, the odds ratio sits
+near 1 and its confidence interval covers the null.
+
+## Step 6: Standardized Survival Curves
+
+`predict_survival_ipw()` applies g-computation to the weighted model, averaging
+the predicted survival over the cohort to produce a marginal survival curve for
+each arm.
+
+```{r}
+#| label: fig-ipw-survival
+#| fig-cap: >
+#|   IP-weighted marginal survival by arm. The arms track each other closely,
+#|   consistent with the null effect built into the simulation.
+
+surv <- predict_survival_ipw(
+  weighted,
+  weight_col = "wp99",
+  outcome_col = "dead_t1"
+)
+
+plot(NA,
+  xlim = c(0, 72), ylim = c(0.8, 1),
+  xlab = "Months since study entry",
+  ylab = "Survival probability",
+  main = "IP-weighted survival by arm"
+)
+lines(surv$month, surv$s_continue, col = "#4B8FE0", lwd = 2)
+lines(surv$month, surv$s_stopbase, col = "#E05C4B", lwd = 2)
+legend("bottomleft",
+  legend = c("CONTINUE", "STOPBASE"),
+  col = c("#4B8FE0", "#E05C4B"), lwd = 2, bty = "n"
+)
+```
+
+## Step 7: Bootstrap Confidence Intervals
+
+`bootstrap_ci()` resamples participants, recomputes the weights and survival
+curves on each resample, and returns percentile confidence intervals for the
+month-by-month survival difference between arms. The number of resamples is
+kept small here so the article renders quickly; a real analysis uses several
+hundred.
+
+```{r}
+#| label: fig-boot-diff
+#| cache: true
+#| fig-cap: >
+#|   Bootstrap survival difference (CONTINUE minus STOPBASE) with a 95 percent
+#|   percentile confidence band. The band covers zero throughout, the expected
+#|   null.
+
+boot <- bootstrap_ci(
+  propensity$data,
+  pred_prob_col = "p_scrmammo",
+  outcome_col = "dead_t1",
+  max_month = 72,
+  n_boot = 50,
+  seed = 1
+)
+
+plot(NA,
+  xlim = c(0, 72), ylim = range(c(boot$diff_lo, boot$diff_hi), na.rm = TRUE),
+  xlab = "Months since study entry",
+  ylab = "Survival difference (CONTINUE - STOPBASE)",
+  main = "Bootstrap survival difference with 95% CI"
+)
+abline(h = 0, col = "grey60", lty = 2)
+polygon(
+  c(boot$month, rev(boot$month)),
+  c(boot$diff_lo, rev(boot$diff_hi)),
+  col = "#4B8FE022", border = NA
+)
+lines(boot$month, boot$diff, col = "#222222", lwd = 2)
+```
+
 ## Summary
+
+The `{ettbc}` package implements the full clone-censor-reweight pipeline:
+
+| Function | Input | Output |
+|---|---|---|
+| `simulate_screening_cohort()` | cohort size | three linked synthetic tables |
+| `clone_censor()` | cohort + mammogram events | two rows per participant |
+| `expand_to_long()` | cloned dataset | one row per participant-arm-month |
+| `augment_long_covariates()` | long dataset + events | time-varying screening covariates |
+| `fit_screening_propensity()` | augmented long dataset | screening probabilities |
+| `compute_ipw_weights()` | long dataset + probabilities | stabilized IPW weights |
+| `fit_outcome_hr()` | weighted long dataset | arm hazard ratio |
+| `predict_survival_ipw()` | weighted long dataset | marginal survival curves |
+| `bootstrap_ci()` | long dataset + probabilities | survival difference with CI |
+
+: Core ettbc functions {#tbl-functions}
+
+Run on the synthetic cohort, the pipeline recovers the null effect the
+simulation was built with. Pointed at a real Medicare cohort with the paper's
+full covariate set, the same functions reproduce the substantive analysis of
+@garcia-albeniz2020.
 
 The `{ettbc}` package provides two core functions for the clone-censor step
 of target trial emulation:
