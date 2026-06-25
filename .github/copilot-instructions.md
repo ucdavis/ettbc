@@ -75,7 +75,7 @@ lintr::lint_package()
 devtools::test()
 
 # Run specific test file
-devtools::test_file("tests/testthat/test-example_function.R")
+devtools::test_file("tests/testthat/test-clone_censor.R")
 
 # Run tests with coverage
 covr::package_coverage()
