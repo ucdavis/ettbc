@@ -1,5 +1,15 @@
 # ettbc (development version)
 
+* Added `deterministic_bias_analysis()` and `probabilistic_bias_analysis()`,
+  the unmeasured-confounding sensitivity analyses from García-Albéniz et al.
+  (supplementary analysis). For a single dichotomous, time-fixed confounder
+  with a given prevalence in each arm and an additive outcome effect, the
+  deterministic version adjusts an observed arm risk difference by
+  `(prev_continue - prev_stopbase) * confounder_effect` (vectorized over a
+  grid of assumptions); the probabilistic version draws the bias parameters
+  from uniform priors and the observed risk difference from its sampling
+  distribution to return a Monte Carlo simulation interval. The caller's RNG
+  state is restored on exit (#12).
 * Added `augment_long_covariates()`: builds the time-varying screening
   covariates the weight and propensity steps need from the long-format data and
   the mammogram events, porting the SAS `cann17b` augmentation. It adds
