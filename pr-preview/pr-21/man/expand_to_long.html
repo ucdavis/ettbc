@@ -388,6 +388,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/compute_rcs_basis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">compute_rcs_basis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/deterministic_bias_analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">deterministic_bias_analysis</span></a>
   </div>
@@ -448,6 +454,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/negative_control_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">negative_control_analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/predict_survival_baseline_adjusted.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">predict_survival_baseline_adjusted</span></a>
   </div>
@@ -474,6 +486,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/screening_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">screening_mammograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/simulate_screening_cohort.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">simulate_screening_cohort</span></a>
   </div>
 </li>
       </ul>
@@ -544,7 +562,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   end_col = "end_month",
   died_col = "died",
   bc_died_col = "bc_died",
-  bc_month_col = "bc_month"
+  bc_month_col = "bc_month",
+  nc_died_col = NULL
 )
 </code></pre>
 </section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
@@ -613,6 +632,14 @@ Name of the breast cancer death indicator column. Default: <code>“bc_died”</
 Name of the breast cancer diagnosis month column. Default: <code>“bc_month”</code>.
 </td>
 </tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="nc_died_col">nc_died_col</code>
+</td>
+<td>
+Name of an optional negative-control death indicator column (e.g., death from cancer of the corpus uteri). When supplied, an <code>nc_dead_t1</code> cause-specific outcome column is added to the output. <code>NULL</code> (the default) omits it.
+</td>
+</tr>
 </tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>The binary outcome variable <code>dead_t1</code> encodes whether the participant died in the interval from month <code>t</code> to month <code>t+1</code>:</p>
 <ul>
@@ -651,7 +678,7 @@ Name of the breast cancer diagnosis month column. Default: <code>“bc_month”<
 </li>
 </ul>
 <p>If a participant died in the same month they entered the study (<code>end_month == start_month</code> and <code>died == 1</code>), <code>dead_t1</code> is set to <code>NA</code> (outcome indeterminate within a single month).</p>
-<p>The breast-cancer-specific outcome <code>bc_dead_t1</code> mirrors <code>dead_t1</code> but is set to <code>0</code> at the event row when the death was not attributed to breast cancer (<code>bc_died == 0</code>).</p>
+<p>The breast-cancer-specific outcome <code>bc_dead_t1</code> mirrors <code>dead_t1</code> but is set to <code>0</code> at the event row when the death was not attributed to breast cancer (<code>bc_died == 0</code>). When <code>nc_died_col</code> is supplied, a negative-control cause-specific outcome <code>nc_dead_t1</code> is built the same way from that column. The negative-control outcome (death from cancer of the corpus uteri in García-Albéniz et al.) supports the falsification analysis in <code><a href="https://rdrr.io/pkg/ettbc/man/negative_control_analysis.html">negative_control_analysis()</a></code>: continued screening mammography should have no effect on a death unrelated to the breast.</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A data frame with one row per participant-arm-month, containing:</p>
 <ul>
@@ -676,10 +703,13 @@ Name of the breast cancer diagnosis month column. Default: <code>“bc_month”<
 <li>
 <p><code>bc_long</code>: Breast cancer diagnosis at this month (0/1)</p>
 </li>
+<li>
+<p><code>nc_dead_t1</code>: Negative-control death in the next interval (appended only when <code>nc_died_col</code> is supplied)</p>
+</li>
 </ul></section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
 <p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381–389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
 </section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
-<p><code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code> for the preceding step.</p>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code> for the preceding step and <code><a href="https://rdrr.io/pkg/ettbc/man/negative_control_analysis.html">negative_control_analysis()</a></code> for the falsification analysis that consumes <code>nc_dead_t1</code>.</p>
 </section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
 <details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ucdavis/ettbc">"ettbc"</a></span><span class="op">)</span></span>

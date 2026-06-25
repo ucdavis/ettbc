@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.38">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>extract_any_mammograms – ettbc</title>
+<title>compute_rcs_basis – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,8 +20,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -48,8 +79,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-dark-c9222b08cc2a7acf193a96321f78a2da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-bebb40f06d5d208e2fa3c4ae88b0db0c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.js"></script>
-<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -75,12 +105,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
-<link rel="stylesheet" href="../styles.css">
+}</script><link rel="stylesheet" href="../styles.css">
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
@@ -246,9 +272,7 @@ ul.task-list li input[type="checkbox"] {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ettbc</span>
@@ -260,7 +284,7 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link active" href="../man/ettbc-package.html" aria-current="page"> 
 <span class="menu-text">Documentation</span></a>
   </li>  
@@ -268,45 +292,39 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Articles</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
-        <li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
     <a class="dropdown-item" href="../vignettes/articles/using-ettbc.html">
  <span class="dropdown-text">Using ettbc</span></a>
   </li>  
     </ul>
-  </li>
+</li>
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/ucdavis/ettbc"> <i class="bi bi-github" role="img" aria-label="ettbc GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/extract_any_mammograms.html">extract_any_mammograms</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/compute_rcs_basis.html">compute_rcs_basis</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -320,15 +338,15 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/articles/using-ettbc.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Using ettbc: Emulating a Target Trial for Breast Cancer Screening</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -337,8 +355,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/augment_long_covariates.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">augment_long_covariates</span></a>
@@ -370,7 +388,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/compute_rcs_basis.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/compute_rcs_basis.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">compute_rcs_basis</span></a>
   </div>
 </li>
@@ -400,7 +418,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/extract_any_mammograms.html" class="sidebar-item-text sidebar-link active">
+  <a href="../man/extract_any_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">extract_any_mammograms</span></a>
   </div>
 </li>
@@ -477,7 +495,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
@@ -509,143 +527,85 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#extract-any-mammograms-from-medicare-claims" id="toc-extract-any-mammograms-from-medicare-claims" class="nav-link active" data-scroll-target="#extract-any-mammograms-from-medicare-claims">Extract Any Mammograms from Medicare Claims</a>
+<li>
+<a href="#compute-restricted-cubic-spline-rcs-basis" id="toc-compute-restricted-cubic-spline-rcs-basis" class="nav-link active" data-scroll-target="#compute-restricted-cubic-spline-rcs-basis">Compute Restricted Cubic Spline (RCS) Basis</a>
   <ul class="collapse">
-  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See Also</a></li>
-  </ul></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/extract_any_mammograms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/extract_any_mammograms.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/compute_rcs_basis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/compute_rcs_basis.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/extract_any_mammograms.html">extract_any_mammograms</a></li></ol></nav></header>
-
-
-
-
-
-<section id="extract-any-mammograms-from-medicare-claims" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="extract-any-mammograms-from-medicare-claims">Extract Any Mammograms from Medicare Claims</h2>
-<section id="description" class="level3">
-<h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Filters a Medicare carrier or outpatient claims file to rows containing any mammography HCPCS codes (screening or diagnostic), and converts claim dates to a 1-indexed study month relative to a reference date.</p>
-</section>
-<section id="usage" class="level3">
-<h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">extract_any_mammograms(
-  claims,
-  id_col = "bene_id",
-  date_col = "thru_dt",
-  hcpcs_col = "hcpcs_cd",
-  hcpcs_codes = c("77057", "76092", "G0202", "G0203", "G0205", "76090", "76091", "G0204",
-    "G0206", "77055", "77056"),
-  ref_date,
-  study_start_month = 1L
-)
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/compute_rcs_basis.html">compute_rcs_basis</a></li></ol></nav></header><section id="compute-restricted-cubic-spline-rcs-basis" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="compute-restricted-cubic-spline-rcs-basis">Compute Restricted Cubic Spline (RCS) Basis</h2>
+<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
+<p>Computes the <em>nonlinear</em> restricted-cubic-spline basis terms for a numeric vector, following Harrell’s truncated-power parameterization as implemented by the SAS <code style="white-space: pre;">%RCSPLINE</code> macro. With <code>k</code> knots this returns <code>k - 2</code> nonlinear terms (named <code>rcs1</code>, <code>rcs2</code>, …); the linear term is supplied separately (e.g., the raw time variable in a model formula). Together the linear term and these nonlinear terms form a full-rank basis for the restricted cubic spline (i.e.&nbsp;natural cubic spline) space, avoiding the rank deficiency that arises when a separate linear term is added to a basis (such as <code><a href="https://rdrr.io/r/splines/ns.html">splines::ns()</a></code>) that already spans the linear component.</p>
+</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
+<pre><code class="language-R">compute_rcs_basis(x, rcs_knots)
 </code></pre>
-</section>
-<section id="arguments" class="level3">
-<h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+</section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table role="presentation">
 <tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="claims">claims</code>
+<code id="x">x</code>
 </td>
 <td>
-A data frame of Medicare claims. Must contain columns <code>id_col</code>, <code>date_col</code>, and <code>hcpcs_col</code>.
+Numeric vector of values (e.g., follow-up time).
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="id_col">id_col</code>
+<code id="rcs_knots">rcs_knots</code>
 </td>
 <td>
-Name of the beneficiary identifier column. Default: <code>“bene_id”</code>.
+Numeric vector with at least 3 elements: first and last are boundary knots; all intermediate elements are interior knots.
 </td>
 </tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="date_col">date_col</code>
-</td>
-<td>
-Name of the service date column (coercible to <code>Date</code>). Default: <code>“thru_dt”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="hcpcs_col">hcpcs_col</code>
-</td>
-<td>
-Name of the HCPCS procedure code column. Default: <code>“hcpcs_cd”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="hcpcs_codes">hcpcs_codes</code>
-</td>
-<td>
-Character vector of HCPCS codes identifying any mammography claims. Default: all screening and diagnostic codes combined.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="ref_date">ref_date</code>
-</td>
-<td>
-A <code>Date</code> object giving the reference date from which study months are counted (e.g., the first day of the study period).
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="study_start_month">study_start_month</code>
-</td>
-<td>
-Integer giving the month index assigned to <code>ref_date</code>. Default: <code>1L</code>.
-</td>
-</tr>
-</tbody></table>
-</section>
-<section id="details" class="level3">
-<h3 class="anchored" data-anchor-id="details">Details</h3>
-<p>This is a <strong>template function</strong> that cannot be run without access to Medicare claims data. It is provided as a reference implementation for users who have access to such data.</p>
-<p>The default HCPCS codes cover both screening and diagnostic mammography:</p>
-<ul>
-<li>
-<p>Screening: <code>“77057”</code>, <code>“76092”</code>, <code>“G0202”</code>, <code>“G0203”</code>, <code>“G0205”</code></p>
-</li>
-<li>
-<p>Diagnostic: <code>“76090”</code>, <code>“76091”</code>, <code>“G0204”</code>, <code>“G0206”</code>, <code>“77055”</code>, <code>“77056”</code></p>
-</li>
-</ul>
-</section>
-<section id="value" class="level3">
-<h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>A data frame with one row per matching claim, containing:</p>
-<ul>
-<li>
-<p><code>id</code>: Beneficiary identifier (from <code>id_col</code>).</p>
-</li>
-<li>
-<p><code>month</code>: Study month index (integer, 1-indexed from <code>ref_date</code>).</p>
-</li>
-</ul>
-</section>
-<section id="see-also" class="level3">
-<h3 class="anchored" data-anchor-id="see-also">See Also</h3>
-<p><code>extract_screening_mammograms()</code>, <code>extract_diagnostic_mammograms()</code>, <code>clone_censor()</code></p>
+</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
+<p>Each term is exactly zero for <code>x</code> at or below the first knot. In the <a href="https://github.com/ucdavis/ettbc">ettbc</a> outcome models this means every spline term vanishes at month 0, so the <code>STOPBASE</code> main effect in <code><a href="https://rdrr.io/pkg/ettbc/man/fit_outcome_hr.html">fit_outcome_hr()</a></code> is the arm contrast at baseline.</p>
+<p>The basis is used internally by <code><a href="https://rdrr.io/pkg/ettbc/man/fit_screening_propensity.html">fit_screening_propensity()</a></code> and the <code style="white-space: pre;">predict_survival_*()</code> functions, and is exported so other packages can reuse the same Harrell parameterization rather than writing it again.</p>
+<p>For knots <code style="white-space: pre;">t[1] &lt; … &lt; t[k]</code>, term <code>j</code> (for <code style="white-space: pre;">j = 1, …, k - 2</code>) is <code style="white-space: pre;">((x - t[j])<em>+^3 - (x - t[k-1])</em>+^3 * (t[k] - t[j]) / (t[k] - t[k-1])</code> <code style="white-space: pre;">+ (x - t[k])<em>+^3 * (t[k-1] - t[j]) / (t[k] - t[k-1])) / (t[k] - t[1])^2</em></code>, where <code style="white-space: pre;">(u)+ = max(u, 0)</code>. The <code>n_knots &gt;= 3</code> guard ensures at least one nonlinear term is produced.</p>
+</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
+<p>A matrix with <code>length(rcs_knots) - 2</code> columns named <code>rcs1</code>, <code>rcs2</code>, …, one per nonlinear restricted-cubic-spline degree of freedom. Restricted cubic splines are constrained to be linear beyond the boundary knots.</p>
+</section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
+<p>Harrell FE. <em>Regression Modeling Strategies.</em> Springer; 2015.</p>
+</section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/fit_outcome_hr.html">fit_outcome_hr()</a></code> and <code><a href="https://rdrr.io/pkg/ettbc/man/predict_survival_ipw.html">predict_survival_ipw()</a></code>, which model time with this basis.</p>
+</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ucdavis/ettbc">"ettbc"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">basis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/compute_rcs_basis.html">compute_rcs_basis</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">12</span>, rcs_knots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">basis</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>            rcs1
+[1,] 0.000000000
+[2,] 0.006944444
+[3,] 0.055555556
+[4,] 0.187500000
+[5,] 0.444444444
+[6,] 0.868055556</code></pre>
+</div>
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Terms vanish at or below the first knot</span></span>
+<span><span class="va">basis</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>rcs1 
+   0 </code></pre>
+</div>
+</div>
 
 
 <script>
@@ -822,13 +782,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 window.addEventListener("load", alignEquationAnchorsWithDefault);
-</script>
-
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</script></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1245,5 +1199,4 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 
 
 
-
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/extract_any_mammograms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/extract_any_mammograms.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/compute_rcs_basis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/compute_rcs_basis.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

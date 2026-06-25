@@ -409,6 +409,12 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../man/compute_rcs_basis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">compute_rcs_basis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../man/deterministic_bias_analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">deterministic_bias_analysis</span></a>
   </div>
@@ -469,6 +475,12 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../man/negative_control_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">negative_control_analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../man/predict_survival_baseline_adjusted.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">predict_survival_baseline_adjusted</span></a>
   </div>
@@ -495,6 +507,12 @@ div.csl-indent {
   <div class="sidebar-item-container"> 
   <a href="../../man/screening_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">screening_mammograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../man/simulate_screening_cohort.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">simulate_screening_cohort</span></a>
   </div>
 </li>
       </ul>
@@ -558,8 +576,13 @@ div.csl-indent {
   </ul>
 </li>
   <li><a href="#step-3-descriptive-analysis" id="toc-step-3-descriptive-analysis" class="nav-link" data-scroll-target="#step-3-descriptive-analysis"><span class="header-section-number">5</span> Step 3: Descriptive Analysis</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6</span> Summary</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
+  <li><a href="#a-larger-simulated-cohort" id="toc-a-larger-simulated-cohort" class="nav-link" data-scroll-target="#a-larger-simulated-cohort"><span class="header-section-number">6</span> A Larger Simulated Cohort</a></li>
+  <li><a href="#step-4-inverse-probability-weights" id="toc-step-4-inverse-probability-weights" class="nav-link" data-scroll-target="#step-4-inverse-probability-weights"><span class="header-section-number">7</span> Step 4: Inverse Probability Weights</a></li>
+  <li><a href="#step-5-weighted-outcome-model" id="toc-step-5-weighted-outcome-model" class="nav-link" data-scroll-target="#step-5-weighted-outcome-model"><span class="header-section-number">8</span> Step 5: Weighted Outcome Model</a></li>
+  <li><a href="#step-6-standardized-survival-curves" id="toc-step-6-standardized-survival-curves" class="nav-link" data-scroll-target="#step-6-standardized-survival-curves"><span class="header-section-number">9</span> Step 6: Standardized Survival Curves</a></li>
+  <li><a href="#step-7-bootstrap-confidence-intervals" id="toc-step-7-bootstrap-confidence-intervals" class="nav-link" data-scroll-target="#step-7-bootstrap-confidence-intervals"><span class="header-section-number">10</span> Step 7: Bootstrap Confidence Intervals</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">11</span> Summary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">12</span> References</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/vignettes/articles/using-ettbc.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/vignettes/articles/using-ettbc.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="using-ettbc-revealjs.html"><i class="bi bi-file-slides"></i>RevealJS</a></li><li><a href="using-ettbc.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -852,15 +875,255 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The crude curves above do not account for the informative censoring introduced by the clone-censor step. In a complete analysis, <strong>inverse probability weights</strong> (IPW) would be applied to correct for the different censoring mechanisms in each arm. See <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#ref-garcia-albeniz2020" role="doc-biblioref">2020</a>)</span> for the full weighted analysis.</p>
+<p>The crude curves above do not account for the informative censoring introduced by the clone-censor step. The rest of this article applies <strong>inverse probability weights</strong> (IPW) to correct for the different censoring mechanisms in each arm, then fits the weighted outcome model and bootstraps a confidence interval. See <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#ref-garcia-albeniz2020" role="doc-biblioref">2020</a>)</span> for the full analysis on the real cohort.</p>
 </div>
 </div>
-</section><section id="summary" class="level2" data-number="6"><h2 data-number="6" class="anchored" data-anchor-id="summary">
-<span class="header-section-number">6</span> Summary</h2>
-<p>The <a href="https://github.com/ucdavis/ettbc">ettbc</a> package provides two core functions for the clone-censor step of target trial emulation:</p>
+</section><section id="a-larger-simulated-cohort" class="level2" data-number="6"><h2 data-number="6" class="anchored" data-anchor-id="a-larger-simulated-cohort">
+<span class="header-section-number">6</span> A Larger Simulated Cohort</h2>
+<p>The 100-participant dataset above is convenient for showing the data structure, but it is too small to fit a stable weighted outcome model: with so few deaths the screening-propensity model separates and the resulting weights are erratic. For the weighted analysis we simulate a larger cohort with <code>simulate_screening_cohort()</code>, which returns the same three linked tables.</p>
+<p>The simulation builds in <strong>no</strong> screening effect on mortality, so the honest expectation is a null result: the two arms should look alike, and the weighted contrast should sit near no difference. What the rest of the article demonstrates is that the machinery runs end to end and recovers that null, not a substantive estimate; a real reproduction needs the Medicare cohort and the paper’s full covariate set.</p>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu">simulate_screening_cohort</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000</span>, max_month <span class="op">=</span> <span class="fl">108</span>, seed <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cloned_l</span> <span class="op">&lt;-</span> <span class="fu">clone_censor</span><span class="op">(</span></span>
+<span>  <span class="va">sim</span><span class="op">$</span><span class="va">cohort</span>, <span class="va">sim</span><span class="op">$</span><span class="va">screening_mammograms</span>, <span class="va">sim</span><span class="op">$</span><span class="va">diagnostic_mammograms</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">long_l</span> <span class="op">&lt;-</span> <span class="fu">expand_to_long</span><span class="op">(</span><span class="va">cloned_l</span><span class="op">)</span></span>
+<span><span class="va">long_l</span> <span class="op">&lt;-</span> <span class="fu">augment_long_covariates</span><span class="op">(</span></span>
+<span>  <span class="va">long_l</span>, <span class="va">sim</span><span class="op">$</span><span class="va">screening_mammograms</span>, <span class="va">sim</span><span class="op">$</span><span class="va">diagnostic_mammograms</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">long_l</span><span class="op">)</span> <span class="co"># person-arm-months</span></span>
+<span><span class="co">#&gt; [1] 73469</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section><section id="step-4-inverse-probability-weights" class="level2" data-number="7"><h2 data-number="7" class="anchored" data-anchor-id="step-4-inverse-probability-weights">
+<span class="header-section-number">7</span> Step 4: Inverse Probability Weights</h2>
+<p><code>fit_screening_propensity()</code> fits the pooled logistic model for the probability of a screening mammogram at each eligible month (the SAS <code>cann17b</code> denominator), and <code>compute_ipw_weights()</code> turns those probabilities into stabilized per-arm weights, truncated at the 99th percentile within each arm.</p>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">propensity</span> <span class="op">&lt;-</span> <span class="fu">fit_screening_propensity</span><span class="op">(</span><span class="va">long_l</span><span class="op">)</span></span>
+<span><span class="va">weighted</span> <span class="op">&lt;-</span> <span class="fu">compute_ipw_weights</span><span class="op">(</span><span class="va">propensity</span><span class="op">$</span><span class="va">data</span>, pred_prob_col <span class="op">=</span> <span class="st">"p_scrmammo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Stabilized, truncated weights are centered near 1 in both arms</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">weighted</span><span class="op">$</span><span class="va">wp99</span>, <span class="va">weighted</span><span class="op">$</span><span class="va">arm</span><span class="op">)</span>, <span class="va">summary</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          Min. 1st Qu. Median Mean 3rd Qu.  Max.</span></span>
+<span><span class="co">#&gt; CONTINUE    0       1   1.33 2.10    2.17 15.35</span></span>
+<span><span class="co">#&gt; STOPBASE    1       1   1.00 5.07   10.15 37.88</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section><section id="step-5-weighted-outcome-model" class="level2" data-number="8"><h2 data-number="8" class="anchored" data-anchor-id="step-5-weighted-outcome-model">
+<span class="header-section-number">8</span> Step 5: Weighted Outcome Model</h2>
+<p><code>fit_outcome_hr()</code> fits the IP-weighted pooled logistic outcome model, with follow-up time entered through a restricted cubic spline and an arm-by-time interaction. The reported odds ratio approximates the hazard ratio for the STOPBASE arm relative to CONTINUE.</p>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hr</span> <span class="op">&lt;-</span> <span class="fu">fit_outcome_hr</span><span class="op">(</span></span>
+<span>  <span class="va">weighted</span>,</span>
+<span>  weight_col <span class="op">=</span> <span class="st">"wp99"</span>,</span>
+<span>  outcome_col <span class="op">=</span> <span class="st">"dead_t1"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>OR <span class="op">=</span> <span class="va">hr</span><span class="op">$</span><span class="va">or</span>, <span class="va">hr</span><span class="op">$</span><span class="va">or_ci</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     OR  2.5 % 97.5 % </span></span>
+<span><span class="co">#&gt;  0.976  0.669  1.422</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>As expected under a simulation with no built-in effect, the odds ratio sits near 1 and its confidence interval covers the null.</p>
+</section><section id="step-6-standardized-survival-curves" class="level2" data-number="9"><h2 data-number="9" class="anchored" data-anchor-id="step-6-standardized-survival-curves">
+<span class="header-section-number">9</span> Step 6: Standardized Survival Curves</h2>
+<p><code>predict_survival_ipw()</code> applies g-computation to the weighted model, averaging the predicted survival over the cohort to produce a marginal survival curve for each arm.</p>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">surv</span> <span class="op">&lt;-</span> <span class="fu">predict_survival_ipw</span><span class="op">(</span></span>
+<span>  <span class="va">weighted</span>,</span>
+<span>  weight_col <span class="op">=</span> <span class="st">"wp99"</span>,</span>
+<span>  outcome_col <span class="op">=</span> <span class="st">"dead_t1"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>,</span>
+<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">72</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"Months since study entry"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Survival probability"</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"IP-weighted survival by arm"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">surv</span><span class="op">$</span><span class="va">month</span>, <span class="va">surv</span><span class="op">$</span><span class="va">s_continue</span>, col <span class="op">=</span> <span class="st">"#4B8FE0"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">surv</span><span class="op">$</span><span class="va">month</span>, <span class="va">surv</span><span class="op">$</span><span class="va">s_stopbase</span>, col <span class="op">=</span> <span class="st">"#E05C4B"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>,</span>
+<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CONTINUE"</span>, <span class="st">"STOPBASE"</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#4B8FE0"</span>, <span class="st">"#E05C4B"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>, bty <span class="op">=</span> <span class="st">"n"</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output-display">
+<div id="fig-ipw-survival" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-ipw-survival-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: IP-weighted marginal survival by arm. The arms track each other closely, consistent with the null effect built into the simulation.
+</figcaption><div aria-describedby="fig-ipw-survival-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="using-ettbc_files/figure-html/fig-ipw-survival-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="step-7-bootstrap-confidence-intervals" class="level2" data-number="10"><h2 data-number="10" class="anchored" data-anchor-id="step-7-bootstrap-confidence-intervals">
+<span class="header-section-number">10</span> Step 7: Bootstrap Confidence Intervals</h2>
+<p><code>bootstrap_ci()</code> resamples participants, recomputes the weights and survival curves on each resample, and returns percentile confidence intervals for the month-by-month survival difference between arms. The number of resamples is kept small here so the article renders quickly; a real analysis uses several hundred.</p>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot</span> <span class="op">&lt;-</span> <span class="fu">bootstrap_ci</span><span class="op">(</span></span>
+<span>  <span class="va">propensity</span><span class="op">$</span><span class="va">data</span>,</span>
+<span>  pred_prob_col <span class="op">=</span> <span class="st">"p_scrmammo"</span>,</span>
+<span>  outcome_col <span class="op">=</span> <span class="st">"dead_t1"</span>,</span>
+<span>  max_month <span class="op">=</span> <span class="fl">72</span>,</span>
+<span>  n_boot <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="cn">NA</span>,</span>
+<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">72</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">boot</span><span class="op">$</span><span class="va">diff_lo</span>, <span class="va">boot</span><span class="op">$</span><span class="va">diff_hi</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"Months since study entry"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Survival difference (CONTINUE - STOPBASE)"</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Bootstrap survival difference with 95% CI"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span>, col <span class="op">=</span> <span class="st">"grey60"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">boot</span><span class="op">$</span><span class="va">month</span>, <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="va">boot</span><span class="op">$</span><span class="va">month</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">boot</span><span class="op">$</span><span class="va">diff_lo</span>, <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="va">boot</span><span class="op">$</span><span class="va">diff_hi</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"#4B8FE022"</span>, border <span class="op">=</span> <span class="cn">NA</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">boot</span><span class="op">$</span><span class="va">month</span>, <span class="va">boot</span><span class="op">$</span><span class="va">diff</span>, col <span class="op">=</span> <span class="st">"#222222"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output-display">
+<div id="fig-boot-diff" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-boot-diff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Bootstrap survival difference (CONTINUE minus STOPBASE) with a 95 percent percentile confidence band. The band covers zero throughout, the expected null.
+</figcaption><div aria-describedby="fig-boot-diff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="using-ettbc_files/figure-html/fig-boot-diff-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="summary" class="level2" data-number="11"><h2 data-number="11" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">11</span> Summary</h2>
+<p>The <a href="https://github.com/ucdavis/ettbc">ettbc</a> package implements the full clone-censor-reweight pipeline:</p>
 <div id="tbl-functions" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Core ettbc functions
+</figcaption><div aria-describedby="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Input</th>
+<th>Output</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>simulate_screening_cohort()</code></td>
+<td>cohort size</td>
+<td>three linked synthetic tables</td>
+</tr>
+<tr class="even">
+<td><code>clone_censor()</code></td>
+<td>cohort + mammogram events</td>
+<td>two rows per participant</td>
+</tr>
+<tr class="odd">
+<td><code>expand_to_long()</code></td>
+<td>cloned dataset</td>
+<td>one row per participant-arm-month</td>
+</tr>
+<tr class="even">
+<td><code>augment_long_covariates()</code></td>
+<td>long dataset + events</td>
+<td>time-varying screening covariates</td>
+</tr>
+<tr class="odd">
+<td><code>fit_screening_propensity()</code></td>
+<td>augmented long dataset</td>
+<td>screening probabilities</td>
+</tr>
+<tr class="even">
+<td><code>compute_ipw_weights()</code></td>
+<td>long dataset + probabilities</td>
+<td>stabilized IPW weights</td>
+</tr>
+<tr class="odd">
+<td><code>fit_outcome_hr()</code></td>
+<td>weighted long dataset</td>
+<td>arm hazard ratio</td>
+</tr>
+<tr class="even">
+<td><code>predict_survival_ipw()</code></td>
+<td>weighted long dataset</td>
+<td>marginal survival curves</td>
+</tr>
+<tr class="odd">
+<td><code>bootstrap_ci()</code></td>
+<td>long dataset + probabilities</td>
+<td>survival difference with CI</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Run on the synthetic cohort, the pipeline recovers the null effect the simulation was built with. Pointed at a real Medicare cohort with the paper’s full covariate set, the same functions reproduce the substantive analysis of <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#ref-garcia-albeniz2020" role="doc-biblioref">2020</a>)</span>.</p>
+<p>The <a href="https://github.com/ucdavis/ettbc">ettbc</a> package provides two core functions for the clone-censor step of target trial emulation:</p>
+<div id="tbl-functions" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Core ettbc functions
 </figcaption><div aria-describedby="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
@@ -890,8 +1153,8 @@ Table&nbsp;1: Core ettbc functions
 </figure>
 </div>
 <p>After running these steps, the long dataset can be used with standard weighted logistic or pooled logistic regression to estimate the <strong>intention-to-treat</strong> effect of each screening strategy.</p>
-</section><section id="references" class="level2" data-number="7"><h2 data-number="7" class="anchored" data-anchor-id="references">
-<span class="header-section-number">7</span> References</h2>
+</section><section id="references" class="level2" data-number="12"><h2 data-number="12" class="anchored" data-anchor-id="references">
+<span class="header-section-number">12</span> References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-garcia-albeniz2020" class="csl-entry" role="listitem">
 García-Albéniz, Xabier, Hajime Uno, Deepak L Bhatt, Patrick H McArdle, Marshall M Joffe, and Miguel A Hernán. 2020. <span>“Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study.”</span> <em>Annals of Internal Medicine</em> 172 (6): 381–89. <a href="https://doi.org/10.7326/M18-1199">https://doi.org/10.7326/M18-1199</a>.
