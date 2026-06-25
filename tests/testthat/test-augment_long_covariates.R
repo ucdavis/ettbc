@@ -1,3 +1,26 @@
+# Test helpers ------------------------------------------------------------
+
+empty_events <- function() {
+  data.frame(id = integer(0), month = integer(0), stringsAsFactors = FALSE)
+}
+
+# Build a single-participant long frame and augment it.
+run_augment_one <- function(months, scr_months, dx_months, start = months[1]) {
+  long_data <- data.frame(
+    id = 1L,
+    arm = "CONTINUE",
+    month = months,
+    month2 = months - start,
+    bc_long = 0L,
+    stringsAsFactors = FALSE
+  )
+  scr <- data.frame(id = rep(1L, length(scr_months)), month = scr_months)
+  dx <- data.frame(id = rep(1L, length(dx_months)), month = dx_months)
+  augment_long_covariates(long_data, scr, dx)
+}
+
+# Tests -------------------------------------------------------------------
+
 test_that("augment_long_covariates adds the expected columns", {
   cloned <- clone_censor(cohort, screening_mammograms, diagnostic_mammograms)
   long_data <- expand_to_long(cloned)
@@ -104,24 +127,3 @@ test_that("augment_long_covariates errors on missing columns", {
     "missing required column"
   )
 })
-
-# Test helpers ------------------------------------------------------------
-
-empty_events <- function() {
-  data.frame(id = integer(0), month = integer(0), stringsAsFactors = FALSE)
-}
-
-# Build a single-participant long frame and augment it.
-run_augment_one <- function(months, scr_months, dx_months, start = months[1]) {
-  long_data <- data.frame(
-    id = 1L,
-    arm = "CONTINUE",
-    month = months,
-    month2 = months - start,
-    bc_long = 0L,
-    stringsAsFactors = FALSE
-  )
-  scr <- data.frame(id = rep(1L, length(scr_months)), month = scr_months)
-  dx <- data.frame(id = rep(1L, length(dx_months)), month = dx_months)
-  augment_long_covariates(long_data, scr, dx)
-}
