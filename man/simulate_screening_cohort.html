@@ -388,6 +388,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/compute_rcs_basis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">compute_rcs_basis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/deterministic_bias_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">deterministic_bias_analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/diagnostic_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">diagnostic_mammograms</span></a>
   </div>
@@ -442,6 +454,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/negative_control_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">negative_control_analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/predict_survival_baseline_adjusted.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">predict_survival_baseline_adjusted</span></a>
   </div>
@@ -460,6 +478,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/probabilistic_bias_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">probabilistic_bias_analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/screening_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">screening_mammograms</span></a>
   </div>
@@ -468,6 +492,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/simulate_screening_cohort.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">simulate_screening_cohort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/standardized_rate_difference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">standardized_rate_difference</span></a>
   </div>
 </li>
       </ul>
@@ -530,7 +560,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>Generates a synthetic cohort of arbitrary size with the structure required by the <a href="https://github.com/ucdavis/ettbc">ettbc</a> pipeline: a participant table plus linked screening- and diagnostic-mammogram event tables. The values are entirely simulated and do not represent real patients; the function exists so analyses, examples, and the package vignettes can be demonstrated end to end without Medicare claims.</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">simulate_screening_cohort(n = 100L, max_month = 108L, seed = NULL)
+<pre><code class="language-R">simulate_screening_cohort(
+  n = 100L,
+  max_month = 108L,
+  seed = NULL,
+  negative_control = FALSE
+)
 </code></pre>
 </section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table role="presentation">
@@ -556,6 +591,14 @@ Total number of months in the study period. Default: <code>108L</code> (January 
 </td>
 <td>
 Optional integer seed for reproducibility. <code>NULL</code> (the default) leaves the random-number stream untouched.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="negative_control">negative_control</code>
+</td>
+<td>
+Logical; when <code>TRUE</code>, the simulated cohort gains an <code>nc_death</code> indicator marking deaths attributed to a negative-control cause (cancer of the corpus uteri), for the falsification analysis in <code><a href="https://rdrr.io/pkg/ettbc/man/negative_control_analysis.html">negative_control_analysis()</a></code>. Default: <code>FALSE</code>.
 </td>
 </tr>
 </tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>

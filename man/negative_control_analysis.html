@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.38">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>ettbc-package – ettbc</title>
+<title>negative_control_analysis – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,8 +20,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -48,8 +79,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-dark-c9222b08cc2a7acf193a96321f78a2da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-bebb40f06d5d208e2fa3c4ae88b0db0c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.js"></script>
-<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -75,12 +105,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
-<link rel="stylesheet" href="../styles.css">
+}</script><link rel="stylesheet" href="../styles.css">
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
@@ -246,9 +272,7 @@ ul.task-list li input[type="checkbox"] {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ettbc</span>
@@ -260,7 +284,7 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link active" href="../man/ettbc-package.html" aria-current="page"> 
 <span class="menu-text">Documentation</span></a>
   </li>  
@@ -268,45 +292,39 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Articles</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
-        <li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
     <a class="dropdown-item" href="../vignettes/articles/using-ettbc.html">
  <span class="dropdown-text">Using ettbc</span></a>
   </li>  
     </ul>
-  </li>
+</li>
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/ucdavis/ettbc"> <i class="bi bi-github" role="img" aria-label="ettbc GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/ettbc-package.html">ettbc-package</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/negative_control_analysis.html">negative_control_analysis</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -320,15 +338,15 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/articles/using-ettbc.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Using ettbc: Emulating a Target Trial for Breast Cancer Screening</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -337,8 +355,8 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/augment_long_covariates.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">augment_long_covariates</span></a>
@@ -388,7 +406,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/ettbc-package.html" class="sidebar-item-text sidebar-link active">
+  <a href="../man/ettbc-package.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ettbc-package</span></a>
   </div>
 </li>
@@ -436,7 +454,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/negative_control_analysis.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/negative_control_analysis.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">negative_control_analysis</span></a>
   </div>
 </li>
@@ -483,7 +501,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
@@ -515,61 +533,182 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#ettbc-emulating-a-target-trial-for-breast-cancer-screening" id="toc-ettbc-emulating-a-target-trial-for-breast-cancer-screening" class="nav-link active" data-scroll-target="#ettbc-emulating-a-target-trial-for-breast-cancer-screening">ettbc: Emulating a Target Trial for Breast Cancer Screening</a>
+<li>
+<a href="#negative-control-outcome-falsification-analysis" id="toc-negative-control-outcome-falsification-analysis" class="nav-link active" data-scroll-target="#negative-control-outcome-falsification-analysis">Negative-Control Outcome (Falsification) Analysis</a>
   <ul class="collapse">
-  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
-  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors">Author(s)</a></li>
+<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
+  <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See Also</a></li>
-  </ul></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/ettbc-package.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/ettbc-package.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/negative_control_analysis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/negative_control_analysis.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/ettbc-package.html">ettbc-package</a></li></ol></nav></header>
-
-
-
-
-
-<section id="ettbc-emulating-a-target-trial-for-breast-cancer-screening" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="ettbc-emulating-a-target-trial-for-breast-cancer-screening">ettbc: Emulating a Target Trial for Breast Cancer Screening</h2>
-<section id="description" class="level3">
-<h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Implements the clone-censor step of the target trial emulation methodology for studying the effect of sustained screening mammography on breast cancer mortality, following the approach of García-Albéniz et al.&nbsp;(2020) <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a>. Provides functions to clone participants into two trial arms (STOPBASE and CONTINUE), apply per-arm censoring rules, expand the resulting dataset to a long format suitable for inverse-probability-weighted survival analysis, compute IPW weights, estimate marginal survival curves via g-computation, and extract mammogram events from Medicare claims data.</p>
-</section>
-<section id="authors" class="level3">
-<h3 class="anchored" data-anchor-id="authors">Author(s)</h3>
-<p><strong>Maintainer</strong>: Douglas Ezra Morrison <a href="mailto:demorrison@ucdavis.edu">demorrison@ucdavis.edu</a> (<a href="https://orcid.org/0000-0002-7195-830X">ORCID</a>)</p>
-<p>Authors:</p>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/negative_control_analysis.html">negative_control_analysis</a></li></ol></nav></header><section id="negative-control-outcome-falsification-analysis" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="negative-control-outcome-falsification-analysis">Negative-Control Outcome (Falsification) Analysis</h2>
+<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
+<p>Runs the IP-weighted outcome model on a negative-control outcome – a cause of death that continued screening mammography cannot plausibly affect – and reports whether the estimated arm effect is consistent with the null. A clearly non-null association on the negative-control outcome would point to residual confounding or selection bias rather than a true screening effect.</p>
+</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
+<pre><code class="language-R">negative_control_analysis(
+  long_data,
+  covariate_cols = NULL,
+  weight_col = "wp99",
+  outcome_col = "nc_dead_t1",
+  arm_col = "arm",
+  month_col = "month2",
+  id_col = "id",
+  cluster_id_col = id_col,
+  max_month = 95L,
+  rcs_knots = c(6, 48, 72),
+  null_value = 1
+)
+</code></pre>
+</section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+<table role="presentation">
+<tbody><tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="long_data">long_data</code>
+</td>
+<td>
+A data frame in long format (one row per participant-arm-month), as produced by <code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="covariate_cols">covariate_cols</code>
+</td>
+<td>
+Character vector of column names to include as additional baseline adjustment terms. Set to <code>NULL</code> for no adjustment. Default: <code>NULL</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="weight_col">weight_col</code>
+</td>
+<td>
+Name of the column containing IPW weights. Set to <code>NULL</code> for unweighted estimation. Default: <code>“wp99”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="outcome_col">outcome_col</code>
+</td>
+<td>
+Name of the negative-control outcome column, as produced by <code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code>. Default: <code>“nc_dead_t1”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="arm_col">arm_col</code>
+</td>
+<td>
+Name of the trial arm column. Default: <code>“arm”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="month_col">month_col</code>
+</td>
+<td>
+Name of the 0-indexed month-from-entry column. Default: <code>“month2”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="id_col">id_col</code>
+</td>
+<td>
+Name of the participant identifier column. Default: <code>“id”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="cluster_id_col">cluster_id_col</code>
+</td>
+<td>
+Name of the column to use for clustering standard errors. When non-<code>NULL</code> and the <code>sandwich</code> package is available, cluster-robust confidence intervals are returned. Defaults to <code>id_col</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="max_month">max_month</code>
+</td>
+<td>
+Maximum month included in the model. Rows beyond this month are excluded. Default: <code>95L</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="rcs_knots">rcs_knots</code>
+</td>
+<td>
+Numeric vector with at least 3 elements specifying the knots for the restricted cubic spline on time: the first element is the left boundary knot, the last element is the right boundary knot, and any middle elements are interior knots. Must have at least one interior knot. Default: <code>c(6, 48, 72)</code> (one interior knot at month 48).
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="null_value">null_value</code>
+</td>
+<td>
+Odds ratio implying no arm effect. Default: <code>1</code>.
+</td>
+</tr>
+</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
+<p>This ports the negative-control falsification check of García-Albéniz et al., which used death from cancer of the corpus uteri as the negative-control outcome (supplementary analysis). The function reuses <code><a href="https://rdrr.io/pkg/ettbc/man/fit_outcome_hr.html">fit_outcome_hr()</a></code> on the negative-control outcome column produced by <code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code> when called with its <code>nc_died_col</code> argument (<code>nc_dead_t1</code> by default). The returned odds ratio approximates the hazard ratio for the STOPBASE arm relative to CONTINUE on the negative-control outcome; absent bias it should sit near <code>null_value</code>, and <code>null_consistent</code> records whether the confidence interval covers it.</p>
+</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
+<p>A named list:</p>
 <ul>
 <li>
-<p>Douglas Ezra Morrison <a href="mailto:demorrison@ucdavis.edu">demorrison@ucdavis.edu</a> (<a href="https://orcid.org/0000-0002-7195-830X">ORCID</a>)</p>
-</li>
-</ul>
-</section>
-<section id="see-also" class="level3">
-<h3 class="anchored" data-anchor-id="see-also">See Also</h3>
-<p>Useful links:</p>
-<ul>
-<li>
-<p><a href="https://github.com/ucdavis/ettbc">https://github.com/ucdavis/ettbc</a></p>
+<p><code>or</code>: Odds ratio for the STOPBASE arm on the negative-control outcome.</p>
 </li>
 <li>
-<p><a href="https://ucdavis.github.io/ettbc/">https://ucdavis.github.io/ettbc/</a></p>
+<p><code>or_ci</code>: 95% confidence interval for <code>or</code>.</p>
 </li>
 <li>
-<p>Report bugs at <a href="https://github.com/ucdavis/ettbc/issues">https://github.com/ucdavis/ettbc/issues</a></p>
+<p><code>null_consistent</code>: <code>TRUE</code> when <code>or_ci</code> covers <code>null_value</code>, i.e., the falsification test passes (no detectable effect on the negative control).</p>
 </li>
-</ul>
+<li>
+<p><code>model</code>: The fitted stats::glm object.</p>
+</li>
+</ul></section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
+<p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381-389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
+</section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/fit_outcome_hr.html">fit_outcome_hr()</a></code> for the underlying model and <code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code> (argument <code>nc_died_col</code>) for building the negative-control outcome.</p>
+</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ucdavis/ettbc">"ettbc"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/simulate_screening_cohort.html">simulate_screening_cohort</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">800</span>, seed <span class="op">=</span> <span class="fl">4</span>, negative_control <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">cloned</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim</span><span class="op">$</span><span class="va">cohort</span>, <span class="va">sim</span><span class="op">$</span><span class="va">screening_mammograms</span>, <span class="va">sim</span><span class="op">$</span><span class="va">diagnostic_mammograms</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long</a></span><span class="op">(</span><span class="va">cloned</span>, nc_died_col <span class="op">=</span> <span class="st">"nc_death"</span><span class="op">)</span></span>
+<span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/augment_long_covariates.html">augment_long_covariates</a></span><span class="op">(</span></span>
+<span>  <span class="va">long</span>, <span class="va">sim</span><span class="op">$</span><span class="va">screening_mammograms</span>, <span class="va">sim</span><span class="op">$</span><span class="va">diagnostic_mammograms</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/fit_screening_propensity.html">fit_screening_propensity</a></span><span class="op">(</span><span class="va">long</span><span class="op">)</span></span>
+<span><span class="va">weighted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/compute_ipw_weights.html">compute_ipw_weights</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">data</span>, pred_prob_col <span class="op">=</span> <span class="st">"p_scrmammo"</span><span class="op">)</span></span>
+<span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/negative_control_analysis.html">negative_control_analysis</a></span><span class="op">(</span><span class="va">weighted</span><span class="op">)</span></span>
+<span><span class="va">nc</span><span class="op">$</span><span class="va">or</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5646123</code></pre>
+</div>
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nc</span><span class="op">$</span><span class="va">null_consistent</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
 
 
 <script>
@@ -746,13 +885,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 window.addEventListener("load", alignEquationAnchorsWithDefault);
-</script>
-
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</script></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1169,5 +1302,4 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 
 
 
-
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/ettbc-package.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/ettbc-package.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/negative_control_analysis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/negative_control_analysis.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
