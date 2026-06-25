@@ -268,29 +268,7 @@ predict_survival_ipw <- function(
   ]
   check_both_arms(fit_data, arm_col)
   formula_obj <- build_model_formula(rcs_col_names, covariate_cols)
-  glm_args <- list(
-    formula = formula_obj,
-    data = fit_data,
-    family = stats::binomial(link = "logit")
-  )
-  if (!is.null(weight_col)) {
-    if (!weight_col %in% names(fit_data)) {
-      cli::cli_abort(
-        c(
-          "{.arg weight_col} ({.val {weight_col}}) not found in data.",
-          "i" = "Ensure the column exists in {.arg long_data}."
-        )
-      )
-    }
-    w <- fit_data[[weight_col]]
-    if (!is.numeric(w)) {
-      cli::cli_abort(
-        "{.arg weight_col} ({.val {weight_col}}) must be numeric."
-      )
-    }
-    glm_args$weights <- w
-  }
-  fit <- do.call(stats::glm, glm_args)
+  fit <- fit_weighted_logistic(fit_data, formula_obj, weight_col)
   standardize_survival(
     fit, fit_data, max_month, rcs_knots, id_col, rcs_col_names
   )
