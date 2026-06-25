@@ -1,5 +1,8 @@
 # ettbc (development version)
 
+* `bootstrap_ci()` now seeds its resampling with `withr::with_seed()` instead
+  of a hand-rolled `.Random.seed` save/restore, and its bootstrap loop was
+  factored into a helper. Behaviour and results are unchanged (#12).
 * Added `augment_long_covariates()`: builds the time-varying screening
   covariates the weight and propensity steps need from the long-format data and
   the mammogram events, porting the SAS `cann17b` augmentation. It adds
