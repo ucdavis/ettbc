@@ -42,8 +42,11 @@
 #' w <- c(chf = 2, dementia = 2, metastatic_cancer = 5)
 #' comorbidity_score(people, w)
 comorbidity_score <- function(data, weights, na_rm = FALSE) {
-  if (!is.numeric(weights) || length(weights) == 0L ||
-      is.null(names(weights)) || any(names(weights) == "")) {
+  named_numeric <- is.numeric(weights) &&
+    length(weights) > 0L &&
+    !is.null(names(weights)) &&
+    all(names(weights) != "")
+  if (!named_numeric) {
     cli::cli_abort(
       "{.arg weights} must be a non-empty, fully named numeric vector."
     )
