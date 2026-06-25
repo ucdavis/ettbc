@@ -1,5 +1,22 @@
 # ettbc (development version)
 
+* Added `augment_long_covariates()`: builds the time-varying screening
+  covariates the weight and propensity steps need from the long-format data and
+  the mammogram events, porting the SAS `cann17b` augmentation. It adds
+  `scrmammo`, `dxmammo`, `anymammo`, `tslm`, `tslm_lag`, and `monthBC`, forcing
+  a screen at entry, resetting the time-since-last-mammogram clock at any
+  mammogram, not counting a screen in the month after a breast-cancer
+  diagnosis, and reclassifying a screen within `dx_reclass_months` of the
+  previous mammogram as diagnostic (#12).
+* Added `fit_screening_propensity()`: fits the pooled logistic
+  screening-propensity model (SAS `cann17b` denominator) and returns the
+  predicted `p_scrmammo` that `compute_ipw_weights()` consumes. The linear
+  predictor uses `tslm_lag` (linear plus a restricted-cubic-spline basis),
+  `month2` and `month2^2`, and any user-supplied baseline/time-varying
+  covariates; the model is fit on the `tslm_lag >= min_tslm_lag` decision
+  window, deduplicated to one row per participant-month. Together with
+  `augment_long_covariates()` this lets `clone_censor()` output drive
+  `compute_ipw_weights()` end to end without hand-set columns (#12).
 * Removed leftover package-template scaffolding: the `example_function()`
   function (and its test and man page), the `quarto_vignette.qmd` and
   `quarto_article.qmd` template-demo vignettes, and the generic `CHECKLIST.md`
