@@ -1,5 +1,8 @@
 # ettbc (development version)
 
+* `bootstrap_ci()` now seeds its resampling with `withr::with_seed()` instead
+  of a hand-rolled `.Random.seed` save/restore, and its bootstrap loop was
+  factored into a helper. Behavior and results are unchanged (#12).
 * Added `standardized_rate_difference()`, the treatment-pattern secondary
   analyses from García-Albéniz et al. (SAS `cann26`/`cann27`/`cann28`:
   surgery, chemotherapy, and radiotherapy receipt among screen-detected

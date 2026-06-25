@@ -119,38 +119,14 @@ bootstrap_ci <- function(
 
   if (nrow(long_data) == 0L) return(empty_result)
 
-  if (!is.null(seed)) {
-    # Seed locally: save and restore the RNG state on exit so the caller's
-    # random-number stream is not affected.
-    has_seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-    old_seed <- if (has_seed) {
-      get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-    } else {
-      NULL
-    }
-    on.exit({
-      if (is.null(old_seed)) {
-        if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
-          rm(".Random.seed", envir = .GlobalEnv)
-        }
-      } else {
-        assign(".Random.seed", old_seed, envir = .GlobalEnv) # nolint: object_name_linter
-      }
-    }, add = TRUE)
-    set.seed(seed)
-  }
-
   ids <- unique(long_data[[id_col]])
   if (anyNA(ids)) {
     cli::cli_abort(
       "Column {.val {id_col}} must not contain {.code NA} values."
     )
   }
-  n_ids <- length(ids)
 
-  # Point estimate (uses the original, unbootstrapped data)
-  point_est <- estimate_survival_curves(
-    long_data,
+  est_args <- list(
     pred_prob_col = pred_prob_col, covariate_cols = covariate_cols,
     outcome_col = outcome_col, arm_col = arm_col, id_col = id_col,
     month_col = month_col, bc_month_col = bc_month_col,
@@ -158,38 +134,27 @@ bootstrap_ci <- function(
     grace_months = grace_months, max_month = max_month, rcs_knots = rcs_knots
   )
 
-  boot_diffs <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
-  boot_s_cont <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
-  boot_s_stop <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
-  n_failed <- 0L
+  # Point estimate (uses the original, unbootstrapped data)
+  point_est <- do.call(estimate_survival_curves, c(list(long_data), est_args))
 
   # Pre-split long_data by id_col once to avoid repeated merge() in the loop
   long_data_split <- split(long_data, long_data[[id_col]])
 
-  for (b in seq_len(n_boot)) {
-    boot_ids <- sample(ids, size = n_ids, replace = TRUE)
-    boot_data <- build_bootstrap_sample(boot_ids, long_data_split, id_col)
-
-    tryCatch(
-      {
-        boot_surv <- estimate_survival_curves(
-          boot_data,
-          pred_prob_col = pred_prob_col, covariate_cols = covariate_cols,
-          outcome_col = outcome_col, arm_col = arm_col, id_col = id_col,
-          month_col = month_col, bc_month_col = bc_month_col,
-          scrmammo_col = scrmammo_col, tslm_lag_col = tslm_lag_col,
-          grace_months = grace_months, max_month = max_month,
-          rcs_knots = rcs_knots
-        )
-        boot_diffs[b, ] <- boot_surv$s_continue - boot_surv$s_stopbase
-        boot_s_cont[b, ] <- boot_surv$s_continue
-        boot_s_stop[b, ] <- boot_surv$s_stopbase
-      },
-      error = function(e) {
-        n_failed <<- n_failed + 1L
-      }
+  # withr::with_seed() seeds the bootstrap locally and restores the caller's
+  # RNG stream on exit.
+  boot <- if (is.null(seed)) {
+    run_bootstrap_iterations(
+      ids, long_data_split, id_col, n_boot, n_months, est_args
     )
+  } else {
+    withr::with_seed(seed, run_bootstrap_iterations(
+      ids, long_data_split, id_col, n_boot, n_months, est_args
+    ))
   }
+  boot_diffs <- boot$diffs
+  boot_s_cont <- boot$s_cont
+  boot_s_stop <- boot$s_stop
+  n_failed <- boot$n_failed
 
   if (n_failed > 0L) {
     fail_rate <- n_failed / n_boot
@@ -213,4 +178,40 @@ bootstrap_ci <- function(
     s_stopbase_lo = col_quantile(boot_s_stop, 0.025),
     s_stopbase_hi = col_quantile(boot_s_stop, 0.975)
   )
+}
+
+# Run the bootstrap resampling loop: for each of `n_boot` iterations, resample
+# participant ids, rebuild the long dataset, and re-estimate the survival
+# curves. Returns the per-iteration difference and arm-survival matrices plus a
+# failed-iteration count. Wrapped in withr::with_seed() by the caller so the
+# RNG stream is seeded locally.
+#' @noRd
+run_bootstrap_iterations <- function(
+    ids, long_data_split, id_col, n_boot, n_months, est_args) {
+  diffs <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
+  s_cont <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
+  s_stop <- matrix(NA_real_, nrow = n_boot, ncol = n_months)
+  n_failed <- 0L
+  n_ids <- length(ids)
+
+  for (b in seq_len(n_boot)) {
+    boot_ids <- sample(ids, size = n_ids, replace = TRUE)
+    boot_data <- build_bootstrap_sample(boot_ids, long_data_split, id_col)
+
+    tryCatch(
+      {
+        boot_surv <- do.call(
+          estimate_survival_curves, c(list(boot_data), est_args)
+        )
+        diffs[b, ] <- boot_surv$s_continue - boot_surv$s_stopbase
+        s_cont[b, ] <- boot_surv$s_continue
+        s_stop[b, ] <- boot_surv$s_stopbase
+      },
+      error = function(e) {
+        n_failed <<- n_failed + 1L
+      }
+    )
+  }
+
+  list(diffs = diffs, s_cont = s_cont, s_stop = s_stop, n_failed = n_failed)
 }
