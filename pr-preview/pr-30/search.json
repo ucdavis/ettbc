@@ -59,7 +59,7 @@
     "href": "CITATION.html",
     "title": "Citation",
     "section": "",
-    "text": "Citation\nTo cite package ‘ettbc’ in publications use:\n\nMorrison D (2026). ettbc: Emulating a Target Trial for Breast Cancer Screening. R package version 0.0.0.9033, https://github.com/ucdavis/ettbc.",
+    "text": "Citation\nTo cite package ‘ettbc’ in publications use:\n\nMorrison D (2026). ettbc: Emulating a Target Trial for Breast Cancer Screening. R package version 0.0.0.9032, https://github.com/ucdavis/ettbc.",
     "crumbs": [
       "Documentation",
       "Citation"
