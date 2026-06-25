@@ -1,5 +1,18 @@
 # ettbc (development version)
 
+* Added `negative_control_analysis()` and negative-control outcome support, the
+  falsification check from García-Albéniz et al. (death from cancer of the
+  corpus uteri). `expand_to_long()` gains an optional `nc_died_col` argument
+  that builds a cause-specific `nc_dead_t1` outcome the same way as
+  `bc_dead_t1` (the shared logic is factored into one helper);
+  `simulate_screening_cohort(negative_control = TRUE)` adds an `nc_death`
+  indicator to the simulated cohort. `negative_control_analysis()` runs
+  `fit_outcome_hr()` on the negative-control outcome and reports
+  `null_consistent`, whether the arm effect's confidence interval covers the
+  null. Continued screening should have no effect on a death unrelated to the
+  breast; a clearly non-null result would flag residual bias. The default
+  behavior of `expand_to_long()` and `simulate_screening_cohort()` is unchanged
+  (#12).
 * Added `simulate_screening_cohort()`: an exported generator that simulates a
   synthetic cohort of arbitrary size and returns the three linked data frames
   (`cohort`, `screening_mammograms`, `diagnostic_mammograms`) the pipeline

@@ -4,7 +4,12 @@
 \alias{simulate_screening_cohort}
 \title{Simulate a Synthetic Breast Cancer Screening Cohort}
 \usage{
-simulate_screening_cohort(n = 100L, max_month = 108L, seed = NULL)
+simulate_screening_cohort(
+  n = 100L,
+  max_month = 108L,
+  seed = NULL,
+  negative_control = FALSE
+)
 }
 \arguments{
 \item{n}{Number of participants to simulate. Default: \code{100L}.}
@@ -14,6 +19,11 @@ simulate_screening_cohort(n = 100L, max_month = 108L, seed = NULL)
 
 \item{seed}{Optional integer seed for reproducibility. \code{NULL} (the default)
 leaves the random-number stream untouched.}
+
+\item{negative_control}{Logical; when \code{TRUE}, the simulated cohort gains an
+\code{nc_death} indicator marking deaths attributed to a negative-control cause
+(cancer of the corpus uteri), for the falsification analysis in
+\code{\link[=negative_control_analysis]{negative_control_analysis()}}. Default: \code{FALSE}.}
 }
 \value{
 A named list of three linked data frames:
