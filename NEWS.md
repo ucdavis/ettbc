@@ -1,5 +1,14 @@
 # ettbc (development version)
 
+* Added `standardized_rate_difference()`, the treatment-pattern secondary
+  analyses from García-Albéniz et al. (SAS `cann26`/`cann27`/`cann28`:
+  surgery, chemotherapy, and radiotherapy receipt among screen-detected
+  cancers). It computes a direct-standardized difference in a binary outcome
+  rate between the CONTINUE and STOPBASE arms, standardized to the pooled
+  sample over user-specified strata (age, comorbidity) and restricted to the
+  common-support strata, with a bootstrap percentile confidence interval and
+  RNG-state restoration, matching the SAS `PROC STDRATE`
+  (`method = direct`, `effect = diff`) approach (#12).
 * Added `augment_long_covariates()`: builds the time-varying screening
   covariates the weight and propensity steps need from the long-format data and
   the mammogram events, porting the SAS `cann17b` augmentation. It adds
