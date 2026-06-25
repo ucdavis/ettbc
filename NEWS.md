@@ -1,5 +1,14 @@
 # ettbc (development version)
 
+* Added `gagne_weights()` and `comorbidity_score()`, the Gagne combined
+  comorbidity score used by García-Albéniz et al. for cohort eligibility and
+  adjustment (item 3). `gagne_weights()` returns the 20 published per-condition
+  weights from the official ICD-9-CM / ICD-10-CM combined-comorbidity-score
+  program -- including the two negative weights (HIV/AIDS and hypertension).
+  `comorbidity_score()` applies a named weight vector to per-person 0/1
+  condition indicators, defaulting to the Gagne weights. Mapping ICD codes to
+  the condition flags is left to the user (e.g. the {comorbidity} package)
+  (#12).
 * `bootstrap_ci()` now seeds its resampling with `withr::with_seed()` instead
   of a hand-rolled `.Random.seed` save/restore, and its bootstrap loop was
   factored into a helper. Behavior and results are unchanged (#12).

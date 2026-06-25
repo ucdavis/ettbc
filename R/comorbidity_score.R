@@ -17,7 +17,9 @@
 #' @param data A data frame with one row per person and a 0/1 (or logical)
 #'   indicator column for each condition named in `weights`.
 #' @param weights A named numeric vector mapping condition column names to
-#'   their weights, e.g. the output of [gagne_weights()].
+#'   their weights. Defaults to [gagne_weights()] (the Gagne combined
+#'   comorbidity score); `data` must then contain all 20 Gagne condition
+#'   columns.
 #' @param na_rm Logical; if `TRUE`, missing indicator values are treated as 0
 #'   (condition absent). If `FALSE` (the default), any `NA` in a scored column
 #'   is an error.
@@ -41,7 +43,7 @@
 #' )
 #' w <- c(chf = 2, dementia = 2, metastatic_cancer = 5)
 #' comorbidity_score(people, w)
-comorbidity_score <- function(data, weights, na_rm = FALSE) {
+comorbidity_score <- function(data, weights = gagne_weights(), na_rm = FALSE) {
   named_numeric <- is.numeric(weights) &&
     length(weights) > 0L &&
     !is.null(names(weights)) &&
