@@ -90,26 +90,11 @@ standardized_rate_difference <- function(
 
   point <- standardized_diff(data, outcome_col, arm_col, strata_cols, mult)
 
-  if (!is.null(seed)) {
-    has_seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-    old_seed <- if (has_seed) {
-      get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-    } else {
-      NULL
-    }
-    on.exit(restore_rng_state(old_seed), add = TRUE)
-    set.seed(seed)
-  }
-
-  n <- nrow(data)
-  boot_diffs <- numeric(n_boot)
-  for (b in seq_len(n_boot)) {
-    resample <- data[sample.int(n, n, replace = TRUE), , drop = FALSE]
-    boot <- tryCatch(
-      standardized_diff(resample, outcome_col, arm_col, strata_cols, mult),
-      error = function(e) NULL
-    )
-    boot_diffs[b] <- if (is.null(boot)) NA_real_ else boot$diff
+  boot_args <- list(data, outcome_col, arm_col, strata_cols, mult, n_boot)
+  boot_diffs <- if (is.null(seed)) {
+    do.call(bootstrap_std_diffs, boot_args)
+  } else {
+    withr::with_seed(seed, do.call(bootstrap_std_diffs, boot_args))
   }
 
   alpha <- (1 - conf_level) / 2
@@ -129,6 +114,25 @@ standardized_rate_difference <- function(
 }
 
 # Internal helpers --------------------------------------------------------
+
+# Bootstrap the standardized rate difference: resample rows with replacement
+# and recompute the standardized difference (reference weights are recomputed
+# on each resample). A resample that has no common-support strata yields NA.
+#' @noRd
+bootstrap_std_diffs <- function(
+    data, outcome_col, arm_col, strata_cols, mult, n_boot) {
+  n <- nrow(data)
+  boot_diffs <- numeric(n_boot)
+  for (b in seq_len(n_boot)) {
+    resample <- data[sample.int(n, n, replace = TRUE), , drop = FALSE]
+    boot <- tryCatch(
+      standardized_diff(resample, outcome_col, arm_col, strata_cols, mult),
+      error = function(e) NULL
+    )
+    boot_diffs[b] <- if (is.null(boot)) NA_real_ else boot$diff
+  }
+  boot_diffs
+}
 
 # Direct-standardized rate difference for one dataset, standardizing to the
 # pooled-sample stratum distribution over strata present in both arms.
@@ -182,16 +186,4 @@ direct_rate <- function(outcome, stratum, arm_rows, ref_weights, common) {
     total <- total + ref_weights[[as.character(s)]] * mean(outcome[rows])
   }
   total
-}
-
-# Restore (or clear) the caller's .Random.seed from an on.exit hook.
-#' @noRd
-restore_rng_state <- function(old_seed) {
-  if (is.null(old_seed)) {
-    if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
-      rm(".Random.seed", envir = .GlobalEnv)
-    }
-  } else {
-    assign(".Random.seed", old_seed, envir = .GlobalEnv) # nolint: object_name_linter
-  }
 }
