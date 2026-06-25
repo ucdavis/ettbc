@@ -1,5 +1,10 @@
 # ettbc (development version)
 
+* Added `fit_weighted_logistic()`: the shared weighted pooled-logistic fitting
+  primitive behind `fit_outcome_hr()` and `predict_survival_ipw()`, which both
+  now call it instead of repeating the weighted-GLM block. Exported so sibling
+  packages can reuse the same fit; first step of the cross-package outcome-model
+  consolidation (#25). No change to existing results (#12).
 * Added `gagne_weights()` and `comorbidity_score()`, the Gagne combined
   comorbidity score used by García-Albéniz et al. for cohort eligibility and
   adjustment (item 3). `gagne_weights()` returns the 20 published per-condition
