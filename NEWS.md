@@ -1,5 +1,10 @@
 # ettbc (development version)
 
+* Exported `compute_rcs_basis()`, the Harrell restricted-cubic-spline basis
+  (SAS `%RCSPLINE` parameterization) used internally by the outcome and
+  propensity models, so other packages can reuse the same parameterization
+  instead of writing it again. Behavior is unchanged; the function moved to
+  its own file and gained a public man page, examples, and tests (#12).
 * Added `negative_control_analysis()` and negative-control outcome support, the
   falsification check from García-Albéniz et al. (death from cancer of the
   corpus uteri). `expand_to_long()` gains an optional `nc_died_col` argument
