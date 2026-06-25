@@ -1,5 +1,14 @@
 # ettbc (development version)
 
+* Added `standardized_rate_difference()`, the treatment-pattern secondary
+  analyses from García-Albéniz et al. (SAS `cann26`/`cann27`/`cann28`:
+  surgery, chemotherapy, and radiotherapy receipt among screen-detected
+  cancers). It computes a direct-standardized difference in a binary outcome
+  rate between the CONTINUE and STOPBASE arms, standardized to the pooled
+  sample over user-specified strata (age, comorbidity) and restricted to the
+  common-support strata, with a bootstrap percentile confidence interval and
+  RNG-state restoration, matching the SAS `PROC STDRATE`
+  (`method = direct`, `effect = diff`) approach (#12).
 * Added `deterministic_bias_analysis()` and `probabilistic_bias_analysis()`,
   the unmeasured-confounding sensitivity analyses from García-Albéniz et al.
   (supplementary analysis). For a single dichotomous, time-fixed confounder
