@@ -1,5 +1,9 @@
 # ettbc (development version)
 
+* `fit_weighted_logistic()` now muffles the expected `non-integer #successes in
+  a binomial glm!` warning that non-integer IPW weights trigger. The fit is
+  unchanged and other warnings (non-convergence, separation) still surface;
+  this just stops `bootstrap_ci()` from emitting one such warning per resample.
 * Added `fit_weighted_logistic()`: the shared weighted pooled-logistic fitting
   primitive behind `fit_outcome_hr()` and `predict_survival_ipw()`, which both
   now call it instead of repeating the weighted-GLM block. Exported so sibling
