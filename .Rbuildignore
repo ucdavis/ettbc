@@ -19,10 +19,7 @@
 ^\.quarto$
 ^vignettes/\.quarto$
 ^vignettes/.*_files$
-^CHECKLIST\.md$
 ^CODE_OF_CONDUCT\.md$
-^USAGE\.md$
-^TEMPLATE_INFO\.md$
 ^altdoc$
 ^_quarto$
 ^CONTRIBUTING\.md$

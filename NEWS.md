@@ -1,5 +1,12 @@
 # ettbc (development version)
 
+* Removed leftover package-template scaffolding: the `example_function()`
+  function (and its test and man page), the `quarto_vignette.qmd` and
+  `quarto_article.qmd` template-demo vignettes, and the generic `CHECKLIST.md`
+  and `USAGE.md` template setup guides. Rewrote `README` (`.Rmd`/`.md`) and the
+  "Getting Started" vignette to describe `{ettbc}` and demonstrate the
+  `clone_censor()` -> `expand_to_long()` pipeline on the synthetic example
+  data, and replaced the placeholder `inst/extdata/README.md`.
 * Added `predict_survival_unadjusted()`, `predict_survival_baseline_adjusted()`,
   and `predict_survival_ipw()`: fit pooled logistic regression models with
   restricted cubic spline time terms and arm-by-time interactions, then apply
