@@ -76,23 +76,15 @@ probabilistic_bias_analysis <- function(
     cli::cli_abort("{.arg conf_level} must be a single value in (0, 1).")
   }
 
-  if (!is.null(seed)) {
-    has_seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-    old_seed <- if (has_seed) {
-      get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-    } else {
-      NULL
-    }
-    on.exit(restore_random_seed(old_seed), add = TRUE)
-    set.seed(seed)
+  adjusted <- if (is.null(seed)) {
+    simulate_adjusted_rd(
+      rd, rd_se, prev_continue, prev_stopbase, confounder_effect, n_sim
+    )
+  } else {
+    withr::with_seed(seed, simulate_adjusted_rd(
+      rd, rd_se, prev_continue, prev_stopbase, confounder_effect, n_sim
+    ))
   }
-
-  rd_draws <- stats::rnorm(n_sim, mean = rd, sd = rd_se)
-  pc <- draw_param(prev_continue, n_sim, "prev_continue")
-  ps <- draw_param(prev_stopbase, n_sim, "prev_stopbase")
-  eff <- draw_param(confounder_effect, n_sim, "confounder_effect")
-
-  adjusted <- rd_draws - rd_bias(pc, ps, eff)
   alpha <- (1 - conf_level) / 2
   bounds <- stats::quantile(adjusted, c(alpha, 1 - alpha), names = FALSE)
 
@@ -107,6 +99,18 @@ probabilistic_bias_analysis <- function(
 }
 
 # Internal helpers --------------------------------------------------------
+
+# One Monte Carlo pass: draw the observed risk difference and the bias
+# parameters, then return the bias-adjusted risk difference for each draw.
+#' @noRd
+simulate_adjusted_rd <- function(
+    rd, rd_se, prev_continue, prev_stopbase, confounder_effect, n_sim) {
+  rd_draws <- stats::rnorm(n_sim, mean = rd, sd = rd_se)
+  pc <- draw_param(prev_continue, n_sim, "prev_continue")
+  ps <- draw_param(prev_stopbase, n_sim, "prev_stopbase")
+  eff <- draw_param(confounder_effect, n_sim, "confounder_effect")
+  rd_draws - rd_bias(pc, ps, eff)
+}
 
 # Draw a bias parameter: a single value is held fixed, a length-2 c(min, max)
 # is drawn from a uniform distribution. Prevalences are validated to [0, 1].
@@ -125,17 +129,4 @@ draw_param <- function(x, n, name) {
     cli::cli_abort("{.arg {name}} range must have {.code min <= max}.")
   }
   stats::runif(n, x[1L], x[2L])
-}
-
-# Restore (or clear) the caller's .Random.seed, used by the on.exit hook so
-# seeding for reproducibility does not perturb the global RNG stream.
-#' @noRd
-restore_random_seed <- function(old_seed) {
-  if (is.null(old_seed)) {
-    if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
-      rm(".Random.seed", envir = .GlobalEnv)
-    }
-  } else {
-    assign(".Random.seed", old_seed, envir = .GlobalEnv) # nolint: object_name_linter
-  }
 }
