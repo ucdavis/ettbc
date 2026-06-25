@@ -6,7 +6,7 @@ test_that("simulate_screening_cohort reproduces the committed example data", {
   expect_identical(sim$diagnostic_mammograms, diagnostic_mammograms)
 })
 
-test_that("simulate_screening_cohort returns three linked, well-formed tables", {
+test_that("simulate_screening_cohort returns three linked tables", {
   sim <- simulate_screening_cohort(n = 50L, seed = 1L)
 
   expect_named(
@@ -37,7 +37,9 @@ test_that("the seed argument does not perturb the caller's RNG stream", {
 
 test_that("simulate_screening_cohort validates its arguments", {
   expect_error(simulate_screening_cohort(0L), "positive integer")
-  expect_error(simulate_screening_cohort(10L, max_month = 0L), "positive integer")
+  expect_error(
+    simulate_screening_cohort(10L, max_month = 0L), "positive integer"
+  )
 })
 
 test_that("the simulated cohort drives the full pipeline end to end", {
