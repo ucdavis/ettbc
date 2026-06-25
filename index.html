@@ -411,12 +411,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/example_function.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">example_function</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./man/expand_to_long.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">expand_to_long</span></a>
   </div>
@@ -541,34 +535,73 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="ettbc" class="level1">
 <h1><code>{ettbc}</code></h1>
 <!-- badges: start -->
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" class="img-fluid" alt="Lifecycle: experimental"></a> <a href="https://github.com/ucdavis/ettbc/actions"><img src="https://github.com/ucdavis/ettbc/workflows/R-CMD-check.yaml/badge.svg" class="img-fluid" alt="R-CMD-check"></a> <a href="https://app.codecov.io/gh/ucdavis/ettbc"><img src="https://codecov.io/gh/ucdavis/ettbc/branch/main/graph/badge.svg" class="img-fluid" alt="Codecov test coverage"></a> <a href="https://www.codefactor.io/repository/github/ucdavis/ettbc"><img src="https://www.codefactor.io/repository/github/ucdavis/ettbc/badge.png" class="img-fluid" alt="CodeFactor"></a> <a href="https://cran.r-project.org/package=ettbc"><img src="https://www.r-pkg.org/badges/version/ettbc.png" class="img-fluid" alt="CRAN status"></a> <a href="https://cran.r-project.org/package=ettbc"><img src="http://cranlogs.r-pkg.org/badges/grand-total/ettbc.png" class="img-fluid"></a> <a href="https://cran.r-project.org/package=ettbc"><img src="http://cranlogs.r-pkg.org/badges/last-month/ettbc.png" class="img-fluid"></a> <a href="https://cran.r-project.org/package=ettbc"><img src="http://cranlogs.r-pkg.org/badges/last-week/ettbc.png" class="img-fluid"></a> <a href="https://cran.r-project.org/web/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" class="img-fluid" alt="License: MIT"></a></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" class="img-fluid" alt="Lifecycle: experimental"></a> <a href="https://github.com/ucdavis/ettbc/actions"><img src="https://github.com/ucdavis/ettbc/workflows/R-CMD-check.yaml/badge.svg" class="img-fluid" alt="R-CMD-check"></a> <a href="https://app.codecov.io/gh/ucdavis/ettbc"><img src="https://codecov.io/gh/ucdavis/ettbc/branch/main/graph/badge.svg" class="img-fluid" alt="Codecov test coverage"></a> <a href="https://www.codefactor.io/repository/github/ucdavis/ettbc"><img src="https://www.codefactor.io/repository/github/ucdavis/ettbc/badge.png" class="img-fluid" alt="CodeFactor"></a> <a href="https://cran.r-project.org/web/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" class="img-fluid" alt="License: MIT"></a></p>
 <!-- badges: end -->
-<p>The goal of <code>{ettbc}</code> is to …</p>
+<p><code>{ettbc}</code> emulates a target trial of screening mammography for breast cancer, using the <strong>clone-censor-reweight</strong> methodology of <a href="https://doi.org/10.7326/M18-1199">García-Albéniz et al. (2020)</a>. That study estimated the effect of continuing (vs.&nbsp;stopping) annual screening mammography on breast cancer mortality in Medicare beneficiaries older than 70.</p>
+<p>The package provides the analytic building blocks of that pipeline:</p>
+<ul>
+<li><code>clone_censor()</code> — clone each participant into the STOPBASE and CONTINUE arms and apply each arm’s censoring rule.</li>
+<li><code>expand_to_long()</code> — expand the cloned data to one row per participant-arm-month for discrete-time survival analysis.</li>
+<li><code>compute_ipw_weights()</code> — stabilized inverse-probability-of-censoring weights.</li>
+<li><code>fit_outcome_hr()</code> — IPW-weighted pooled logistic regression for the arm hazard ratio.</li>
+<li><code>predict_survival_unadjusted()</code>, <code>predict_survival_baseline_adjusted()</code>, <code>predict_survival_ipw()</code> — g-computation marginal survival curves.</li>
+<li><code>bootstrap_ci()</code> — percentile bootstrap confidence intervals.</li>
+<li><code>false_positives()</code> — false-positive rates for histological evaluations.</li>
+<li><code>extract_screening_mammograms()</code> and companions — templates for extracting mammogram events from Medicare claims by HCPCS code.</li>
+</ul>
+<p>The package is experimental and not yet an end-to-end reproduction of the published analysis; see the open issues for the remaining gaps.</p>
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
-<p>You can install the development version of <code>{ettbc}</code> from <a href="https://github.com/">GitHub</a> with:</p>
+<p>You can install the development version of <code>{ettbc}</code> from <a href="https://github.com/ucdavis/ettbc">GitHub</a> with:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("pak")</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"ucdavis/ettbc"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="example" class="level2">
 <h2 class="anchored" data-anchor-id="example">Example</h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
+<p><code>{ettbc}</code> ships three synthetic datasets (<code>cohort</code>, <code>screening_mammograms</code>, <code>diagnostic_mammograms</code>) that mimic the structure of the original study data. The clone-censor step turns the one-row-per-participant cohort into two rows per participant — one for each trial arm:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ettbc)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## basic example code</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>cloned <span class="ot">&lt;-</span> <span class="fu">clone_censor</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  cohort,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  screening_mammograms,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  diagnostic_mammograms</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cloned) <span class="co"># two rows per participant</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 200</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cloned[, <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"arm"</span>, <span class="st">"start_month"</span>, <span class="st">"end_month"</span>, <span class="st">"fup"</span>, <span class="st">"bc_died"</span>)])</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   id      arm start_month end_month fup bc_died</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  1 STOPBASE          26        38  13       0</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  2 STOPBASE          33        45  13       0</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  3 STOPBASE          28        42  15       0</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  4 STOPBASE           1        12  12       0</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  5 STOPBASE          17        28  12       0</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  6 STOPBASE          40        52  13       0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>expand_to_long()</code> then prepares the data for the inverse-probability-weighted survival analysis:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>long <span class="ot">&lt;-</span> <span class="fu">expand_to_long</span>(cloned)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(long[, <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"arm"</span>, <span class="st">"month"</span>, <span class="st">"month2"</span>, <span class="st">"dead_t1"</span>)])</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   id      arm month month2 dead_t1</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  1 STOPBASE    26      0       0</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  1 STOPBASE    27      1       0</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  1 STOPBASE    28      2       0</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  1 STOPBASE    29      3       0</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  1 STOPBASE    30      4       0</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  1 STOPBASE    31      5       0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>See the article <a href="https://ucdavis.github.io/ettbc/articles/using-ettbc.html">“Using ettbc”</a> for the full walkthrough.</p>
 </section>
 <section id="development" class="level2">
 <h2 class="anchored" data-anchor-id="development">Development</h2>
 <section id="building-the-documentation-site" class="level3">
 <h3 class="anchored" data-anchor-id="building-the-documentation-site">Building the Documentation Site</h3>
 <p>This package uses <a href="https://altdoc.etiennebacher.com/">altdoc</a> with <a href="https://quarto.org/">Quarto</a> to build its documentation site. To build and preview the documentation locally:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the package</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pkgload<span class="sc">::</span><span class="fu">load_all</span>()</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Render the documentation</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>altdoc<span class="sc">::</span><span class="fu">render_docs</span>()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview the site</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>altdoc<span class="sc">::</span><span class="fu">preview_docs</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the package</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pkgload<span class="sc">::</span><span class="fu">load_all</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Render the documentation</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>altdoc<span class="sc">::</span><span class="fu">render_docs</span>()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview the site</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>altdoc<span class="sc">::</span><span class="fu">preview_docs</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The documentation is automatically built and deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.</p>
 </section>
 </section>
