@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>clone_censor – ettbc</title>
+<title>simulate_screening_cohort – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/clone_censor.html">clone_censor</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/simulate_screening_cohort.html">simulate_screening_cohort</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -370,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/clone_censor.html" class="sidebar-item-text sidebar-link active">
+  <a href="../man/clone_censor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">clone_censor</span></a>
   </div>
 </li>
@@ -478,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/simulate_screening_cohort.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/simulate_screening_cohort.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">simulate_screening_cohort</span></a>
   </div>
 </li>
@@ -523,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#clone-and-censor-participants-for-target-trial-emulation" id="toc-clone-and-censor-participants-for-target-trial-emulation" class="nav-link active" data-scroll-target="#clone-and-censor-participants-for-target-trial-emulation">Clone and Censor Participants for Target Trial Emulation</a>
+<a href="#simulate-a-synthetic-breast-cancer-screening-cohort" id="toc-simulate-a-synthetic-breast-cancer-screening-cohort" class="nav-link active" data-scroll-target="#simulate-a-synthetic-breast-cancer-screening-cohort">Simulate a Synthetic Breast Cancer Screening Cohort</a>
   <ul class="collapse">
 <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
@@ -535,197 +535,99 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/clone_censor.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/clone_censor.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/simulate_screening_cohort.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/simulate_screening_cohort.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/clone_censor.html">clone_censor</a></li></ol></nav></header><section id="clone-and-censor-participants-for-target-trial-emulation" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="clone-and-censor-participants-for-target-trial-emulation">Clone and Censor Participants for Target Trial Emulation</h2>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/simulate_screening_cohort.html">simulate_screening_cohort</a></li></ol></nav></header><section id="simulate-a-synthetic-breast-cancer-screening-cohort" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="simulate-a-synthetic-breast-cancer-screening-cohort">Simulate a Synthetic Breast Cancer Screening Cohort</h2>
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Creates two clones of each participant — one assigned to each of two hypothetical trial arms — and applies the corresponding censoring rules. This implements the "clone-censor" step of the target trial emulation methodology described in García-Albéniz et al.&nbsp;(2020).</p>
+<p>Generates a synthetic cohort of arbitrary size with the structure required by the <a href="https://github.com/ucdavis/ettbc">ettbc</a> pipeline: a participant table plus linked screening- and diagnostic-mammogram event tables. The values are entirely simulated and do not represent real patients; the function exists so analyses, examples, and the package vignettes can be demonstrated end to end without Medicare claims.</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">clone_censor(
-  data,
-  scr_mammo,
-  dx_mammo,
-  id_col = "id",
-  start_col = "start_month",
-  end_col = "end_month",
-  death_col = "death_month",
-  bc_death_col = "bc_death",
-  bc_month_col = "bc_month",
-  mammo_month_col = "month",
-  stop_grace_months = 9L,
-  continue_grace_months = 13L,
-  total_months = 108L
+<pre><code class="language-R">simulate_screening_cohort(
+  n = 100L,
+  max_month = 108L,
+  seed = NULL,
+  negative_control = FALSE
 )
 </code></pre>
 </section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table role="presentation">
 <tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="data">data</code>
+<code id="n">n</code>
 </td>
 <td>
-A data frame with one row per participant, containing columns for participant ID, study entry month, last follow-up month, death month, breast cancer death indicator, and breast cancer diagnosis month.
+Number of participants to simulate. Default: <code>100L</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="scr_mammo">scr_mammo</code>
+<code id="max_month">max_month</code>
 </td>
 <td>
-A data frame with one row per screening mammogram event, containing columns for participant ID and event month.
+Total number of months in the study period. Default: <code>108L</code> (January 2000 through December 2008).
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="dx_mammo">dx_mammo</code>
+<code id="seed">seed</code>
 </td>
 <td>
-A data frame with one row per diagnostic mammogram event, containing columns for participant ID and event month.
+Optional integer seed for reproducibility. <code>NULL</code> (the default) leaves the random-number stream untouched.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="id_col">id_col</code>
+<code id="negative_control">negative_control</code>
 </td>
 <td>
-Name of the participant ID column in <code>data</code>, <code>scr_mammo</code>, and <code>dx_mammo</code>. Default: <code>“id”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="start_col">start_col</code>
-</td>
-<td>
-Name of the study entry month column in <code>data</code>. Default: <code>“start_month”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="end_col">end_col</code>
-</td>
-<td>
-Name of the last follow-up month column in <code>data</code> (administrative censoring, e.g., end of study or loss to follow-up). Default: <code>“end_month”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="death_col">death_col</code>
-</td>
-<td>
-Name of the death month column in <code>data</code> (<code>NA</code> if alive at end of follow-up). Default: <code>“death_month”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="bc_death_col">bc_death_col</code>
-</td>
-<td>
-Name of the breast cancer death indicator column in <code>data</code> (0/1). Default: <code>“bc_death”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="bc_month_col">bc_month_col</code>
-</td>
-<td>
-Name of the breast cancer diagnosis month column in <code>data</code> (<code>NA</code> if no diagnosis). Default: <code>“bc_month”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="mammo_month_col">mammo_month_col</code>
-</td>
-<td>
-Name of the mammogram month column in <code>scr_mammo</code> and <code>dx_mammo</code>. Default: <code>“month”</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="stop_grace_months">stop_grace_months</code>
-</td>
-<td>
-Number of months after study entry during which a screening mammogram does not trigger censoring in the STOPBASE arm. Default: <code>9</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="continue_grace_months">continue_grace_months</code>
-</td>
-<td>
-Length of the compliance window (in months) in the CONTINUE arm. A participant remains on-protocol for this many months following any mammogram (screening or diagnostic). Default: <code>13</code>.
-</td>
-</tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="total_months">total_months</code>
-</td>
-<td>
-Total number of months in the study period. Default: <code>108</code> (corresponding to January 2000 through December 2008).
+Logical; when <code>TRUE</code>, the simulated cohort gains an <code>nc_death</code> indicator marking deaths attributed to a negative-control cause (cancer of the corpus uteri), for the falsification analysis in <code><a href="https://rdrr.io/pkg/ettbc/man/negative_control_analysis.html">negative_control_analysis()</a></code>. Default: <code>FALSE</code>.
 </td>
 </tr>
 </tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
-<p>Each participant is cloned into two arms:</p>
-<ul>
-<li>
-<p><strong>STOPBASE</strong>: The clone is censored the first time the participant receives a screening mammogram after the initial grace period (<code>stop_grace_months</code>). Within the grace period, and after a breast cancer diagnosis, screening mammograms do not trigger censoring.</p>
-</li>
-<li>
-<p><strong>CONTINUE</strong>: The clone is censored the first time the participant goes longer than <code>continue_grace_months</code> months without any mammogram (screening or diagnostic). Breast cancer diagnosis prevents censoring.</p>
-</li>
-</ul>
-<p>Months are numbered as consecutive integers starting from 1 (representing the first month of the study period), matching the convention used in the original SAS implementation.</p>
+<p>The three returned data frames are produced, in order, by the package’s internal generators (<code>simulate_cohort()</code>, <code>simulate_screening_mammograms()</code>, and <code>simulate_diagnostic_mammograms()</code>), sharing a single random-number stream. Calling <code>simulate_screening_cohort(100, 108, seed = 2020)</code> therefore reproduces the shipped cohort, screening_mammograms, and diagnostic_mammograms example datasets exactly.</p>
+<p>Roughly 80% of participants are annual "adherers"; about 15% die during follow-up and about 2% die from breast cancer. Months are numbered consecutively from 1, matching the convention used throughout the package. Each participant has a pre-entry screening mammogram so the CONTINUE arm compliance window is seeded at trial entry.</p>
+<p>When <code>seed</code> is supplied, it is applied with <code><a href="https://withr.r-lib.org/reference/with_seed.html">withr::with_seed()</a></code>, which restores the caller’s <code>.Random.seed</code> afterwards, so reproducible simulation does not perturb the surrounding random-number stream.</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>A data frame with two rows per participant (one per arm), containing all columns from <code>data</code> plus:</p>
+<p>A named list of three linked data frames:</p>
 <ul>
 <li>
-<p><code>arm</code>: Trial arm: <code>“STOPBASE”</code> or <code>“CONTINUE”</code></p>
+<p><code>cohort</code>: One row per participant, as documented in cohort.</p>
 </li>
 <li>
-<p><code>end_month</code>: Last observed month (minimum of death, administrative censoring, and protocol censoring). Overwrites the input <code>end_col</code> column.</p>
+<p><code>screening_mammograms</code>: One row per screening-mammogram event, as documented in screening_mammograms.</p>
 </li>
 <li>
-<p><code>censor_month</code>: Month of protocol deviation censoring, or <code>NA</code> if the participant was not censored for protocol non-adherence.</p>
-</li>
-<li>
-<p><code>fup</code>: Follow-up time in months (<code>end_month - start_month + 1</code>).</p>
-</li>
-<li>
-<p><code>died</code>: Overall mortality indicator (0/1): 1 if death was the reason for ending follow-up.</p>
-</li>
-<li>
-<p><code>bc_died</code>: Breast cancer mortality indicator (0/1).</p>
+<p><code>diagnostic_mammograms</code>: One row per diagnostic-mammogram event, as documented in diagnostic_mammograms.</p>
 </li>
 </ul></section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
-<p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381–389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
-<p>Hernán MA, Robins JM. Using Big Data to Emulate a Target Trial When a Randomized Trial Is Not Available. <em>Am J Epidemiol.</em> 2016;183(8):758–764. <a href="https://doi.org/10.1093/aje/kwv254">doi:10.1093/aje/kwv254</a></p>
+<p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381-389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
 </section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
-<p><code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code> for expanding the cloned dataset to one row per participant-arm-month.</p>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code> for the next step in the pipeline, and cohort, screening_mammograms, diagnostic_mammograms for the shipped example datasets this function reproduces.</p>
 </section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
 <details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ucdavis/ettbc">"ettbc"</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cloned</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor</a></span><span class="op">(</span></span>
-<span>  <span class="va">cohort</span>,</span>
-<span>  <span class="va">screening_mammograms</span>,</span>
-<span>  <span class="va">diagnostic_mammograms</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">cloned</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/simulate_screening_cohort.html">simulate_screening_cohort</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">cohort</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code>  id age start_month end_month death_month bc_death bc_month      arm
-1  1  81          26        38          NA        0       NA STOPBASE
-2  2  81          33        45          NA        0       NA STOPBASE
-3  3  76          28        42          NA        0       NA STOPBASE
-4  4  75           1        12          NA        0       NA STOPBASE
-5  5  77          17        28          NA        0       NA STOPBASE
-6  6  70          40        52          NA        0       NA STOPBASE
-  censor_month fup died bc_died
-1           38  13    0       0
-2           45  13    0       0
-3           42  15    0       0
-4           12  12    0       0
-5           28  12    0       0
-6           52  13    0       0</code></pre>
+<pre><code>[1] 200</code></pre>
+</div>
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">screening_mammograms</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>  id month
+1  1    23
+2  1    35
+3  1    49
+4  1    60
+5  1    73
+6  1    85</code></pre>
+</div>
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cloned</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim</span><span class="op">$</span><span class="va">cohort</span>, <span class="va">sim</span><span class="op">$</span><span class="va">screening_mammograms</span>, <span class="va">sim</span><span class="op">$</span><span class="va">diagnostic_mammograms</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cloned</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 400</code></pre>
 </div>
 </div>
 
@@ -1321,4 +1223,4 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/clone_censor.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/clone_censor.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/simulate_screening_cohort.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/simulate_screening_cohort.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
