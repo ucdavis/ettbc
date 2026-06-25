@@ -1,5 +1,15 @@
 # ettbc (development version)
 
+* Added `simulate_screening_cohort()`: an exported generator that simulates a
+  synthetic cohort of arbitrary size and returns the three linked data frames
+  (`cohort`, `screening_mammograms`, `diagnostic_mammograms`) the pipeline
+  needs. It wraps the internal generators behind a single seeded random-number
+  stream, so `simulate_screening_cohort(100, 108, seed = 2020)` reproduces the
+  shipped example datasets exactly; the seed is set locally and the caller's
+  `.Random.seed` is restored on exit. The "Using ettbc" article uses it to
+  demonstrate the full `clone_censor()` -> `compute_ipw_weights()` ->
+  `fit_outcome_hr()` -> `predict_survival_ipw()` -> `bootstrap_ci()` pipeline
+  end to end on a larger simulated cohort (#12).
 * Added `augment_long_covariates()`: builds the time-varying screening
   covariates the weight and propensity steps need from the long-format data and
   the mammogram events, porting the SAS `cann17b` augmentation. It adds
