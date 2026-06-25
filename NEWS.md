@@ -1,5 +1,10 @@
 # ettbc (development version)
 
+* Exported `compute_rcs_basis()`, the Harrell restricted-cubic-spline basis
+  (SAS `%RCSPLINE` parameterization) used internally by the outcome and
+  propensity models, so other packages can reuse the same parameterization
+  instead of writing it again. Behavior is unchanged; the function moved to
+  its own file and gained a public man page, examples, and tests (#12).
 * Added `augment_long_covariates()`: builds the time-varying screening
   covariates the weight and propensity steps need from the long-format data and
   the mammogram events, porting the SAS `cann17b` augmentation. It adds
