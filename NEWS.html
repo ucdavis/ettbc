@@ -364,6 +364,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./man/comorbidity_score.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">comorbidity_score</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./man/compute_ipw_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">compute_ipw_weights</span></a>
   </div>
@@ -432,6 +438,12 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="./man/fit_screening_propensity.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">fit_screening_propensity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/gagne_weights.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">gagne_weights</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -539,6 +551,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="ettbc-development-version" class="level1">
 <h1>ettbc (development version)</h1>
 <ul>
+<li><p>Added <code>gagne_weights()</code> and <code>comorbidity_score()</code>, the Gagne combined comorbidity score used by García-Albéniz et al.&nbsp;for cohort eligibility and adjustment (item 3). <code>gagne_weights()</code> returns the 20 published per-condition weights from the official ICD-9-CM / ICD-10-CM combined-comorbidity-score program – including the two negative weights (HIV/AIDS and hypertension). <code>comorbidity_score()</code> applies a named weight vector to per-person 0/1 condition indicators, defaulting to the Gagne weights. Mapping ICD codes to the condition flags is left to the user (e.g.&nbsp;the {comorbidity} package) (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
 <li><p><code>bootstrap_ci()</code> now seeds its resampling with <code>withr::with_seed()</code> instead of a hand-rolled <code>.Random.seed</code> save/restore, and its bootstrap loop was factored into a helper. Behavior and results are unchanged (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
 <li><p>Added <code>standardized_rate_difference()</code>, the treatment-pattern secondary analyses from García-Albéniz et al.&nbsp;(SAS <code>cann26</code>/<code>cann27</code>/<code>cann28</code>: surgery, chemotherapy, and radiotherapy receipt among screen-detected cancers). It computes a direct-standardized difference in a binary outcome rate between the CONTINUE and STOPBASE arms, standardized to the pooled sample over user-specified strata (age, comorbidity) and restricted to the common-support strata, with a bootstrap percentile confidence interval and RNG-state restoration, matching the SAS <code>PROC STDRATE</code> (<code>method = direct</code>, <code>effect = diff</code>) approach (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
 <li><p>Added <code>deterministic_bias_analysis()</code> and <code>probabilistic_bias_analysis()</code>, the unmeasured-confounding sensitivity analyses from García-Albéniz et al. (supplementary analysis). For a single dichotomous, time-fixed confounder with a given prevalence in each arm and an additive outcome effect, the deterministic version adjusts an observed arm risk difference by <code>(prev_continue - prev_stopbase) * confounder_effect</code> (vectorized over a grid of assumptions); the probabilistic version draws the bias parameters from uniform priors and the observed risk difference from its sampling distribution to return a Monte Carlo simulation interval. The caller’s RNG state is restored on exit (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>

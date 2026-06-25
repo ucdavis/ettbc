@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.38">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>contributing – ettbc</title>
+<title>comorbidity_score – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,33 +20,66 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
-
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bebb40f06d5d208e2fa3c4ae88b0db0c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-c9222b08cc2a7acf193a96321f78a2da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-bebb40f06d5d208e2fa3c4ae88b0db0c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.js"></script>
-<link href="site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-bebb40f06d5d208e2fa3c4ae88b0db0c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c9222b08cc2a7acf193a96321f78a2da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-bebb40f06d5d208e2fa3c4ae88b0db0c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.js"></script>
+<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -75,12 +105,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
-<link rel="stylesheet" href="styles.css">
+}</script><link rel="stylesheet" href="../styles.css">
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
@@ -246,11 +272,9 @@ ul.task-list li input[type="checkbox"] {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ettbc</span>
     </a>
   </div>
@@ -260,55 +284,49 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link active" href="./man/ettbc-package.html" aria-current="page"> 
+<li class="nav-item">
+    <a class="nav-link active" href="../man/ettbc-package.html" aria-current="page"> 
 <span class="menu-text">Documentation</span></a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Articles</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
-        <li>
-    <a class="dropdown-item" href="./vignettes/articles/using-ettbc.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
+    <a class="dropdown-item" href="../vignettes/articles/using-ettbc.html">
  <span class="dropdown-text">Using ettbc</span></a>
   </li>  
     </ul>
-  </li>
+</li>
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/ucdavis/ettbc"> <i class="bi bi-github" role="img" aria-label="ettbc GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./CONTRIBUTING.html">Contributing</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/comorbidity_score.html">comorbidity_score</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
   </div>
 </li>
@@ -320,283 +338,291 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./vignettes/articles/using-ettbc.html" class="sidebar-item-text sidebar-link">
+  <a href="../vignettes/articles/using-ettbc.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Using ettbc: Emulating a Target Trial for Breast Cancer Screening</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Reference</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/augment_long_covariates.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/augment_long_covariates.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">augment_long_covariates</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/bootstrap_ci.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/bootstrap_ci.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">bootstrap_ci</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/clone_censor.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/clone_censor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">clone_censor</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/cohort.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/cohort.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">cohort</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/comorbidity_score.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/comorbidity_score.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">comorbidity_score</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/compute_ipw_weights.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/compute_ipw_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">compute_ipw_weights</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/compute_rcs_basis.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/compute_rcs_basis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">compute_rcs_basis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/deterministic_bias_analysis.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/deterministic_bias_analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">deterministic_bias_analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/diagnostic_mammograms.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/diagnostic_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">diagnostic_mammograms</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/ettbc-package.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/ettbc-package.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ettbc-package</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/expand_to_long.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/expand_to_long.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">expand_to_long</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/extract_any_mammograms.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/extract_any_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">extract_any_mammograms</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/extract_diagnostic_mammograms.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/extract_diagnostic_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">extract_diagnostic_mammograms</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/extract_screening_mammograms.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/extract_screening_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">extract_screening_mammograms</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/false_positives.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/false_positives.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">false_positives</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/fit_outcome_hr.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/fit_outcome_hr.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">fit_outcome_hr</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/fit_screening_propensity.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/fit_screening_propensity.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">fit_screening_propensity</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/gagne_weights.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/gagne_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">gagne_weights</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/negative_control_analysis.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/negative_control_analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">negative_control_analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/predict_survival_baseline_adjusted.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/predict_survival_baseline_adjusted.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">predict_survival_baseline_adjusted</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/predict_survival_ipw.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/predict_survival_ipw.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">predict_survival_ipw</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/predict_survival_unadjusted.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/predict_survival_unadjusted.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">predict_survival_unadjusted</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/probabilistic_bias_analysis.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/probabilistic_bias_analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">probabilistic_bias_analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/screening_mammograms.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/screening_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">screening_mammograms</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/simulate_screening_cohort.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/simulate_screening_cohort.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">simulate_screening_cohort</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./man/standardized_rate_difference.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/standardized_rate_difference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">standardized_rate_difference</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./NEWS.html" class="sidebar-item-text sidebar-link">
+  <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">News</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./LICENSE.html" class="sidebar-item-text sidebar-link">
+  <a href="../LICENSE.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">License</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./CODE_OF_CONDUCT.html" class="sidebar-item-text sidebar-link">
+  <a href="../CODE_OF_CONDUCT.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Code of conduct</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./CONTRIBUTING.html" class="sidebar-item-text sidebar-link active">
+  <a href="../CONTRIBUTING.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Contributing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./CITATION.html" class="sidebar-item-text sidebar-link">
+  <a href="../CITATION.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Citation</span></a>
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#contributing-to-ettbc" id="toc-contributing-to-ettbc" class="nav-link active" data-scroll-target="#contributing-to-ettbc">Contributing to ettbc</a>
+<li>
+<a href="#weighted-comorbidity-score" id="toc-weighted-comorbidity-score" class="nav-link active" data-scroll-target="#weighted-comorbidity-score">Weighted Comorbidity Score</a>
   <ul class="collapse">
-  <li><a href="#fixing-typos" id="toc-fixing-typos" class="nav-link" data-scroll-target="#fixing-typos">Fixing typos</a></li>
-  <li><a href="#bigger-changes" id="toc-bigger-changes" class="nav-link" data-scroll-target="#bigger-changes">Bigger changes</a>
-  <ul class="collapse">
-  <li><a href="#pull-request-process" id="toc-pull-request-process" class="nav-link" data-scroll-target="#pull-request-process">Pull request process</a></li>
-  <li><a href="#sec-code-style" id="toc-sec-code-style" class="nav-link" data-scroll-target="#sec-code-style">Code style</a></li>
-  </ul></li>
-  <li><a href="#code-of-conduct" id="toc-code-of-conduct" class="nav-link" data-scroll-target="#code-of-conduct">Code of Conduct</a></li>
-  </ul></li>
+<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
+  <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See Also</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/CONTRIBUTING.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/CONTRIBUTING.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/comorbidity_score.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/comorbidity_score.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
-
-
-
-
-
-<section id="contributing-to-ettbc" class="level1">
-<h1>Contributing to ettbc</h1>
-<p>This document outlines how to propose a change to this project. For a detailed discussion on contributing to this and other packages, please see the <a href="https://www.tidyverse.org/">tidyverse</a>’s <a href="https://rstd.io/tidy-contrib">development contributing guide</a> and <a href="https://code-review.tidyverse.org/">code review principles</a>.</p>
-<section id="fixing-typos" class="level2">
-<h2 class="anchored" data-anchor-id="fixing-typos">Fixing typos</h2>
-<p>You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the <em>source</em> file. This generally means you’ll need to edit <a href="https://roxygen2.r-lib.org/articles/roxygen2.html">roxygen2 comments</a> in an <code>.R</code>, not a <code>.Rd</code> file. You can find the <code>.R</code> file that generates the <code>.Rd</code> by reading the comment in the first line.</p>
-</section>
-<section id="bigger-changes" class="level2">
-<h2 class="anchored" data-anchor-id="bigger-changes">Bigger changes</h2>
-<p>If you want to make a bigger change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal <a href="https://www.tidyverse.org/help/#reprex">reprex</a> (this will also help you write a unit test, if needed). See the tidyverse guide on <a href="https://code-review.tidyverse.org/issues/">how to create a great issue</a> for more advice.</p>
-<section id="pull-request-process" class="level3">
-<h3 class="anchored" data-anchor-id="pull-request-process">Pull request process</h3>
-<ul>
-<li><p><label><input type="checkbox">Fork the package and clone onto your computer. If you haven’t done this before, we recommend using <code>usethis::create_from_github("ucdavis/ettbc", fork = TRUE)</code>.</label></p></li>
-<li><p><label><input type="checkbox">Install all development dependencies with <code>devtools::install_dev_deps()</code>, and then make sure the package passes R CMD check by running <code>devtools::check()</code>. If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.</label></p></li>
-<li><p><label><input type="checkbox">Create a Git branch for your pull request (PR). We recommend using <code>usethis::pr_init("brief-description-of-change")</code>.</label></p></li>
-<li><p><label><input type="checkbox">Make your changes, commit to git, and then create a PR by running <code>usethis::pr_push()</code>, and following the prompts in your browser.</label></p>
-<ul class="task-list">
-<li><label><input type="checkbox">The title of your PR should briefly describe the change.</label></li>
-<li><label><input type="checkbox">The body of your PR should contain <code>Fixes #issue-number</code>.</label></li>
-<li><label><input type="checkbox">Your changes should conform to the tidyverse code style guidelines and design principles described <a href="#sec-code-style">below</a>.</label></li>
-</ul></li>
-<li><p><label><input type="checkbox">For user-facing changes, add a bullet to the top of <code>NEWS.md</code> (i.e.&nbsp;just below the first header). Follow the style described in <a href="https://style.tidyverse.org/news.html" class="uri">https://style.tidyverse.org/news.html</a>.</label></p></li>
-<li><p>GitHub will <a href="https://github.com/r-lib/actions">automatically check your PR</a> to see if the package is still functional on Mac OS, Windows, and Linux; if not, you will receive an email describing the problems.</p>
-<ul>
-<li>For help decoding errors, try this resource: <a href="https://github.com/r-lib/actions?tab=readme-ov-file#where-to-find-help" class="uri">https://github.com/r-lib/actions?tab=readme-ov-file#where-to-find-help</a>.</li>
-</ul></li>
-</ul>
-</section>
-<section id="sec-code-style" class="level3">
-<h3 class="anchored" data-anchor-id="sec-code-style">Code style</h3>
-<ul>
-<li><p>New code should follow the tidyverse <a href="https://style.tidyverse.org">style guide</a> and <a href="https://design.tidyverse.org/">design principles</a>. You can use the <a href="https://CRAN.R-project.org/package=lintr">lintr</a> package to automatically check for some style and design issues and the <a href="https://CRAN.R-project.org/package=styler">styler</a> package to automatically correct some issues. Please don’t restyle code that has nothing to do with your PR.</p></li>
-<li><p>We use <a href="https://cran.r-project.org/package=roxygen2">roxygen2</a>, with <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html">Markdown syntax</a>, for documentation.</p></li>
-<li><p>We use <a href="https://cran.r-project.org/package=testthat">testthat</a> for unit tests. Contributions with test cases included are easier to accept.</p></li>
-</ul>
-</section>
-</section>
-<section id="code-of-conduct" class="level2">
-<h2 class="anchored" data-anchor-id="code-of-conduct">Code of Conduct</h2>
-<p>Please note that this project is released with a <a href="./CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project you agree to abide by its terms.</p>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/comorbidity_score.html">comorbidity_score</a></li></ol></nav></header><section id="weighted-comorbidity-score" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="weighted-comorbidity-score">Weighted Comorbidity Score</h2>
+<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
+<p>Computes a weighted comorbidity score for each person from a set of binary condition indicators and a named vector of per-condition weights. This is the general scoring engine behind the Gagne combined comorbidity score (see <code><a href="https://rdrr.io/pkg/ettbc/man/gagne_weights.html">gagne_weights()</a></code>); supplying a different <code>weights</code> vector computes any other additive comorbidity index from the same condition flags.</p>
+</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
+<pre><code class="language-R">comorbidity_score(data, weights = gagne_weights(), na_rm = FALSE)
+</code></pre>
+</section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+<table role="presentation">
+<tbody><tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="data">data</code>
+</td>
+<td>
+A data frame with one row per person and a 0/1 (or logical) indicator column for each condition named in <code>weights</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="weights">weights</code>
+</td>
+<td>
+A named numeric vector mapping condition column names to their weights. Defaults to <code><a href="https://rdrr.io/pkg/ettbc/man/gagne_weights.html">gagne_weights()</a></code> (the Gagne combined comorbidity score); <code>data</code> must then contain all 20 Gagne condition columns.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="na_rm">na_rm</code>
+</td>
+<td>
+Logical; if <code>TRUE</code>, missing indicator values are treated as 0 (condition absent). If <code>FALSE</code> (the default), any <code>NA</code> in a scored column is an error.
+</td>
+</tr>
+</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
+<p>The score for a person is the sum, over the conditions named in <code>weights</code>, of the weight times the person’s 0/1 indicator for that condition. The comorbidity-mapping step (turning ICD diagnosis codes into the condition indicators) is out of scope here; map codes to flags first — for example with the <a href="https://CRAN.R-project.org/package=comorbidity">comorbidity</a> package — then pass the resulting indicator columns to this function.</p>
+</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
+<p>A numeric vector with one weighted score per row of <code>data</code>.</p>
+</section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
+<p>Gagne JJ, Glynn RJ, Avorn J, Levin R, Schneeweiss S. A combined comorbidity score predicted mortality in elderly patients better than existing scores. <em>J Clin Epidemiol.</em> 2011;64(7):749-759. <a href="https://doi.org/10.1016/j.jclinepi.2010.10.004">doi:10.1016/j.jclinepi.2010.10.004</a></p>
+</section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/gagne_weights.html">gagne_weights()</a></code> for the García-Albéniz / Gagne weight set.</p>
+</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ucdavis/ettbc">"ettbc"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">people</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  chf <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  dementia <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  metastatic_cancer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>chf <span class="op">=</span> <span class="fl">2</span>, dementia <span class="op">=</span> <span class="fl">2</span>, metastatic_cancer <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/comorbidity_score.html">comorbidity_score</a></span><span class="op">(</span><span class="va">people</span>, <span class="va">w</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] 0 2 7</code></pre>
+</div>
+</div>
 
 
 <script>
@@ -773,13 +799,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 window.addEventListener("load", alignEquationAnchorsWithDefault);
-</script>
-
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</script></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1196,5 +1216,4 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 
 
 
-
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/CONTRIBUTING.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/CONTRIBUTING.md" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/comorbidity_score.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/comorbidity_score.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
