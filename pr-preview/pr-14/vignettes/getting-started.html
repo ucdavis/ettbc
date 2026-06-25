@@ -400,12 +400,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/example_function.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">example_function</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../man/expand_to_long.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">expand_to_long</span></a>
   </div>
@@ -511,8 +505,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  <li><a href="#basic-usage" id="toc-basic-usage" class="nav-link" data-scroll-target="#basic-usage"><span class="header-section-number">2</span> Basic Usage</a></li>
-  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps"><span class="header-section-number">3</span> Next Steps</a></li>
+  <li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data"><span class="header-section-number">2</span> Example Data</a></li>
+  <li><a href="#step-1-clone-and-censor" id="toc-step-1-clone-and-censor" class="nav-link" data-scroll-target="#step-1-clone-and-censor"><span class="header-section-number">3</span> Step 1: Clone and Censor</a></li>
+  <li><a href="#step-2-expand-to-long-format" id="toc-step-2-expand-to-long-format" class="nav-link" data-scroll-target="#step-2-expand-to-long-format"><span class="header-section-number">4</span> Step 2: Expand to Long Format</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps"><span class="header-section-number">5</span> Next Steps</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/vignettes/getting-started.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/vignettes/getting-started.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="getting-started-revealjs.html"><i class="bi bi-file-slides"></i>RevealJS</a></li><li><a href="getting-started.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -524,19 +520,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="introduction" class="level2" data-number="1"><h2 data-number="1" class="anchored" data-anchor-id="introduction">
 <span class="header-section-number">1</span> Introduction</h2>
-<p>This vignette provides an introduction to the <a href="https://github.com/ucdavis/ettbc">ettbc</a> package.</p>
-</section><section id="basic-usage" class="level2" data-number="2"><h2 data-number="2" class="anchored" data-anchor-id="basic-usage">
-<span class="header-section-number">2</span> Basic Usage</h2>
-<p>Here’s a basic example:</p>
+<p><a href="https://github.com/ucdavis/ettbc">ettbc</a> emulates a target trial of screening mammography for breast cancer, following the clone-censor-reweight methodology of García-Albéniz et al. (2020). This vignette walks through the first two steps of the pipeline on the package’s synthetic example data. For the full analysis — including inverse-probability weighting, the outcome model, survival curves, and bootstrap confidence intervals — see the article “Using ettbc”.</p>
+</section><section id="example-data" class="level2" data-number="2"><h2 data-number="2" class="anchored" data-anchor-id="example-data">
+<span class="header-section-number">2</span> Example Data</h2>
+<p>The package ships three synthetic datasets that mimic the structure of the original study data:</p>
 <div class="cell">
-<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Example usage</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/example_function.html">example_function</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># One row per participant</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">cohort</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   id age start_month end_month death_month bc_death bc_month</span></span>
+<span><span class="co">#&gt; 1  1  81          26       108          NA        0       NA</span></span>
+<span><span class="co">#&gt; 2  2  81          33       108          NA        0       NA</span></span>
+<span><span class="co">#&gt; 3  3  76          28       108          NA        0       NA</span></span>
+<span><span class="co">#&gt; 4  4  75           1       108          NA        0       NA</span></span>
+<span><span class="co">#&gt; 5  5  77          17       108          NA        0       NA</span></span>
+<span><span class="co">#&gt; 6  6  70          40       108          NA        0       NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-</section><section id="next-steps" class="level2" data-number="3"><h2 data-number="3" class="anchored" data-anchor-id="next-steps">
-<span class="header-section-number">3</span> Next Steps</h2>
-<p>For more information, see the package documentation.</p>
+</section><section id="step-1-clone-and-censor" class="level2" data-number="3"><h2 data-number="3" class="anchored" data-anchor-id="step-1-clone-and-censor">
+<span class="header-section-number">3</span> Step 1: Clone and Censor</h2>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code> replicates each participant into two trial arms — STOPBASE (stop screening at entry) and CONTINUE (continue annual screening) — and applies each arm’s censoring rule:</p>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cloned</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor</a></span><span class="op">(</span></span>
+<span>  <span class="va">cohort</span>,</span>
+<span>  <span class="va">screening_mammograms</span>,</span>
+<span>  <span class="va">diagnostic_mammograms</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">cloned</span><span class="op">)</span> <span class="co"># two rows per participant</span></span>
+<span><span class="co">#&gt; [1] 200</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">cloned</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"arm"</span>, <span class="st">"start_month"</span>, <span class="st">"end_month"</span>, <span class="st">"fup"</span>, <span class="st">"bc_died"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   id      arm start_month end_month fup bc_died</span></span>
+<span><span class="co">#&gt; 1  1 STOPBASE          26        38  13       0</span></span>
+<span><span class="co">#&gt; 2  2 STOPBASE          33        45  13       0</span></span>
+<span><span class="co">#&gt; 3  3 STOPBASE          28        42  15       0</span></span>
+<span><span class="co">#&gt; 4  4 STOPBASE           1        12  12       0</span></span>
+<span><span class="co">#&gt; 5  5 STOPBASE          17        28  12       0</span></span>
+<span><span class="co">#&gt; 6  6 STOPBASE          40        52  13       0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section><section id="step-2-expand-to-long-format" class="level2" data-number="4"><h2 data-number="4" class="anchored" data-anchor-id="step-2-expand-to-long-format">
+<span class="header-section-number">4</span> Step 2: Expand to Long Format</h2>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code> converts the cloned data to one row per participant-arm-month, ready for discrete-time survival analysis:</p>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long</a></span><span class="op">(</span><span class="va">cloned</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">long</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"arm"</span>, <span class="st">"month"</span>, <span class="st">"month2"</span>, <span class="st">"dead_t1"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   id      arm month month2 dead_t1</span></span>
+<span><span class="co">#&gt; 1  1 STOPBASE    26      0       0</span></span>
+<span><span class="co">#&gt; 2  1 STOPBASE    27      1       0</span></span>
+<span><span class="co">#&gt; 3  1 STOPBASE    28      2       0</span></span>
+<span><span class="co">#&gt; 4  1 STOPBASE    29      3       0</span></span>
+<span><span class="co">#&gt; 5  1 STOPBASE    30      4       0</span></span>
+<span><span class="co">#&gt; 6  1 STOPBASE    31      5       0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section><section id="next-steps" class="level2" data-number="5"><h2 data-number="5" class="anchored" data-anchor-id="next-steps">
+<span class="header-section-number">5</span> Next Steps</h2>
+<p>From the long-format data you can compute inverse-probability weights with <code><a href="https://rdrr.io/pkg/ettbc/man/compute_ipw_weights.html">compute_ipw_weights()</a></code>, fit the outcome model with <code><a href="https://rdrr.io/pkg/ettbc/man/fit_outcome_hr.html">fit_outcome_hr()</a></code>, estimate marginal survival curves with the <code>predict_survival_*()</code> functions, and obtain confidence intervals with <code><a href="https://rdrr.io/pkg/ettbc/man/bootstrap_ci.html">bootstrap_ci()</a></code>. The article “Using ettbc” demonstrates the full pipeline.</p>
 
 
 <script>
