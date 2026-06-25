@@ -580,7 +580,7 @@ Logical; when <code>TRUE</code>, the simulated cohort gains an <code>nc_death</c
 </tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>The three returned data frames are produced, in order, by the package’s internal generators (<code>simulate_cohort()</code>, <code>simulate_screening_mammograms()</code>, and <code>simulate_diagnostic_mammograms()</code>), sharing a single random-number stream. Calling <code>simulate_screening_cohort(100, 108, seed = 2020)</code> therefore reproduces the shipped cohort, screening_mammograms, and diagnostic_mammograms example datasets exactly.</p>
 <p>Roughly 80% of participants are annual "adherers"; about 15% die during follow-up and about 2% die from breast cancer. Months are numbered consecutively from 1, matching the convention used throughout the package. Each participant has a pre-entry screening mammogram so the CONTINUE arm compliance window is seeded at trial entry.</p>
-<p>When <code>seed</code> is supplied, the random-number generator is seeded locally and the caller’s <code>.Random.seed</code> is restored on exit, so reproducible simulation does not perturb the surrounding random-number stream.</p>
+<p>When <code>seed</code> is supplied, it is applied with <code><a href="https://withr.r-lib.org/reference/with_seed.html">withr::with_seed()</a></code>, which restores the caller’s <code>.Random.seed</code> afterwards, so reproducible simulation does not perturb the surrounding random-number stream.</p>
 </section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A named list of three linked data frames:</p>
 <ul>
