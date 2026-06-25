@@ -4,7 +4,13 @@
 # Dec 2004) to ensure at least four years of potential follow-up. Roughly 15%
 # of participants die during follow-up; about 2% die from breast cancer.
 # Used by the example-data generation script under data-raw.
-simulate_cohort <- function(n, max_month) {
+#
+# When `negative_control = TRUE`, an `nc_death` indicator column is added: a
+# small, disjoint subset of the deaths is attributed to the negative-control
+# cause (death from cancer of the corpus uteri in Garcia-Albeniz et al.). The
+# default (FALSE) draws no extra random numbers and leaves the output
+# unchanged, so the shipped example data is reproduced exactly.
+simulate_cohort <- function(n, max_month, negative_control = FALSE) {
   ids <- seq_len(n)
   ages <- sample(70L:84L, n, replace = TRUE)
   start_months <- sample(1L:60L, n, replace = TRUE)
@@ -62,7 +68,7 @@ simulate_cohort <- function(n, max_month) {
     bc_months[i] <- sample(sm:em, 1L)
   }
 
-  data.frame(
+  out <- data.frame(
     id = ids,
     age = ages,
     start_month = start_months,
@@ -72,4 +78,21 @@ simulate_cohort <- function(n, max_month) {
     bc_month = bc_months,
     stringsAsFactors = FALSE
   )
+
+  # Negative-control deaths: a small subset of the (non-breast-cancer) deaths
+  # attributed to a cause unrelated to screening. Only drawn when requested, so
+  # the default output and RNG stream are untouched.
+  if (negative_control) {
+    nc_deaths <- rep(0L, n)
+    nc_candidates <- setdiff(die_idx, bc_death_idx)
+    if (length(nc_candidates) > 0L) {
+      n_nc_deaths <- max(1L, round(n * 0.02))
+      n_take <- min(n_nc_deaths, length(nc_candidates))
+      nc_idx <- nc_candidates[sample.int(length(nc_candidates), n_take)]
+      nc_deaths[nc_idx] <- 1L
+    }
+    out$nc_death <- nc_deaths
+  }
+
+  out
 }
