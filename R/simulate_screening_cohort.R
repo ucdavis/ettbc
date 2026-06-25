@@ -21,8 +21,8 @@
 #' Each participant has a pre-entry screening mammogram so the CONTINUE arm
 #' compliance window is seeded at trial entry.
 #'
-#' When `seed` is supplied, the random-number generator is seeded locally and
-#' the caller's `.Random.seed` is restored on exit, so reproducible simulation
+#' When `seed` is supplied, it is applied with [withr::with_seed()], which
+#' restores the caller's `.Random.seed` afterwards, so reproducible simulation
 #' does not perturb the surrounding random-number stream.
 #'
 #' @param n Number of participants to simulate. Default: `100L`.
@@ -70,14 +70,21 @@ simulate_screening_cohort <- function(n = 100L, max_month = 108L, seed = NULL) {
     cli::cli_abort("{.arg max_month} must be a single positive integer.")
   }
 
-  with_seed_local(seed, {
-    cohort <- simulate_cohort(n, max_month)
-    screening_mammograms <- simulate_screening_mammograms(cohort, max_month)
-    diagnostic_mammograms <- simulate_diagnostic_mammograms(cohort, max_month)
-    list(
-      cohort = cohort,
-      screening_mammograms = screening_mammograms,
-      diagnostic_mammograms = diagnostic_mammograms
-    )
-  })
+  if (is.null(seed)) {
+    return(simulate_screening_tables(n, max_month))
+  }
+  withr::with_seed(seed, simulate_screening_tables(n, max_month))
+}
+
+# Build the three linked synthetic tables from one shared RNG stream.
+#' @noRd
+simulate_screening_tables <- function(n, max_month) {
+  cohort <- simulate_cohort(n, max_month)
+  screening_mammograms <- simulate_screening_mammograms(cohort, max_month)
+  diagnostic_mammograms <- simulate_diagnostic_mammograms(cohort, max_month)
+  list(
+    cohort = cohort,
+    screening_mammograms = screening_mammograms,
+    diagnostic_mammograms = diagnostic_mammograms
+  )
 }

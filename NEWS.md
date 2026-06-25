@@ -5,8 +5,9 @@
   (`cohort`, `screening_mammograms`, `diagnostic_mammograms`) the pipeline
   needs. It wraps the internal generators behind a single seeded random-number
   stream, so `simulate_screening_cohort(100, 108, seed = 2020)` reproduces the
-  shipped example datasets exactly; the seed is set locally and the caller's
-  `.Random.seed` is restored on exit. The "Using ettbc" article uses it to
+  shipped example datasets exactly; the seed is applied with
+  `withr::with_seed()`, so the caller's RNG stream is left untouched. The
+  "Using ettbc" article uses it to
   demonstrate the full `clone_censor()` -> `compute_ipw_weights()` ->
   `fit_outcome_hr()` -> `predict_survival_ipw()` -> `bootstrap_ci()` pipeline
   end to end on a larger simulated cohort (#12).

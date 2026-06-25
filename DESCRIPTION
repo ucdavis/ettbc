@@ -27,9 +27,10 @@ Roxygen: list(markdown = TRUE)
 Language: en-US
 Depends: 
     R (>= 4.1.0)
-Imports: 
+Imports:
     cli,
-    stats
+    stats,
+    withr
 Suggests: 
     altdoc,
     knitr,
@@ -38,7 +39,6 @@ Suggests:
     snapr,
     spelling,
     testthat (>= 3.0.0),
-    withr,
     quarto,
     bslib,
     badger

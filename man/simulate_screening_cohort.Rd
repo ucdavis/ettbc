@@ -47,8 +47,8 @@ consecutively from 1, matching the convention used throughout the package.
 Each participant has a pre-entry screening mammogram so the CONTINUE arm
 compliance window is seeded at trial entry.
 
-When \code{seed} is supplied, the random-number generator is seeded locally and
-the caller's \code{.Random.seed} is restored on exit, so reproducible simulation
+When \code{seed} is supplied, it is applied with \code{\link[withr:with_seed]{withr::with_seed()}}, which
+restores the caller's \code{.Random.seed} afterwards, so reproducible simulation
 does not perturb the surrounding random-number stream.
 }
 \examples{
