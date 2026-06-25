@@ -506,18 +506,212 @@ Figure&nbsp;3: Empirical cumulative mortality by arm (crude, without IPW). Under
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>The crude curves above do not account for the informative censoring introduced by the clone-censor step. In a complete analysis, <strong>inverse probability weights</strong> (IPW) would be applied to correct for the different censoring mechanisms in each arm. See <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span> for the full weighted analysis.</p>
+<p>The crude curves above do not account for the informative censoring introduced by the clone-censor step. The rest of this article applies <strong>inverse probability weights</strong> (IPW) to correct for the different censoring mechanisms in each arm, then fits the weighted outcome model and bootstraps a confidence interval. See <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span> for the full analysis on the real cohort.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="summary" class="slide level2" data-number="6">
-<h2><span class="header-section-number">6</span> Summary</h2>
-<p>The <code>{ettbc}</code> package provides two core functions for the clone-censor step of target trial emulation:</p>
+<section id="a-larger-simulated-cohort" class="slide level2" data-number="6">
+<h2><span class="header-section-number">6</span> A Larger Simulated Cohort</h2>
+<p>The 100-participant dataset above is convenient for showing the data structure, but it is too small to fit a stable weighted outcome model: with so few deaths the screening-propensity model separates and the resulting weights are erratic. For the weighted analysis we simulate a larger cohort with <code>simulate_screening_cohort()</code>, which returns the same three linked tables.</p>
+<p>The simulation builds in <strong>no</strong> screening effect on mortality, so the honest expectation is a null result: the two arms should look alike, and the weighted contrast should sit near no difference. What the rest of the article demonstrates is that the machinery runs end to end and recovers that null, not a substantive estimate; a real reproduction needs the Medicare cohort and the paper’s full covariate set.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>sim <span class="ot">&lt;-</span> <span class="fu">simulate_screening_cohort</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">max_month =</span> <span class="dv">108</span>, <span class="at">seed =</span> <span class="dv">7</span>)</span>
+<span id="cb13-2"><a></a></span>
+<span id="cb13-3"><a></a>cloned_l <span class="ot">&lt;-</span> <span class="fu">clone_censor</span>(</span>
+<span id="cb13-4"><a></a>  sim<span class="sc">$</span>cohort, sim<span class="sc">$</span>screening_mammograms, sim<span class="sc">$</span>diagnostic_mammograms</span>
+<span id="cb13-5"><a></a>)</span>
+<span id="cb13-6"><a></a>long_l <span class="ot">&lt;-</span> <span class="fu">expand_to_long</span>(cloned_l)</span>
+<span id="cb13-7"><a></a>long_l <span class="ot">&lt;-</span> <span class="fu">augment_long_covariates</span>(</span>
+<span id="cb13-8"><a></a>  long_l, sim<span class="sc">$</span>screening_mammograms, sim<span class="sc">$</span>diagnostic_mammograms</span>
+<span id="cb13-9"><a></a>)</span>
+<span id="cb13-10"><a></a></span>
+<span id="cb13-11"><a></a><span class="fu">nrow</span>(long_l) <span class="co"># person-arm-months</span></span>
+<span id="cb13-12"><a></a><span class="co">#&gt; [1] 73469</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-4-inverse-probability-weights" class="slide level2" data-number="7">
+<h2><span class="header-section-number">7</span> Step 4: Inverse Probability Weights</h2>
+<p><code>fit_screening_propensity()</code> fits the pooled logistic model for the probability of a screening mammogram at each eligible month (the SAS <code>cann17b</code> denominator), and <code>compute_ipw_weights()</code> turns those probabilities into stabilized per-arm weights, truncated at the 99th percentile within each arm.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>propensity <span class="ot">&lt;-</span> <span class="fu">fit_screening_propensity</span>(long_l)</span>
+<span id="cb14-2"><a></a>weighted <span class="ot">&lt;-</span> <span class="fu">compute_ipw_weights</span>(propensity<span class="sc">$</span>data, <span class="at">pred_prob_col =</span> <span class="st">"p_scrmammo"</span>)</span>
+<span id="cb14-3"><a></a></span>
+<span id="cb14-4"><a></a><span class="co"># Stabilized, truncated weights are centered near 1 in both arms</span></span>
+<span id="cb14-5"><a></a><span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">split</span>(weighted<span class="sc">$</span>wp99, weighted<span class="sc">$</span>arm), summary)), <span class="dv">2</span>)</span>
+<span id="cb14-6"><a></a><span class="co">#&gt;          Min. 1st Qu. Median Mean 3rd Qu.  Max.</span></span>
+<span id="cb14-7"><a></a><span class="co">#&gt; CONTINUE    0       1   1.33 2.10    2.17 15.35</span></span>
+<span id="cb14-8"><a></a><span class="co">#&gt; STOPBASE    1       1   1.00 5.07   10.15 37.88</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="step-5-weighted-outcome-model" class="slide level2" data-number="8">
+<h2><span class="header-section-number">8</span> Step 5: Weighted Outcome Model</h2>
+<p><code>fit_outcome_hr()</code> fits the IP-weighted pooled logistic outcome model, with follow-up time entered through a restricted cubic spline and an arm-by-time interaction. The reported odds ratio approximates the hazard ratio for the STOPBASE arm relative to CONTINUE.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>hr <span class="ot">&lt;-</span> <span class="fu">fit_outcome_hr</span>(</span>
+<span id="cb15-2"><a></a>  weighted,</span>
+<span id="cb15-3"><a></a>  <span class="at">weight_col =</span> <span class="st">"wp99"</span>,</span>
+<span id="cb15-4"><a></a>  <span class="at">outcome_col =</span> <span class="st">"dead_t1"</span></span>
+<span id="cb15-5"><a></a>)</span>
+<span id="cb15-6"><a></a></span>
+<span id="cb15-7"><a></a><span class="fu">round</span>(<span class="fu">c</span>(<span class="at">OR =</span> hr<span class="sc">$</span>or, hr<span class="sc">$</span>or_ci), <span class="dv">3</span>)</span>
+<span id="cb15-8"><a></a><span class="co">#&gt;     OR  2.5 % 97.5 % </span></span>
+<span id="cb15-9"><a></a><span class="co">#&gt;  0.976  0.669  1.422</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>As expected under a simulation with no built-in effect, the odds ratio sits near 1 and its confidence interval covers the null.</p>
+</section>
+<section id="step-6-standardized-survival-curves" class="slide level2" data-number="9">
+<h2><span class="header-section-number">9</span> Step 6: Standardized Survival Curves</h2>
+<p><code>predict_survival_ipw()</code> applies g-computation to the weighted model, averaging the predicted survival over the cohort to produce a marginal survival curve for each arm.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>surv <span class="ot">&lt;-</span> <span class="fu">predict_survival_ipw</span>(</span>
+<span id="cb16-2"><a></a>  weighted,</span>
+<span id="cb16-3"><a></a>  <span class="at">weight_col =</span> <span class="st">"wp99"</span>,</span>
+<span id="cb16-4"><a></a>  <span class="at">outcome_col =</span> <span class="st">"dead_t1"</span></span>
+<span id="cb16-5"><a></a>)</span>
+<span id="cb16-6"><a></a></span>
+<span id="cb16-7"><a></a><span class="fu">plot</span>(<span class="cn">NA</span>,</span>
+<span id="cb16-8"><a></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">72</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="dv">1</span>),</span>
+<span id="cb16-9"><a></a>  <span class="at">xlab =</span> <span class="st">"Months since study entry"</span>,</span>
+<span id="cb16-10"><a></a>  <span class="at">ylab =</span> <span class="st">"Survival probability"</span>,</span>
+<span id="cb16-11"><a></a>  <span class="at">main =</span> <span class="st">"IP-weighted survival by arm"</span></span>
+<span id="cb16-12"><a></a>)</span>
+<span id="cb16-13"><a></a><span class="fu">lines</span>(surv<span class="sc">$</span>month, surv<span class="sc">$</span>s_continue, <span class="at">col =</span> <span class="st">"#4B8FE0"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb16-14"><a></a><span class="fu">lines</span>(surv<span class="sc">$</span>month, surv<span class="sc">$</span>s_stopbase, <span class="at">col =</span> <span class="st">"#E05C4B"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb16-15"><a></a><span class="fu">legend</span>(<span class="st">"bottomleft"</span>,</span>
+<span id="cb16-16"><a></a>  <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"CONTINUE"</span>, <span class="st">"STOPBASE"</span>),</span>
+<span id="cb16-17"><a></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#4B8FE0"</span>, <span class="st">"#E05C4B"</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span></span>
+<span id="cb16-18"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+
+</div>
+<img data-src="using-ettbc_files/figure-revealjs/fig-ipw-survival-1.png" width="672" class="r-stretch quarto-figure-center" id="fig-ipw-survival"><p class="caption">
+Figure&nbsp;4: IP-weighted marginal survival by arm. The arms track each other closely, consistent with the null effect built into the simulation.
+</p></section>
+<section id="step-7-bootstrap-confidence-intervals" class="slide level2" data-number="10">
+<h2><span class="header-section-number">10</span> Step 7: Bootstrap Confidence Intervals</h2>
+<p><code>bootstrap_ci()</code> resamples participants, recomputes the weights and survival curves on each resample, and returns percentile confidence intervals for the month-by-month survival difference between arms. The number of resamples is kept small here so the article renders quickly; a real analysis uses several hundred.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>boot <span class="ot">&lt;-</span> <span class="fu">bootstrap_ci</span>(</span>
+<span id="cb17-2"><a></a>  propensity<span class="sc">$</span>data,</span>
+<span id="cb17-3"><a></a>  <span class="at">pred_prob_col =</span> <span class="st">"p_scrmammo"</span>,</span>
+<span id="cb17-4"><a></a>  <span class="at">outcome_col =</span> <span class="st">"dead_t1"</span>,</span>
+<span id="cb17-5"><a></a>  <span class="at">max_month =</span> <span class="dv">72</span>,</span>
+<span id="cb17-6"><a></a>  <span class="at">n_boot =</span> <span class="dv">50</span>,</span>
+<span id="cb17-7"><a></a>  <span class="at">seed =</span> <span class="dv">1</span></span>
+<span id="cb17-8"><a></a>)</span>
+<span id="cb17-9"><a></a></span>
+<span id="cb17-10"><a></a><span class="fu">plot</span>(<span class="cn">NA</span>,</span>
+<span id="cb17-11"><a></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">72</span>), <span class="at">ylim =</span> <span class="fu">range</span>(<span class="fu">c</span>(boot<span class="sc">$</span>diff_lo, boot<span class="sc">$</span>diff_hi), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-12"><a></a>  <span class="at">xlab =</span> <span class="st">"Months since study entry"</span>,</span>
+<span id="cb17-13"><a></a>  <span class="at">ylab =</span> <span class="st">"Survival difference (CONTINUE - STOPBASE)"</span>,</span>
+<span id="cb17-14"><a></a>  <span class="at">main =</span> <span class="st">"Bootstrap survival difference with 95% CI"</span></span>
+<span id="cb17-15"><a></a>)</span>
+<span id="cb17-16"><a></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">"grey60"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb17-17"><a></a><span class="fu">polygon</span>(</span>
+<span id="cb17-18"><a></a>  <span class="fu">c</span>(boot<span class="sc">$</span>month, <span class="fu">rev</span>(boot<span class="sc">$</span>month)),</span>
+<span id="cb17-19"><a></a>  <span class="fu">c</span>(boot<span class="sc">$</span>diff_lo, <span class="fu">rev</span>(boot<span class="sc">$</span>diff_hi)),</span>
+<span id="cb17-20"><a></a>  <span class="at">col =</span> <span class="st">"#4B8FE022"</span>, <span class="at">border =</span> <span class="cn">NA</span></span>
+<span id="cb17-21"><a></a>)</span>
+<span id="cb17-22"><a></a><span class="fu">lines</span>(boot<span class="sc">$</span>month, boot<span class="sc">$</span>diff, <span class="at">col =</span> <span class="st">"#222222"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+
+</div>
+<img data-src="using-ettbc_files/figure-revealjs/fig-boot-diff-1.png" width="672" class="r-stretch quarto-figure-center" id="fig-boot-diff"><p class="caption">
+Figure&nbsp;5: Bootstrap survival difference (CONTINUE minus STOPBASE) with a 95 percent percentile confidence band. The band covers zero throughout, the expected null.
+</p></section>
+<section id="summary" class="slide level2" data-number="11">
+<h2><span class="header-section-number">11</span> Summary</h2>
+<p>The <code>{ettbc}</code> package implements the full clone-censor-reweight pipeline:</p>
 <div id="tbl-functions" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-tbl">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Core ettbc functions
+</figcaption>
+<div aria-describedby="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>simulate_screening_cohort()</code></td>
+<td>cohort size</td>
+<td>three linked synthetic tables</td>
+</tr>
+<tr class="even">
+<td><code>clone_censor()</code></td>
+<td>cohort + mammogram events</td>
+<td>two rows per participant</td>
+</tr>
+<tr class="odd">
+<td><code>expand_to_long()</code></td>
+<td>cloned dataset</td>
+<td>one row per participant-arm-month</td>
+</tr>
+<tr class="even">
+<td><code>augment_long_covariates()</code></td>
+<td>long dataset + events</td>
+<td>time-varying screening covariates</td>
+</tr>
+<tr class="odd">
+<td><code>fit_screening_propensity()</code></td>
+<td>augmented long dataset</td>
+<td>screening probabilities</td>
+</tr>
+<tr class="even">
+<td><code>compute_ipw_weights()</code></td>
+<td>long dataset + probabilities</td>
+<td>stabilized IPW weights</td>
+</tr>
+<tr class="odd">
+<td><code>fit_outcome_hr()</code></td>
+<td>weighted long dataset</td>
+<td>arm hazard ratio</td>
+</tr>
+<tr class="even">
+<td><code>predict_survival_ipw()</code></td>
+<td>weighted long dataset</td>
+<td>marginal survival curves</td>
+</tr>
+<tr class="odd">
+<td><code>bootstrap_ci()</code></td>
+<td>long dataset + probabilities</td>
+<td>survival difference with CI</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Run on the synthetic cohort, the pipeline recovers the null effect the simulation was built with. Pointed at a real Medicare cohort with the paper’s full covariate set, the same functions reproduce the substantive analysis of <span class="citation" data-cites="garcia-albeniz2020">García-Albéniz et al. (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span>.</p>
+<p>The <code>{ettbc}</code> package provides two core functions for the clone-censor step of target trial emulation:</p>
+<div id="tbl-functions" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Core ettbc functions
 </figcaption>
 <div aria-describedby="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top">
@@ -551,8 +745,8 @@ Table&nbsp;1: Core ettbc functions
 </div>
 <p>After running these steps, the long dataset can be used with standard weighted logistic or pooled logistic regression to estimate the <strong>intention-to-treat</strong> effect of each screening strategy.</p>
 </section>
-<section id="references" class="slide level2 smaller scrollable" data-number="7">
-<h2><span class="header-section-number">7</span> References</h2>
+<section id="references" class="slide level2 smaller scrollable" data-number="12">
+<h2><span class="header-section-number">12</span> References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-garcia-albeniz2020" class="csl-entry" role="listitem">
 García-Albéniz, Xabier, Hajime Uno, Deepak L Bhatt, Patrick H McArdle, Marshall M Joffe, and Miguel A Hernán. 2020. <span>“Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study.”</span> <em>Annals of Internal Medicine</em> 172 (6): 381–89. <a href="https://doi.org/10.7326/M18-1199">https://doi.org/10.7326/M18-1199</a>.

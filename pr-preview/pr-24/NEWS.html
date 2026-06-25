@@ -370,6 +370,18 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./man/compute_rcs_basis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">compute_rcs_basis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/deterministic_bias_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">deterministic_bias_analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./man/diagnostic_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">diagnostic_mammograms</span></a>
   </div>
@@ -424,6 +436,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./man/negative_control_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">negative_control_analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./man/predict_survival_baseline_adjusted.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">predict_survival_baseline_adjusted</span></a>
   </div>
@@ -442,8 +460,26 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./man/probabilistic_bias_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">probabilistic_bias_analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./man/screening_mammograms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">screening_mammograms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/simulate_screening_cohort.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">simulate_screening_cohort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/standardized_rate_difference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">standardized_rate_difference</span></a>
   </div>
 </li>
       </ul>
@@ -503,7 +539,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="ettbc-development-version" class="level1">
 <h1>ettbc (development version)</h1>
 <ul>
-<li><p><code>bootstrap_ci()</code> now seeds its resampling with <code>withr::with_seed()</code> instead of a hand-rolled <code>.Random.seed</code> save/restore, and its bootstrap loop was factored into a helper. Behaviour and results are unchanged (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
+<li><p><code>bootstrap_ci()</code> now seeds its resampling with <code>withr::with_seed()</code> instead of a hand-rolled <code>.Random.seed</code> save/restore, and its bootstrap loop was factored into a helper. Behavior and results are unchanged (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
+<li><p>Added <code>standardized_rate_difference()</code>, the treatment-pattern secondary analyses from García-Albéniz et al.&nbsp;(SAS <code>cann26</code>/<code>cann27</code>/<code>cann28</code>: surgery, chemotherapy, and radiotherapy receipt among screen-detected cancers). It computes a direct-standardized difference in a binary outcome rate between the CONTINUE and STOPBASE arms, standardized to the pooled sample over user-specified strata (age, comorbidity) and restricted to the common-support strata, with a bootstrap percentile confidence interval and RNG-state restoration, matching the SAS <code>PROC STDRATE</code> (<code>method = direct</code>, <code>effect = diff</code>) approach (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
+<li><p>Added <code>deterministic_bias_analysis()</code> and <code>probabilistic_bias_analysis()</code>, the unmeasured-confounding sensitivity analyses from García-Albéniz et al. (supplementary analysis). For a single dichotomous, time-fixed confounder with a given prevalence in each arm and an additive outcome effect, the deterministic version adjusts an observed arm risk difference by <code>(prev_continue - prev_stopbase) * confounder_effect</code> (vectorized over a grid of assumptions); the probabilistic version draws the bias parameters from uniform priors and the observed risk difference from its sampling distribution to return a Monte Carlo simulation interval. The caller’s RNG state is restored on exit (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
+<li><p>Exported <code>compute_rcs_basis()</code>, the Harrell restricted-cubic-spline basis (SAS <code>%RCSPLINE</code> parameterization) used internally by the outcome and propensity models, so other packages can reuse the same parameterization instead of writing it again. Behavior is unchanged; the function moved to its own file and gained a public man page, examples, and tests (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
+<li><p>Added <code>negative_control_analysis()</code> and negative-control outcome support, the falsification check from García-Albéniz et al.&nbsp;(death from cancer of the corpus uteri). <code>expand_to_long()</code> gains an optional <code>nc_died_col</code> argument that builds a cause-specific <code>nc_dead_t1</code> outcome the same way as <code>bc_dead_t1</code> (the shared logic is factored into one helper); <code>simulate_screening_cohort(negative_control = TRUE)</code> adds an <code>nc_death</code> indicator to the simulated cohort. <code>negative_control_analysis()</code> runs <code>fit_outcome_hr()</code> on the negative-control outcome and reports <code>null_consistent</code>, whether the arm effect’s confidence interval covers the null. Continued screening should have no effect on a death unrelated to the breast; a clearly non-null result would flag residual bias. The default behavior of <code>expand_to_long()</code> and <code>simulate_screening_cohort()</code> is unchanged (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
+<li><p>Added <code>simulate_screening_cohort()</code>: an exported generator that simulates a synthetic cohort of arbitrary size and returns the three linked data frames (<code>cohort</code>, <code>screening_mammograms</code>, <code>diagnostic_mammograms</code>) the pipeline needs. It wraps the internal generators behind a single seeded random-number stream, so <code>simulate_screening_cohort(100, 108, seed = 2020)</code> reproduces the shipped example datasets exactly; the seed is applied with <code>withr::with_seed()</code>, so the caller’s RNG stream is left untouched. The “Using ettbc” article uses it to demonstrate the full <code>clone_censor()</code> -&gt; <code>compute_ipw_weights()</code> -&gt; <code>fit_outcome_hr()</code> -&gt; <code>predict_survival_ipw()</code> -&gt; <code>bootstrap_ci()</code> pipeline end to end on a larger simulated cohort (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
 <li><p>Added <code>augment_long_covariates()</code>: builds the time-varying screening covariates the weight and propensity steps need from the long-format data and the mammogram events, porting the SAS <code>cann17b</code> augmentation. It adds <code>scrmammo</code>, <code>dxmammo</code>, <code>anymammo</code>, <code>tslm</code>, <code>tslm_lag</code>, and <code>monthBC</code>, forcing a screen at entry, resetting the time-since-last-mammogram clock at any mammogram, not counting a screen in the month after a breast-cancer diagnosis, and reclassifying a screen within <code>dx_reclass_months</code> of the previous mammogram as diagnostic (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
 <li><p>Added <code>fit_screening_propensity()</code>: fits the pooled logistic screening-propensity model (SAS <code>cann17b</code> denominator) and returns the predicted <code>p_scrmammo</code> that <code>compute_ipw_weights()</code> consumes. The linear predictor uses <code>tslm_lag</code> (linear plus a restricted-cubic-spline basis), <code>month2</code> and <code>month2^2</code>, and any user-supplied baseline/time-varying covariates; the model is fit on the <code>tslm_lag &gt;= min_tslm_lag</code> decision window, deduplicated to one row per participant-month. Together with <code>augment_long_covariates()</code> this lets <code>clone_censor()</code> output drive <code>compute_ipw_weights()</code> end to end without hand-set columns (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
 <li><p>Removed leftover package-template scaffolding: the <code>example_function()</code> function (and its test and man page), the <code>quarto_vignette.qmd</code> and <code>quarto_article.qmd</code> template-demo vignettes, and the generic <code>CHECKLIST.md</code> and <code>USAGE.md</code> template setup guides. Rewrote <code>README</code> (<code>.Rmd</code>/<code>.md</code>) and the “Getting Started” vignette to describe <code>{ettbc}</code> and demonstrate the <code>clone_censor()</code> -&gt; <code>expand_to_long()</code> pipeline on the synthetic example data, and replaced the placeholder <code>inst/extdata/README.md</code>.</p></li>
