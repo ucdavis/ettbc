@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>deterministic_bias_analysis – ettbc</title>
+<title>fit_weighted_logistic – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/deterministic_bias_analysis.html">deterministic_bias_analysis</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/fit_weighted_logistic.html">fit_weighted_logistic</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -400,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/deterministic_bias_analysis.html" class="sidebar-item-text sidebar-link active">
+  <a href="../man/deterministic_bias_analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">deterministic_bias_analysis</span></a>
   </div>
 </li>
@@ -460,7 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/fit_weighted_logistic.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/fit_weighted_logistic.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">fit_weighted_logistic</span></a>
   </div>
 </li>
@@ -559,91 +559,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#deterministic-bias-analysis-for-an-unmeasured-confounder" id="toc-deterministic-bias-analysis-for-an-unmeasured-confounder" class="nav-link active" data-scroll-target="#deterministic-bias-analysis-for-an-unmeasured-confounder">Deterministic Bias Analysis for an Unmeasured Confounder</a>
+<a href="#fit-a-weighted-pooled-logistic-regression" id="toc-fit-a-weighted-pooled-logistic-regression" class="nav-link active" data-scroll-target="#fit-a-weighted-pooled-logistic-regression">Fit a Weighted Pooled Logistic Regression</a>
   <ul class="collapse">
 <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
-  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See Also</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/deterministic_bias_analysis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/deterministic_bias_analysis.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/fit_weighted_logistic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/fit_weighted_logistic.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/deterministic_bias_analysis.html">deterministic_bias_analysis</a></li></ol></nav></header><section id="deterministic-bias-analysis-for-an-unmeasured-confounder" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="deterministic-bias-analysis-for-an-unmeasured-confounder">Deterministic Bias Analysis for an Unmeasured Confounder</h2>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/fit_weighted_logistic.html">fit_weighted_logistic</a></li></ol></nav></header><section id="fit-a-weighted-pooled-logistic-regression" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="fit-a-weighted-pooled-logistic-regression">Fit a Weighted Pooled Logistic Regression</h2>
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Adjusts an observed arm risk difference for a single hypothetical dichotomous, time-fixed unmeasured confounder, given its prevalence in each arm and its effect on the outcome. This ports the deterministic unmeasured-confounding sensitivity analysis of García-Albéniz et al. (supplementary analysis): how far would the screening effect move if a confounder of a specified strength, more common in one arm than the other, were left uncontrolled?</p>
+<p>Fits a binomial (logit) generalized linear model from a formula and data, optionally weighted by a named column. This is the shared fitting primitive behind the package’s IP-weighted models (<code><a href="https://rdrr.io/pkg/ettbc/man/fit_outcome_hr.html">fit_outcome_hr()</a></code> and <code><a href="https://rdrr.io/pkg/ettbc/man/predict_survival_ipw.html">predict_survival_ipw()</a></code>): the weighted-GLM step now has a single, tested implementation. It is exported so sibling packages can reuse the same weighted pooled-logistic fit (see the discrete-time outcome-model consolidation discussion in the package’s issue tracker).</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">deterministic_bias_analysis(
-  rd,
-  prev_continue,
-  prev_stopbase,
-  confounder_effect
-)
+<pre><code class="language-R">fit_weighted_logistic(data, formula, weight_col = NULL)
 </code></pre>
 </section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table role="presentation">
 <tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="rd">rd</code>
+<code id="data">data</code>
 </td>
 <td>
-Observed arm risk difference (CONTINUE minus STOPBASE).
+A data frame containing the model variables and, when <code>weight_col</code> is supplied, the weight column.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="prev_continue">prev_continue</code>
+<code id="formula">formula</code>
 </td>
 <td>
-Confounder prevalence in the CONTINUE arm (0-1).
+A model formula passed to <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="prev_stopbase">prev_stopbase</code>
+<code id="weight_col">weight_col</code>
 </td>
 <td>
-Confounder prevalence in the STOPBASE arm (0-1).
+Name of a numeric weight column in <code>data</code>, or <code>NULL</code> (the default) for an unweighted fit.
 </td>
 </tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="confounder_effect">confounder_effect</code>
-</td>
-<td>
-Additive effect of the confounder on outcome risk (risk when present minus risk when absent), on the same scale as <code>rd</code>.
-</td>
-</tr>
-</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
-<p>For a dichotomous confounder with prevalence <code>prev_continue</code> in the CONTINUE arm and <code>prev_stopbase</code> in the STOPBASE arm, and an additive effect <code>confounder_effect</code> on the outcome risk (the risk when the confounder is present minus the risk when it is absent), the bias it induces in the arm risk difference (CONTINUE minus STOPBASE) is <code>(prev_continue - prev_stopbase) * confounder_effect</code>. The bias-adjusted risk difference is <code>rd</code> minus that bias.</p>
-<p>The arguments are recycled to a common length, so passing vectors sweeps a grid of assumptions in one call (e.g., several confounder prevalences against a fixed effect). Express <code>rd</code> and <code>confounder_effect</code> on the same scale (a risk difference, e.g., cases per person or per 1000); the result is on that scale.</p>
-</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>A data frame with one row per assumption set, containing <code>rd</code>, <code>prev_continue</code>, <code>prev_stopbase</code>, <code>confounder_effect</code>, <code>bias</code> (<code>(prev_continue - prev_stopbase) * confounder_effect</code>), and <code>adjusted_rd</code> (<code>rd - bias</code>).</p>
-</section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
-<p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381-389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
+</tbody></table></section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
+<p>The fitted stats::glm object (binomial family, logit link).</p>
 </section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
-<p><code><a href="https://rdrr.io/pkg/ettbc/man/probabilistic_bias_analysis.html">probabilistic_bias_analysis()</a></code> for the Monte Carlo version.</p>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/fit_outcome_hr.html">fit_outcome_hr()</a></code> and <code><a href="https://rdrr.io/pkg/ettbc/man/predict_survival_ipw.html">predict_survival_ipw()</a></code>, which build their formula and call this function for the fit.</p>
 </section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
 <details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ucdavis/ettbc">"ettbc"</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># A confounder 4 points more common in STOPBASE, raising outcome risk by 0.01</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/deterministic_bias_analysis.html">deterministic_bias_analysis</a></span><span class="op">(</span></span>
-<span>  rd <span class="op">=</span> <span class="op">-</span><span class="fl">0.012</span>,</span>
-<span>  prev_continue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.10</span><span class="op">)</span>,</span>
-<span>  prev_stopbase <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  confounder_effect <span class="op">=</span> <span class="fl">0.01</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/fit_weighted_logistic.html">fit_weighted_logistic</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, weight_col <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code>      rd prev_continue prev_stopbase confounder_effect   bias adjusted_rd
-1 -0.012          0.01          0.05              0.01 -4e-04     -0.0116
-2 -0.012          0.05          0.05              0.01  0e+00     -0.0120
-3 -0.012          0.10          0.05              0.01  5e-04     -0.0125</code></pre>
+<pre><code>(Intercept)           x 
+  -3.410079    1.202284 </code></pre>
 </div>
 </div>
 
@@ -1239,4 +1217,4 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/deterministic_bias_analysis.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/deterministic_bias_analysis.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/fit_weighted_logistic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/fit_weighted_logistic.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
