@@ -3,7 +3,6 @@
 export(bootstrap_ci)
 export(clone_censor)
 export(compute_ipw_weights)
-export(example_function)
 export(expand_to_long)
 export(extract_any_mammograms)
 export(extract_diagnostic_mammograms)

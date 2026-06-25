@@ -1,6 +1,6 @@
 ---
 title: "Getting Started"
-format: 
+format:
   html: default
   revealjs:
     output-file: getting-started-revealjs.html
@@ -24,17 +24,54 @@ library(ettbc)
 
 ## Introduction
 
-This vignette provides an introduction to the `{ettbc}` package.
+`{ettbc}` emulates a target trial of screening mammography for breast cancer,
+following the clone-censor-reweight methodology of García-Albéniz et al.
+(2020). This vignette walks through the first two steps of the pipeline on
+the package's synthetic example data. For the full analysis --- including
+inverse-probability weighting, the outcome model, survival curves, and
+bootstrap confidence intervals --- see the article "Using ettbc".
 
-## Basic Usage
+## Example Data
 
-Here's a basic example:
+The package ships three synthetic datasets that mimic the structure of the
+original study data:
 
 ```{r}
-# Example usage
-example_function(c(1, 2, 3, 4, 5))
+# One row per participant
+head(cohort)
+```
+
+## Step 1: Clone and Censor
+
+`clone_censor()` replicates each participant into two trial arms --- STOPBASE
+(stop screening at entry) and CONTINUE (continue annual screening) --- and
+applies each arm's censoring rule:
+
+```{r}
+cloned <- clone_censor(
+  cohort,
+  screening_mammograms,
+  diagnostic_mammograms
+)
+
+nrow(cloned) # two rows per participant
+head(cloned[, c("id", "arm", "start_month", "end_month", "fup", "bc_died")])
+```
+
+## Step 2: Expand to Long Format
+
+`expand_to_long()` converts the cloned data to one row per
+participant-arm-month, ready for discrete-time survival analysis:
+
+```{r}
+long <- expand_to_long(cloned)
+head(long[, c("id", "arm", "month", "month2", "dead_t1")])
 ```
 
 ## Next Steps
 
-For more information, see the package documentation.
+From the long-format data you can compute inverse-probability weights with
+`compute_ipw_weights()`, fit the outcome model with `fit_outcome_hr()`,
+estimate marginal survival curves with the `predict_survival_*()` functions,
+and obtain confidence intervals with `bootstrap_ci()`. The article
+"Using ettbc" demonstrates the full pipeline.
