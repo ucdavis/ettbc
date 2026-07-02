@@ -270,7 +270,7 @@ test_that("mammo_window_months and enrollment_window_months are validated", {
   )
   mammograms <- data.frame(id = 1, month = 12)
 
-  for (bad in list(0L, -1L, NA_integer_, c(1L, 2L))) {
+  for (bad in list(0L, -1L, NA_integer_, c(1L, 2L), 12.9, "12")) {
     expect_error(
       apply_eligibility_criteria(
         demographics, enrollment, mammograms, mammo_window_months = bad

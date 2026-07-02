@@ -94,17 +94,19 @@ by \code{\link[=clone_censor]{clone_censor()}}.
 Selects the participants eligible for entry into the target trial and
 determines each one's study entry month, following the eligibility
 criteria of García-Albéniz et al. (2020) (SAS \code{c01_eligibility.sas}):
-alive at the age threshold, a qualifying screening mammogram near that
-age, twelve months of continuous fee-for-service Medicare enrollment
-ending at entry, and Medicare entitlement by age (not disability or
-end-stage renal disease).
+alive and entitled by age at the age threshold, a qualifying screening
+mammogram near that age, and twelve months of continuous fee-for-service
+Medicare enrollment ending at entry.
 }
 \details{
-Four criteria are applied, in order:
+Three checks are applied, in order:
 \enumerate{
-\item \strong{Alive at the age threshold.} A participant must be alive when they
+\item \strong{Alive and entitled by age.} A participant must be alive when they
 reach \code{agein_month_col} (a \code{death_month_col} at or after
-\code{agein_month_col}, or missing, still counts as alive at that month).
+\code{agein_month_col}, or missing, still counts as alive at that month),
+and \code{orec_col} must equal \code{0} (entitled by age, not disability or
+end-stage renal disease). A missing \code{agein_month_col} or \code{orec_col}
+disqualifies the participant.
 \item \strong{A qualifying screening mammogram.} The earliest screening mammogram
 in the \code{mammo_window_months}-month window starting at
 \code{agein_month_col} becomes the participant's study entry month
@@ -114,9 +116,6 @@ months ending at the entry month must have a fee-for-service enrollment
 record (\code{buyin_col} value in \code{eligible_buyin}) with no HMO enrollment
 (\code{hmo_col} value in \code{eligible_hmo}). A participant-month absent from
 \code{enrollment}, or one outside these codes, disqualifies the participant.
-\item \strong{Original reason for entitlement.} \code{orec_col} must equal \code{0}
-(entitled by age, not disability or end-stage renal disease); a
-missing \code{orec_col} disqualifies the participant.
 }
 
 The fee-for-service buy-in codes (\code{"3"}, \code{"C"}) and the not-in-an-HMO code

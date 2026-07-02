@@ -3,17 +3,19 @@
 #' Selects the participants eligible for entry into the target trial and
 #' determines each one's study entry month, following the eligibility
 #' criteria of García-Albéniz et al. (2020) (SAS `c01_eligibility.sas`):
-#' alive at the age threshold, a qualifying screening mammogram near that
-#' age, twelve months of continuous fee-for-service Medicare enrollment
-#' ending at entry, and Medicare entitlement by age (not disability or
-#' end-stage renal disease).
+#' alive and entitled by age at the age threshold, a qualifying screening
+#' mammogram near that age, and twelve months of continuous fee-for-service
+#' Medicare enrollment ending at entry.
 #'
 #' @details
-#' Four criteria are applied, in order:
+#' Three checks are applied, in order:
 #'
-#' 1. **Alive at the age threshold.** A participant must be alive when they
+#' 1. **Alive and entitled by age.** A participant must be alive when they
 #'    reach `agein_month_col` (a `death_month_col` at or after
-#'    `agein_month_col`, or missing, still counts as alive at that month).
+#'    `agein_month_col`, or missing, still counts as alive at that month),
+#'    and `orec_col` must equal `0` (entitled by age, not disability or
+#'    end-stage renal disease). A missing `agein_month_col` or `orec_col`
+#'    disqualifies the participant.
 #' 2. **A qualifying screening mammogram.** The earliest screening mammogram
 #'    in the `mammo_window_months`-month window starting at
 #'    `agein_month_col` becomes the participant's study entry month
@@ -23,9 +25,6 @@
 #'    record (`buyin_col` value in `eligible_buyin`) with no HMO enrollment
 #'    (`hmo_col` value in `eligible_hmo`). A participant-month absent from
 #'    `enrollment`, or one outside these codes, disqualifies the participant.
-#' 4. **Original reason for entitlement.** `orec_col` must equal `0`
-#'    (entitled by age, not disability or end-stage renal disease); a
-#'    missing `orec_col` disqualifies the participant.
 #'
 #' The fee-for-service buy-in codes (`"3"`, `"C"`) and the not-in-an-HMO code
 #' (`"0"`) are the Medicare `BUYIN`/`HMOIND` values used directly by
