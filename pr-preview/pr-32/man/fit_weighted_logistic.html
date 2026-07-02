@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/fit_weighted_logistic.html">fit_weighted_logistic</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/fit_weighted_logistic.html">fit_weighted_logistic</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -357,6 +357,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/apply_eligibility_criteria.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">apply_eligibility_criteria</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/augment_long_covariates.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">augment_long_covariates</span></a>
@@ -572,7 +578,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/fit_weighted_logistic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/fit_weighted_logistic.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/fit_weighted_logistic.html">fit_weighted_logistic</a></li></ol></nav></header><section id="fit-a-weighted-pooled-logistic-regression" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="fit-a-weighted-pooled-logistic-regression">Fit a Weighted Pooled Logistic Regression</h2>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/fit_weighted_logistic.html">fit_weighted_logistic</a></li></ol></nav></header><section id="fit-a-weighted-pooled-logistic-regression" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="fit-a-weighted-pooled-logistic-regression">Fit a Weighted Pooled Logistic Regression</h2>
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>Fits a binomial (logit) generalized linear model from a formula and data, optionally weighted by a named column. This is the shared fitting primitive behind the package’s IP-weighted models (<code><a href="https://rdrr.io/pkg/ettbc/man/fit_outcome_hr.html">fit_outcome_hr()</a></code> and <code><a href="https://rdrr.io/pkg/ettbc/man/predict_survival_ipw.html">predict_survival_ipw()</a></code>): the weighted-GLM step now has a single, tested implementation. It is exported so sibling packages can reuse the same weighted pooled-logistic fit (see the discrete-time outcome-model consolidation discussion in the package’s issue tracker).</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
