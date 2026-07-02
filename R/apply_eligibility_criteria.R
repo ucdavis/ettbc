@@ -129,6 +129,12 @@ apply_eligibility_criteria <- function(
     id_col, agein_month_col, death_month_col, orec_col,
     enrollment_month_col, buyin_col, hmo_col, mammo_month_col
   )
+  mammo_window_months <- check_positive_int(
+    mammo_window_months, "mammo_window_months"
+  )
+  enrollment_window_months <- check_positive_int(
+    enrollment_window_months, "enrollment_window_months"
+  )
 
   alive <- alive_and_entitled(
     demographics, id_col, agein_month_col, death_month_col, orec_col
@@ -177,6 +183,15 @@ require_columns <- function(data, required, arg_name) {
   }
 }
 
+#' @noRd
+check_positive_int <- function(x, arg_name) {
+  x <- suppressWarnings(as.integer(x))
+  if (length(x) != 1L || is.na(x) || x < 1L) {
+    cli::cli_abort("{.arg {arg_name}} must be a single positive integer.")
+  }
+  x
+}
+
 # Box 1 (part 1): alive at the age threshold, entitled by age (not
 # disability/ESRD).
 #' @noRd
@@ -184,7 +199,7 @@ alive_and_entitled <- function(
     demographics, id_col, agein_month_col, death_month_col, orec_col) {
   death <- demographics[[death_month_col]]
   agein <- demographics[[agein_month_col]]
-  alive_at_agein <- is.na(death) | death >= agein
+  alive_at_agein <- !is.na(agein) & (is.na(death) | death >= agein)
   entitled_by_age <- !is.na(demographics[[orec_col]]) &
     demographics[[orec_col]] == 0
 
@@ -206,7 +221,9 @@ first_qualifying_mammogram <- function(
   window_end <- merged[[agein_month_col]] + mammo_window_months - 1L
   in_window <- merged[[mammo_month_col]] >= merged[[agein_month_col]] &
     merged[[mammo_month_col]] <= window_end
-  merged <- merged[in_window, , drop = FALSE]
+  # which() drops NA indices, so a missing mammogram or age-threshold month
+  # is excluded rather than propagating an NA row into the result.
+  merged <- merged[which(in_window), , drop = FALSE]
 
   if (nrow(merged) == 0L) {
     out <- alive[0L, c(id_col, agein_month_col), drop = FALSE]

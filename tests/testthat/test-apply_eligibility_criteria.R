@@ -231,6 +231,61 @@ test_that("empty inputs return a zero-row result with the expected columns", {
   expect_named(out, c("id", "agein_month", "start_month"))
 })
 
+test_that("a missing age-threshold month excludes the participant", {
+  # death_month is also NA here: without the explicit agein NA-guard, this
+  # would previously be treated as "alive" and propagate NA downstream.
+  demographics <- data.frame(
+    id = 1, agein_month = NA, death_month = NA, orec = 0
+  )
+  enrollment <- data.frame(
+    id = rep(1, 12), month = 1:12, buyin = "3", hmo = "0"
+  )
+  mammograms <- data.frame(id = 1, month = 12)
+
+  out <- apply_eligibility_criteria(demographics, enrollment, mammograms)
+  expect_equal(nrow(out), 0L)
+})
+
+test_that("a missing mammogram month is excluded, not kept as NA", {
+  demographics <- data.frame(
+    id = 1, agein_month = 12, death_month = NA, orec = 0
+  )
+  enrollment <- data.frame(
+    id = rep(1, 12), month = 1:12, buyin = "3", hmo = "0"
+  )
+  mammograms <- data.frame(id = c(1, 1), month = c(NA, 12))
+
+  out <- apply_eligibility_criteria(demographics, enrollment, mammograms)
+  expect_equal(nrow(out), 1L)
+  expect_false(anyNA(out$start_month))
+  expect_equal(out$start_month, 12)
+})
+
+test_that("mammo_window_months and enrollment_window_months are validated", {
+  demographics <- data.frame(
+    id = 1, agein_month = 12, death_month = NA, orec = 0
+  )
+  enrollment <- data.frame(
+    id = rep(1, 12), month = 1:12, buyin = "3", hmo = "0"
+  )
+  mammograms <- data.frame(id = 1, month = 12)
+
+  for (bad in list(0L, -1L, NA_integer_, c(1L, 2L))) {
+    expect_error(
+      apply_eligibility_criteria(
+        demographics, enrollment, mammograms, mammo_window_months = bad
+      ),
+      "mammo_window_months"
+    )
+    expect_error(
+      apply_eligibility_criteria(
+        demographics, enrollment, mammograms, enrollment_window_months = bad
+      ),
+      "enrollment_window_months"
+    )
+  }
+})
+
 test_that("missing required columns are reported", {
   demographics <- data.frame(id = 1, agein_month = 10, death_month = NA)
   enrollment <- data.frame(id = 1, month = 1, buyin = "3", hmo = "0")
