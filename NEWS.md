@@ -1,5 +1,15 @@
 # ettbc (development version)
 
+* Added `apply_eligibility_criteria()`, the cohort eligibility/enrollment
+  logic from García-Albéniz et al. (SAS `c01_eligibility.sas`, item 3).
+  Given a demographics table, a monthly enrollment table, and screening
+  mammogram events, it selects participants alive at the age threshold, with
+  a qualifying mammogram near that age (which becomes the derived study
+  entry month), twelve consecutive months of fee-for-service Medicare
+  enrollment ending at entry, and entitlement by age rather than disability
+  or end-stage renal disease. Complements `gagne_weights()` /
+  `comorbidity_score()` (#27) as the other half of cohort construction (#31,
+  #12).
 * `fit_weighted_logistic()` now muffles the expected `non-integer #successes in
   a binomial glm!` warning that non-integer IPW weights trigger. The fit is
   unchanged and other warnings (non-convergence, separation) still surface;
