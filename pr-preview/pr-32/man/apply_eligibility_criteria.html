@@ -582,7 +582,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">apply_eligibility_criteria</a></li></ol></nav></header><section id="apply-cohort-eligibility-criteria" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="apply-cohort-eligibility-criteria">Apply Cohort Eligibility Criteria</h2>
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Selects the participants eligible for entry into the target trial and determines each one’s study entry month, following the eligibility criteria of García-Albéniz et al.&nbsp;(2020) (SAS <code>c01_eligibility.sas</code>): alive at the age threshold, a qualifying screening mammogram near that age, twelve months of continuous fee-for-service Medicare enrollment ending at entry, and Medicare entitlement by age (not disability or end-stage renal disease).</p>
+<p>Selects the participants eligible for entry into the target trial and determines each one’s study entry month, following the eligibility criteria of García-Albéniz et al.&nbsp;(2020) (SAS <code>c01_eligibility.sas</code>): alive and entitled by age at the age threshold, a qualifying screening mammogram near that age, and twelve months of continuous fee-for-service Medicare enrollment ending at entry.</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <pre><code class="language-R">apply_eligibility_criteria(
   demographics,
@@ -725,19 +725,16 @@ Number of consecutive months of enrollment, ending at and including the entry mo
 </td>
 </tr>
 </tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
-<p>Four criteria are applied, in order:</p>
+<p>Three checks are applied, in order:</p>
 <ol>
 <li>
-<p><strong>Alive at the age threshold.</strong> A participant must be alive when they reach <code>agein_month_col</code> (a <code>death_month_col</code> at or after <code>agein_month_col</code>, or missing, still counts as alive at that month).</p>
+<p><strong>Alive and entitled by age.</strong> A participant must be alive when they reach <code>agein_month_col</code> (a <code>death_month_col</code> at or after <code>agein_month_col</code>, or missing, still counts as alive at that month), and <code>orec_col</code> must equal <code>0</code> (entitled by age, not disability or end-stage renal disease). A missing <code>agein_month_col</code> or <code>orec_col</code> disqualifies the participant.</p>
 </li>
 <li>
 <p><strong>A qualifying screening mammogram.</strong> The earliest screening mammogram in the <code>mammo_window_months</code>-month window starting at <code>agein_month_col</code> becomes the participant’s study entry month (<code>start_month</code>). Participants without one are excluded.</p>
 </li>
 <li>
 <p><strong>Continuous enrollment.</strong> Every one of the <code>enrollment_window_months</code> months ending at the entry month must have a fee-for-service enrollment record (<code>buyin_col</code> value in <code>eligible_buyin</code>) with no HMO enrollment (<code>hmo_col</code> value in <code>eligible_hmo</code>). A participant-month absent from <code>enrollment</code>, or one outside these codes, disqualifies the participant.</p>
-</li>
-<li>
-<p><strong>Original reason for entitlement.</strong> <code>orec_col</code> must equal <code>0</code> (entitled by age, not disability or end-stage renal disease); a missing <code>orec_col</code> disqualifies the participant.</p>
 </li>
 </ol>
 <p>The fee-for-service buy-in codes (<code>“3”</code>, <code>“C”</code>) and the not-in-an-HMO code (<code>“0”</code>) are the Medicare <code>BUYIN</code>/<code>HMOIND</code> values used directly by <code>c01_eligibility.sas</code>.</p>
