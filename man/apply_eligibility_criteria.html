@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.38">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>bootstrap_ci – ettbc</title>
+<title>apply_eligibility_criteria – ettbc</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,8 +20,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -48,8 +79,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-dark-c9222b08cc2a7acf193a96321f78a2da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-bebb40f06d5d208e2fa3c4ae88b0db0c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.js"></script>
-<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -75,12 +105,8 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-
-
-<link rel="stylesheet" href="../styles.css">
+}</script><link rel="stylesheet" href="../styles.css">
 </head>
-
 <body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
@@ -246,9 +272,7 @@ ul.task-list li input[type="checkbox"] {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ettbc</span>
@@ -260,7 +284,7 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link active" href="../man/ettbc-package.html" aria-current="page"> 
 <span class="menu-text">Documentation</span></a>
   </li>  
@@ -268,45 +292,39 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Articles</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
-        <li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">
+<li>
     <a class="dropdown-item" href="../vignettes/articles/using-ettbc.html">
  <span class="dropdown-text">Using ettbc</span></a>
   </li>  
     </ul>
-  </li>
+</li>
 </ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/ucdavis/ettbc"> <i class="bi bi-github" role="img" aria-label="ettbc GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/bootstrap_ci.html">bootstrap_ci</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">apply_eligibility_criteria</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -320,15 +338,15 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/articles/using-ettbc.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Using ettbc: Emulating a Target Trial for Breast Cancer Screening</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -337,10 +355,10 @@ ul.task-list li input[type="checkbox"] {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/apply_eligibility_criteria.html" class="sidebar-item-text sidebar-link">
+  <a href="../man/apply_eligibility_criteria.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">apply_eligibility_criteria</span></a>
   </div>
 </li>
@@ -352,7 +370,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/bootstrap_ci.html" class="sidebar-item-text sidebar-link active">
+  <a href="../man/bootstrap_ci.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">bootstrap_ci</span></a>
   </div>
 </li>
@@ -507,7 +525,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
@@ -539,88 +557,75 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bootstrap-confidence-intervals-for-survival-difference" id="toc-bootstrap-confidence-intervals-for-survival-difference" class="nav-link active" data-scroll-target="#bootstrap-confidence-intervals-for-survival-difference">Bootstrap Confidence Intervals for Survival Difference</a>
+<li>
+<a href="#apply-cohort-eligibility-criteria" id="toc-apply-cohort-eligibility-criteria" class="nav-link active" data-scroll-target="#apply-cohort-eligibility-criteria">Apply Cohort Eligibility Criteria</a>
   <ul class="collapse">
-  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See Also</a></li>
-  </ul></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/bootstrap_ci.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/bootstrap_ci.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/apply_eligibility_criteria.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/apply_eligibility_criteria.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/bootstrap_ci.html">bootstrap_ci</a></li></ol></nav></header>
-
-
-
-
-
-<section id="bootstrap-confidence-intervals-for-survival-difference" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="bootstrap-confidence-intervals-for-survival-difference">Bootstrap Confidence Intervals for Survival Difference</h2>
-<section id="description" class="level3">
-<h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Uses the nonparametric bootstrap to compute 95% percentile confidence intervals for the difference in marginal survival between the CONTINUE and STOPBASE arms, as estimated by <code>predict_survival_ipw()</code>.</p>
-</section>
-<section id="usage" class="level3">
-<h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">bootstrap_ci(
-  long_data,
-  pred_prob_col,
-  covariate_cols = NULL,
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">apply_eligibility_criteria</a></li></ol></nav></header><section id="apply-cohort-eligibility-criteria" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="apply-cohort-eligibility-criteria">Apply Cohort Eligibility Criteria</h2>
+<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
+<p>Selects the participants eligible for entry into the target trial and determines each one’s study entry month, following the eligibility criteria of García-Albéniz et al.&nbsp;(2020) (SAS <code>c01_eligibility.sas</code>): alive and entitled by age at the age threshold, a qualifying screening mammogram near that age, and twelve months of continuous fee-for-service Medicare enrollment ending at entry.</p>
+</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
+<pre><code class="language-R">apply_eligibility_criteria(
+  demographics,
+  enrollment,
+  mammograms,
   id_col = "id",
-  outcome_col = "dead_t1",
-  arm_col = "arm",
-  month_col = "month2",
-  bc_month_col = "monthBC",
-  scrmammo_col = "scrmammo",
-  tslm_lag_col = "tslm_lag",
-  grace_months = 11L,
-  max_month = 95L,
-  rcs_knots = c(6, 48, 72),
-  n_boot = 500L,
-  seed = NULL,
-  fail_threshold = 0.1
+  agein_month_col = "agein_month",
+  death_month_col = "death_month",
+  orec_col = "orec",
+  enrollment_month_col = "month",
+  buyin_col = "buyin",
+  hmo_col = "hmo",
+  mammo_month_col = "month",
+  eligible_buyin = c("3", "C"),
+  eligible_hmo = "0",
+  mammo_window_months = 12L,
+  enrollment_window_months = 12L
 )
 </code></pre>
-</section>
-<section id="arguments" class="level3">
-<h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+</section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table role="presentation">
 <tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="long_data">long_data</code>
+<code id="demographics">demographics</code>
 </td>
 <td>
-A data frame in long format (one row per participant-arm-month), as produced by <code>expand_to_long()</code> and augmented with the columns required by <code>compute_ipw_weights()</code>.
+A data frame with one row per participant, containing the participant ID, the month each participant turns the entry age (<code>agein_month_col</code>), month of death (<code>death_month_col</code>, <code>NA</code> if alive), and original reason for entitlement (<code>orec_col</code>).
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="pred_prob_col">pred_prob_col</code>
+<code id="enrollment">enrollment</code>
 </td>
 <td>
-Name of the column containing the model-predicted probability of a screening mammogram, passed to <code>compute_ipw_weights()</code>.
+A data frame with one row per participant-month, containing the participant ID, calendar month (<code>enrollment_month_col</code>), fee-for-service buy-in code (<code>buyin_col</code>), and HMO enrollment indicator (<code>hmo_col</code>). A participant-month absent from <code>enrollment</code> is treated as not enrolled.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="covariate_cols">covariate_cols</code>
+<code id="mammograms">mammograms</code>
 </td>
 <td>
-Character vector of covariate column names for <code>predict_survival_ipw()</code>. Set to <code>NULL</code> for unadjusted estimation. Default: <code>NULL</code>.
+A data frame of screening mammogram events, containing the participant ID and event month (<code>mammo_month_col</code>).
 </td>
 </tr>
 <tr>
@@ -628,155 +633,151 @@ Character vector of covariate column names for <code>predict_survival_ipw()</cod
 <code id="id_col">id_col</code>
 </td>
 <td>
-Name of the participant identifier column. Default: <code>“id”</code>.
+Name of the participant ID column in <code>demographics</code>, <code>enrollment</code>, and <code>mammograms</code>. Default: <code>“id”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="outcome_col">outcome_col</code>
+<code id="agein_month_col">agein_month_col</code>
 </td>
 <td>
-Name of the binary outcome column. Default: <code>“dead_t1”</code>.
+Name of the age-threshold month column in <code>demographics</code>. Default: <code>“agein_month”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="arm_col">arm_col</code>
+<code id="death_month_col">death_month_col</code>
 </td>
 <td>
-Name of the trial arm column. Default: <code>“arm”</code>.
+Name of the death-month column in <code>demographics</code> (<code>NA</code> if alive). Default: <code>“death_month”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="month_col">month_col</code>
+<code id="orec_col">orec_col</code>
 </td>
 <td>
-Name of the 0-indexed month-from-entry column. Default: <code>“month2”</code>.
+Name of the original-reason-for-entitlement column in <code>demographics</code>. Default: <code>“orec”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="bc_month_col">bc_month_col</code>
+<code id="enrollment_month_col">enrollment_month_col</code>
 </td>
 <td>
-Name of the breast-cancer diagnosis month column, forwarded to <code>compute_ipw_weights()</code>. Default: <code>“monthBC”</code>.
+Name of the calendar-month column in <code>enrollment</code>. Default: <code>“month”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="scrmammo_col">scrmammo_col</code>
+<code id="buyin_col">buyin_col</code>
 </td>
 <td>
-Name of the screening-mammogram indicator column, forwarded to <code>compute_ipw_weights()</code>. Default: <code>“scrmammo”</code>.
+Name of the fee-for-service buy-in code column in <code>enrollment</code>. Default: <code>“buyin”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="tslm_lag_col">tslm_lag_col</code>
+<code id="hmo_col">hmo_col</code>
 </td>
 <td>
-Name of the lagged time-since-last-mammogram column, forwarded to <code>compute_ipw_weights()</code>. Default: <code>“tslm_lag”</code>.
+Name of the HMO enrollment indicator column in <code>enrollment</code>. Default: <code>“hmo”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="grace_months">grace_months</code>
+<code id="mammo_month_col">mammo_month_col</code>
 </td>
 <td>
-Length of the compliance grace period in months, forwarded to <code>compute_ipw_weights()</code>. Default: <code>11L</code>.
+Name of the event-month column in <code>mammograms</code>. Default: <code>“month”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="max_month">max_month</code>
+<code id="eligible_buyin">eligible_buyin</code>
 </td>
 <td>
-Maximum month for survival prediction. Default: <code>95L</code>.
+Buy-in codes that count as fee-for-service Part A+B enrollment. Default: <code>c(“3”, “C”)</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="rcs_knots">rcs_knots</code>
+<code id="eligible_hmo">eligible_hmo</code>
 </td>
 <td>
-Numeric vector with at least 3 elements specifying the knots for the restricted cubic spline: the first element is the left boundary knot, the last element is the right boundary knot, and any middle elements are interior knots. Must have at least one interior knot. Default: <code>c(6, 48, 72)</code> (one interior knot at month 48).
+HMO indicator value(s) that count as <em>not</em> enrolled in an HMO. Default: <code>“0”</code>.
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="n_boot">n_boot</code>
+<code id="mammo_window_months">mammo_window_months</code>
 </td>
 <td>
-Number of bootstrap iterations. Default: <code>500L</code>.
+Width, in months, of the window starting at <code>agein_month_col</code> in which a screening mammogram qualifies as the entry event. Default: <code>12L</code> (approximating the 365-day window in the original study).
 </td>
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="seed">seed</code>
+<code id="enrollment_window_months">enrollment_window_months</code>
 </td>
 <td>
-Integer seed for reproducibility. <code>NULL</code> means no seed is set. Default: <code>NULL</code>.
+Number of consecutive months of enrollment, ending at and including the entry month, required for eligibility. Default: <code>12L</code>.
 </td>
 </tr>
-<tr>
-<td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="fail_threshold">fail_threshold</code>
-</td>
-<td>
-Maximum proportion of bootstrap iterations that may fail before a warning is issued. Default: <code>0.1</code> (warn if more than 10% of iterations fail).
-</td>
-</tr>
-</tbody></table>
-</section>
-<section id="details" class="level3">
-<h3 class="anchored" data-anchor-id="details">Details</h3>
-<p>At each bootstrap iteration, participant IDs are sampled with replacement. All long-format rows belonging to a sampled ID are included in the bootstrap dataset, with duplicate draws receiving distinct synthetic identifiers. IPW weights are recomputed on each bootstrap sample before estimating survival curves.</p>
-<p>The point estimate uses the original (unbootstrapped) data. Confidence intervals are taken as the 2.5th and 97.5th percentiles of the bootstrap distribution.</p>
-</section>
-<section id="value" class="level3">
-<h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>A data frame with one row per month (0 through <code>max_month</code>), containing:</p>
+</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
+<p>Three checks are applied, in order:</p>
+<ol>
+<li>
+<p><strong>Alive and entitled by age.</strong> A participant must be alive when they reach <code>agein_month_col</code> (a <code>death_month_col</code> at or after <code>agein_month_col</code>, or missing, still counts as alive at that month), and <code>orec_col</code> must equal <code>0</code> (entitled by age, not disability or end-stage renal disease). A missing <code>agein_month_col</code> or <code>orec_col</code> disqualifies the participant.</p>
+</li>
+<li>
+<p><strong>A qualifying screening mammogram.</strong> The earliest screening mammogram in the <code>mammo_window_months</code>-month window starting at <code>agein_month_col</code> becomes the participant’s study entry month (<code>start_month</code>). Participants without one are excluded.</p>
+</li>
+<li>
+<p><strong>Continuous enrollment.</strong> Every one of the <code>enrollment_window_months</code> months ending at the entry month must have a fee-for-service enrollment record (<code>buyin_col</code> value in <code>eligible_buyin</code>) with no HMO enrollment (<code>hmo_col</code> value in <code>eligible_hmo</code>). A participant-month absent from <code>enrollment</code>, or one outside these codes, disqualifies the participant.</p>
+</li>
+</ol>
+<p>The fee-for-service buy-in codes (<code>“3”</code>, <code>“C”</code>) and the not-in-an-HMO code (<code>“0”</code>) are the Medicare <code>BUYIN</code>/<code>HMOIND</code> values used directly by <code>c01_eligibility.sas</code>.</p>
+</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
+<p>A data frame with one row per eligible participant:</p>
 <ul>
 <li>
-<p><code>month</code>: Month index (0-indexed from trial entry).</p>
+<p><code>id</code>: Participant ID (named as <code>id_col</code>).</p>
 </li>
 <li>
-<p><code>diff</code>: Point estimate of <code>s_continue - s_stopbase</code>.</p>
+<p><code>agein_month</code>: The age-threshold month from <code>demographics</code> (named as <code>agein_month_col</code>).</p>
 </li>
 <li>
-<p><code>diff_lo</code>: 2.5th percentile bootstrap estimate of the survival difference.</p>
-</li>
-<li>
-<p><code>diff_hi</code>: 97.5th percentile bootstrap estimate of the survival difference.</p>
-</li>
-<li>
-<p><code>s_continue</code>: Point estimate of survival in the CONTINUE arm.</p>
-</li>
-<li>
-<p><code>s_stopbase</code>: Point estimate of survival in the STOPBASE arm.</p>
-</li>
-<li>
-<p><code>s_continue_lo</code>: 2.5th percentile bootstrap estimate for CONTINUE survival.</p>
-</li>
-<li>
-<p><code>s_continue_hi</code>: 97.5th percentile bootstrap estimate for CONTINUE survival.</p>
-</li>
-<li>
-<p><code>s_stopbase_lo</code>: 2.5th percentile bootstrap estimate for STOPBASE survival.</p>
-</li>
-<li>
-<p><code>s_stopbase_hi</code>: 97.5th percentile bootstrap estimate for STOPBASE survival.</p>
+<p><code>start_month</code>: The derived study entry month (the qualifying screening mammogram month).</p>
 </li>
 </ul>
-</section>
-<section id="references" class="level3">
-<h3 class="anchored" data-anchor-id="references">References</h3>
-<p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381–389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
-</section>
-<section id="see-also" class="level3">
-<h3 class="anchored" data-anchor-id="see-also">See Also</h3>
-<p><code>predict_survival_ipw()</code>, <code>compute_ipw_weights()</code></p>
+<p>Join this onto the participant’s other cohort columns (e.g.&nbsp;<code>end_month</code>, <code>death_month</code>, <code>bc_death</code>, <code>bc_month</code>) to build the <code>data</code> input expected by <code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code>.</p>
+</section><section id="references" class="level3"><h3 class="anchored" data-anchor-id="references">References</h3>
+<p>García-Albéniz X, Uno H, Bhatt DL, McArdle PH, Joffe MM, Hernán MA. Continuation of Annual Screening Mammography and Breast Cancer Mortality in Women Older Than 70 Years: A Prospective Observational Study. <em>Ann Intern Med.</em> 2020;172(6):381-389. <a href="https://doi.org/10.7326/M18-1199">doi:10.7326/M18-1199</a></p>
+</section><section id="see-also" class="level3"><h3 class="anchored" data-anchor-id="see-also">See Also</h3>
+<p><code><a href="https://rdrr.io/pkg/ettbc/man/clone_censor.html">clone_censor()</a></code> for the step this cohort feeds into, and <code><a href="https://rdrr.io/pkg/ettbc/man/comorbidity_score.html">comorbidity_score()</a></code> for the comorbidity-adjustment side of cohort construction.</p>
+</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
+<div class="cell">
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ucdavis/ettbc">"ettbc"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Participant 1 is eligible; participant 2 dies before the age threshold;</span></span>
+<span><span class="co"># participant 3 has no qualifying mammogram in the entry window.</span></span>
+<span><span class="va">demographics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span>
+<span>  agein_month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">12</span>, <span class="fl">12</span><span class="op">)</span>,</span>
+<span>  death_month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">5</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  orec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">enrollment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">12</span><span class="op">)</span>, month <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, buyin <span class="op">=</span> <span class="st">"3"</span>, hmo <span class="op">=</span> <span class="st">"0"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">mammograms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/ettbc/man/apply_eligibility_criteria.html">apply_eligibility_criteria</a></span><span class="op">(</span><span class="va">demographics</span>, <span class="va">enrollment</span>, <span class="va">mammograms</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>  id agein_month start_month
+1  1          12          12</code></pre>
+</div>
+</div>
 
 
 <script>
@@ -953,13 +954,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 window.addEventListener("load", alignEquationAnchorsWithDefault);
-</script>
-
-</section>
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</script></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1376,5 +1371,4 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 
 
 
-
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/bootstrap_ci.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/bootstrap_ci.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/apply_eligibility_criteria.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/apply_eligibility_criteria.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

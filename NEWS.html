@@ -340,6 +340,12 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./man/apply_eligibility_criteria.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">apply_eligibility_criteria</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./man/augment_long_covariates.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">augment_long_covariates</span></a>
   </div>
@@ -557,6 +563,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="ettbc-development-version" class="level1">
 <h1>ettbc (development version)</h1>
 <ul>
+<li><p>Added <code>apply_eligibility_criteria()</code>, the cohort eligibility/enrollment logic from García-Albéniz et al.&nbsp;(SAS <code>c01_eligibility.sas</code>, item 3). Given a demographics table, a monthly enrollment table, and screening mammogram events, it selects participants alive at the age threshold, with a qualifying mammogram near that age (which becomes the derived study entry month), twelve consecutive months of fee-for-service Medicare enrollment ending at entry, and entitlement by age rather than disability or end-stage renal disease. Complements <code>gagne_weights()</code> / <code>comorbidity_score()</code> (<a href="https://github.com/ucdavis/ettbc/issues/27">#27</a>) as the other half of cohort construction (<a href="https://github.com/ucdavis/ettbc/issues/31">#31</a>, <a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
 <li><p><code>fit_weighted_logistic()</code> now muffles the expected <code>non-integer #successes in a binomial glm!</code> warning that non-integer IPW weights trigger. The fit is unchanged and other warnings (non-convergence, separation) still surface; this just stops <code>bootstrap_ci()</code> from emitting one such warning per resample.</p></li>
 <li><p>Added <code>fit_weighted_logistic()</code>: the shared weighted pooled-logistic fitting primitive behind <code>fit_outcome_hr()</code> and <code>predict_survival_ipw()</code>, which both now call it instead of repeating the weighted-GLM block. Exported so sibling packages can reuse the same fit; first step of the cross-package outcome-model consolidation (<a href="https://github.com/ucdavis/ettbc/issues/25">#25</a>). No change to existing results (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>
 <li><p>Added <code>gagne_weights()</code> and <code>comorbidity_score()</code>, the Gagne combined comorbidity score used by García-Albéniz et al.&nbsp;for cohort eligibility and adjustment (item 3). <code>gagne_weights()</code> returns the 20 published per-condition weights from the official ICD-9-CM / ICD-10-CM combined-comorbidity-score program – including the two negative weights (HIV/AIDS and hypertension). <code>comorbidity_score()</code> applies a named weight vector to per-person 0/1 condition indicators, defaulting to the Gagne weights. Mapping ICD codes to the condition flags is left to the user (e.g.&nbsp;the {comorbidity} package) (<a href="https://github.com/ucdavis/ettbc/issues/12">#12</a>).</p></li>

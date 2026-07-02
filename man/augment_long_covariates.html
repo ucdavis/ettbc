@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">augment_long_covariates</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">augment_long_covariates</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -357,6 +357,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/apply_eligibility_criteria.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">apply_eligibility_criteria</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/augment_long_covariates.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">augment_long_covariates</span></a>
@@ -574,7 +580,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/ucdavis/ettbc/edit/main/man/augment_long_covariates.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ucdavis/ettbc/blob/main/man/augment_long_covariates.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/ucdavis/ettbc/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">augment_long_covariates</a></li></ol></nav></header><section id="augment-long-format-data-with-mammogram-and-time-since-last-mammogram-columns" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="augment-long-format-data-with-mammogram-and-time-since-last-mammogram-columns">Augment Long-Format Data with Mammogram and Time-Since-Last-Mammogram Columns</h2>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../man/apply_eligibility_criteria.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/augment_long_covariates.html">augment_long_covariates</a></li></ol></nav></header><section id="augment-long-format-data-with-mammogram-and-time-since-last-mammogram-columns" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="augment-long-format-data-with-mammogram-and-time-since-last-mammogram-columns">Augment Long-Format Data with Mammogram and Time-Since-Last-Mammogram Columns</h2>
 <section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>Adds the time-varying screening covariates required by <code><a href="https://rdrr.io/pkg/ettbc/man/compute_ipw_weights.html">compute_ipw_weights()</a></code> and <code><a href="https://rdrr.io/pkg/ettbc/man/fit_screening_propensity.html">fit_screening_propensity()</a></code> to long-format data produced by <code><a href="https://rdrr.io/pkg/ettbc/man/expand_to_long.html">expand_to_long()</a></code>. It merges the observed mammogram events onto each participant-arm-month and derives the screening indicator, the time since the last mammogram, and the breast-cancer diagnosis month.</p>
 </section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
